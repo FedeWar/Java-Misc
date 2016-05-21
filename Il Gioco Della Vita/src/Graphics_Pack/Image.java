@@ -9,7 +9,7 @@ public class Image extends BufferedImage
 	
 	public Image(int w, int h, int c, int tile)
 	{
-		super(w, h, c);
+		super(w * tile, h * tile, c);
 		Tile = tile;
 	}
 	

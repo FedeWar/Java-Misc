@@ -120,7 +120,7 @@ public class Window extends JPanel
 		int H = Integer.parseInt(txtHeight.getText());
 		int T = Integer.parseInt(txtTile.getText());
 		
-		canvas = new Image(W * T, H * T, Image.TYPE_INT_RGB, T);
+		canvas = new Image(W, H, Image.TYPE_INT_RGB, T);
 		canvas.fill(Color.black);
 		addMouseListener(new DrawingListener(App, canvas));
 		
