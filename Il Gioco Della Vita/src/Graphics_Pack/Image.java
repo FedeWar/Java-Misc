@@ -14,8 +14,10 @@ public class Image extends BufferedImage
 	}
 	
 	/* Disegna un elemento in posizione X,Y allineato su una griglia */
-	public void drawElement(int X, int Y, int color)
+	public void drawPoint(int X, int Y, int color)
 	{
+		X *= Tile;
+		Y *= Tile;
 		int endX = Tile + X - (X % Tile);
 		int endY = Tile + Y - (Y % Tile);
 		

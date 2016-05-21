@@ -15,14 +15,15 @@ import Graphics_Pack.Image;
 
 public class DrawingListener implements MouseListener
 {
+	private static final int[] COLOR = new int[]{0, Color.WHITE.getRGB(), 0, Color.BLACK.getRGB()};
 	TimerListener TL;	// Evento chiamato dal timer
 	Timer T;			// Timer per controllare i movimenti del mouse
 	Image I;			// Immagine su cui scrivere
 	
 	public class TimerListener implements ActionListener
 	{
-		JFrame W;		// Frame a cui chiedere info sulla posizione
-		boolean left;	// È stato premuto il pulsante sinistro
+		JFrame W;	// Frame a cui chiedere info sulla posizione
+		int color;	// È stato premuto il pulsante sinistro
 		
 		TimerListener(JFrame w, Image i) { W = w; }	// Costruttore
 		
@@ -32,10 +33,10 @@ public class DrawingListener implements MouseListener
 			Point mouse = MouseInfo.getPointerInfo().getLocation();
 			
 			try{
-				I.drawElement(
-					mouse.x - (W.getLocation().x + (W.getWidth() - W.getContentPane().getWidth()) / 2),
-					mouse.y - (W.getLocation().y + W.getHeight() - W.getContentPane().getHeight() - 9),
-					left ? Color.WHITE.getRGB() : Color.BLACK.getRGB());
+				I.drawPoint(
+					(mouse.x - (W.getLocation().x + (W.getWidth() - W.getContentPane().getWidth()) / 2)) / I.Tile,
+					(mouse.y - (W.getLocation().y + W.getHeight() - W.getContentPane().getHeight() - 9)) / I.Tile,
+					color);
 			} catch (ArrayIndexOutOfBoundsException e1) {}
 		}
 	}
@@ -65,7 +66,7 @@ public class DrawingListener implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent arg0)
 	{
-		TL.left = arg0.getButton() == 1 ? true : false;
+		TL.color = COLOR[arg0.getButton()];
 		T.start();
 	}
 

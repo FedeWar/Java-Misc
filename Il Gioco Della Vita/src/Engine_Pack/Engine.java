@@ -54,7 +54,7 @@ public class Engine
 				
 				boolean lives = count > 2 && count < 5;		// Vive o muore?
 				Mat[otherBuf].set(X, Y, lives);				// Lo imposta come deve
-				I.drawElement(X * I.Tile, Y * I.Tile, COLORS[lives ? 0 : 1]);	// Disegna
+				I.drawPoint(X, Y, COLORS[lives ? 0 : 1]);	// Disegna
 			}
 		}
 		
