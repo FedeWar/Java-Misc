@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import Engine_Pack.Engine;
 import Main_Pack.Applicazione;
 import Main_Pack.DrawingListener;
 import Main_Pack.Listener;
@@ -25,10 +26,10 @@ public class Window extends JPanel
 	private boolean drawingMode = false;	// Se è in modalità disegno
 	
 	//Controlli
-	private JButton btnDraw, btnStart;				// Avvia la modalità di disegno
-	private JTextArea txtWidth, txtHeight, txtTile;	// Le dimensioni del canvas
-	private JLabel lblWidth, lblHeight, lblTile;	// Label
-	public Image canvas;							// Canvas su cui disegnare
+	private JButton btnDraw, btnStart, btnExport, btnImport;// Bottoni
+	private JTextArea txtWidth, txtHeight, txtTile;			// Le dimensioni del canvas
+	private JLabel lblWidth, lblHeight, lblTile;			// Label
+	public Image canvas;									// Canvas su cui disegnare
 	private Applicazione App;
 	
 	public Window(Applicazione app)
@@ -102,9 +103,21 @@ public class Window extends JPanel
 		btnStart.addActionListener(new Listener(arg));
 		btnStart.setVisible(false);
 		arg.add(btnStart);
+		
+		btnExport = new JButton("Export");
+		btnExport.setSize(75, 50);
+		btnExport.setVisible(false);
+		btnExport.addActionListener(new Listener(arg));
+		arg.add(btnExport);
+		
+		btnImport = new JButton("Import");
+		btnImport.setSize(75, 50);
+		btnImport.setVisible(false);
+		btnImport.addActionListener(new Listener(arg));
+		arg.add(btnImport);
 	}
 
-	public void runDrawing()
+	public Engine runDrawing()
 	{
 		drawingMode = true;
 		
@@ -126,6 +139,12 @@ public class Window extends JPanel
 		
 		btnStart.setVisible(true);
 		btnStart.setLocation(25, H * T + 10);
+		
+		btnExport.setVisible(true);
+		btnExport.setLocation(200, H * T + 10);
+		btnImport.setVisible(true);
+		btnImport.setLocation(275, H * T + 10);
+		
 		Size = new Dimension(W * T, H * T + 70);
 		setSize(Size);
 		
@@ -133,6 +152,8 @@ public class Window extends JPanel
 		App.getContentPane().setPreferredSize(Size);
 		
 		App.repaint();
+		
+		return new Engine(W, H);
 	}
 
 	public void runSimulation()

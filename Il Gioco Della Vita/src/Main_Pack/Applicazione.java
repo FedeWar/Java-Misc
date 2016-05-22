@@ -52,15 +52,14 @@ public class Applicazione extends JFrame
 	
 	public void runDrawing()
 	{
-		win.runDrawing();
+		E = win.runDrawing();
 		T.start();
 	}
 
 	public void runSimulation()
 	{
+		E.Init(win.canvas);
 		win.runSimulation();
-		E = new Engine(win.canvas);
-		// E.exportTo("C:\\Users\\Federico\\Desktop\\D.txt");	// Prova
 		isRunning = true;
 	}
 
@@ -68,6 +67,17 @@ public class Applicazione extends JFrame
 	{
 		win.stopSimulation();
 		isRunning = false;
-		E = null;
+	}
+
+	public void exportTo(String path)
+	{
+		if(!E.initialized)
+			E.Init(win.canvas);
+		E.exportTo(path);
+	}
+	
+	public void importFrom(String path)
+	{
+		E.importFrom(path, win.canvas);
 	}
 }
