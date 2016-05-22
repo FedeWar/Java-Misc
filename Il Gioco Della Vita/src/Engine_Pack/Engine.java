@@ -10,7 +10,7 @@ import Graphics_Pack.Image;
 
 public class Engine
 {
-	private final int[] COLORS = new int[]{Color.WHITE.getRGB(), Color.BLACK.getRGB()};
+	private final int[] COLORS = new int[]{Color.WHITE.getRGB(), Color.BLACK.getRGB(), Color.RED.getRGB()};
 	BitArray[] Mat;
 	int currBuf = 0;
 	int otherBuf = 1;
@@ -37,6 +37,8 @@ public class Engine
 		{
 			for(int Y = 0; Y < Mat[0].height(); Y++)
 			{
+				if(I.getElementColor(X, Y) == COLORS[2])
+					continue;
 				int count = 0;						// Quanti vicini sono vivi
 				int startx = (X == 0) ? 0 : X - 1;	// Da dove parte, non deve strabordare
 				int starty = (Y == 0) ? 0 : Y - 1;

@@ -15,7 +15,7 @@ import Graphics_Pack.Image;
 
 public class DrawingListener implements MouseListener
 {
-	private static final int[] COLOR = new int[]{0, Color.WHITE.getRGB(), 0, Color.BLACK.getRGB()};
+	private static final int[] COLOR = new int[]{0, Color.WHITE.getRGB(), Color.RED.getRGB(), Color.BLACK.getRGB()};
 	TimerListener TL;	// Evento chiamato dal timer
 	Timer T;			// Timer per controllare i movimenti del mouse
 	Image I;			// Immagine su cui scrivere
