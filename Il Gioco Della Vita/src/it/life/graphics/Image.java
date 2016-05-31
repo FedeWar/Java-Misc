@@ -1,4 +1,4 @@
-package Graphics_Pack;
+package it.life.graphics;
 //migliorare la classe, renderla più elastica
 import java.awt.Color;
 import java.awt.image.BufferedImage;

@@ -1,4 +1,4 @@
-package Graphics_Pack;
+package it.life.graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Engine_Pack.Engine;
-import Main_Pack.Applicazione;
-import Main_Pack.DrawingListener;
-import Main_Pack.Listener;
+import it.life.Applicazione;
+import it.life.engine.Engine;
+import it.life.listeners.DrawingListener;
+import it.life.listeners.Listener;
 
 //Bisogna commentare tutto il codice
 public class Window extends JPanel

@@ -1,4 +1,4 @@
-package Main_Pack;
+package it.life;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import Engine_Pack.Engine;
-import Graphics_Pack.Window;
+import it.life.engine.Engine;
+import it.life.graphics.Window;
 
 public class Applicazione extends JFrame
 {

@@ -1,4 +1,4 @@
-package Engine_Pack;
+package it.life.engine;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import Graphics_Pack.Image;
+import it.life.graphics.Image;
 
 public class Engine
 {

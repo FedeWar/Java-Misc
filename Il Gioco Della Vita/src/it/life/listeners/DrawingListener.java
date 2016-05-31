@@ -1,4 +1,4 @@
-package Main_Pack;
+package it.life.listeners;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -6,7 +6,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.SwingUtilities;
 
-import Graphics_Pack.Image;
+import it.life.graphics.Image;
 
 public class DrawingListener implements MouseMotionListener
 {

@@ -1,10 +1,12 @@
-package Main_Pack;
+package it.life.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
+import it.life.Applicazione;
 
 public class Listener implements ActionListener
 {
