@@ -29,7 +29,7 @@ public class Window extends JPanel
 	private JButton btnDraw, btnStart, btnExport, btnImport;// Bottoni
 	private JTextArea txtWidth, txtHeight, txtTile;			// Le dimensioni del canvas
 	private JLabel lblWidth, lblHeight, lblTile;			// Label
-	public Image canvas;									// Canvas su cui disegnare
+	public	Image canvas;									// Canvas su cui disegnare
 	private Applicazione App;
 	
 	public Window(Applicazione app)
@@ -135,7 +135,9 @@ public class Window extends JPanel
 		
 		canvas = new Image(W, H, Image.TYPE_INT_RGB, T);
 		canvas.fill(Color.black);
-		addMouseListener(new DrawingListener(App, canvas));
+		
+		DrawingListener DL = new DrawingListener(canvas);
+		addMouseMotionListener(DL);
 		
 		btnStart.setVisible(true);
 		btnStart.setLocation(25, H * T + 10);

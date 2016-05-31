@@ -1,78 +1,42 @@
 package Main_Pack;
 
 import java.awt.Color;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-import javax.swing.JFrame;
-import javax.swing.Timer;
+import javax.swing.SwingUtilities;
 
 import Graphics_Pack.Image;
 
-public class DrawingListener implements MouseListener
+public class DrawingListener implements MouseMotionListener
 {
 	private static final int[] COLOR = new int[]{0, Color.WHITE.getRGB(), Color.RED.getRGB(), Color.BLACK.getRGB()};
-	TimerListener TL;	// Evento chiamato dal timer
-	Timer T;			// Timer per controllare i movimenti del mouse
-	Image I;			// Immagine su cui scrivere
+	private Image I;	// Immagine su cui scrivere
+	private int color;	// Colore scelto
 	
-	public class TimerListener implements ActionListener
+	public DrawingListener(Image target) { I = target; }
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0)
 	{
-		JFrame W;	// Frame a cui chiedere info sulla posizione
-		int color;	// È stato premuto il pulsante sinistro
-		
-		TimerListener(JFrame w, Image i) { W = w; }	// Costruttore
-		
-		@Override
-		public void actionPerformed(ActionEvent e)
+		/* Sceglie il colore */
+		if(SwingUtilities.isLeftMouseButton(arg0))
+			color = COLOR[1];
+		else if(SwingUtilities.isRightMouseButton(arg0))
+			color = COLOR[3];
+		else if(SwingUtilities.isMiddleMouseButton(arg0))
+			color = COLOR[2];
+		else return;
+		/* Disegna il quadrato */
+		try{
+			I.drawPoint(arg0.getX() / I.Tile, arg0.getY() / I.Tile, color);
+		} catch (ArrayIndexOutOfBoundsException e1)
 		{
-			Point mouse = MouseInfo.getPointerInfo().getLocation();
-			
-			try{
-				I.drawPoint(
-					(mouse.x - (W.getLocation().x + (W.getWidth() - W.getContentPane().getWidth()) / 2)) / I.Tile,
-					(mouse.y - (W.getLocation().y + W.getHeight() - W.getContentPane().getHeight() - 9)) / I.Tile,
-					color);
-			} catch (ArrayIndexOutOfBoundsException e1) {}
+			System.out.print("Out of bounds: ");
+			System.out.println(arg0.getX() / I.Tile + "," + arg0.getY() / I.Tile);
 		}
 	}
-	
-	public DrawingListener(JFrame w, Image i)
-	{
-		I = i;
-		TL = new TimerListener(w, i);
-		T = new Timer(1, TL);
-	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0)
-	{
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
-		TL.color = COLOR[arg0.getButton()];
-		T.start();
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-		T.stop();
-	}
+	public void mouseMoved(MouseEvent arg0) {}
 }
