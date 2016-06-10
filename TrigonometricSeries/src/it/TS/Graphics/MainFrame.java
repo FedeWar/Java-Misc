@@ -10,16 +10,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class MainFrame
 {
 	/* Creare dei metodi per leggere da questi valori */
-	private JFrame mainFrame;
-	private WavePanel pnlWave;
-	private GraphPanel pnlGraph;
-	private JCheckBox chckbxMostraSomma;
-	private JSlider sldZoom;
+	private JFrame		mainFrame;
+	private WavePanel	pnlWave;
+	private GraphPanel	pnlGraph;
+	private JCheckBox	chckbxMostraSomma;
+	private JSlider		sldZoom;
+	private JTextField	function;
 	
 	class ButtonListener implements MouseListener
 	{
@@ -28,7 +30,7 @@ public class MainFrame
 		{
 			JButton src = (JButton)arg0.getSource();
 			
-			if(src.getText() == "Disegna")	// Funziona, può fare meglio
+			if(src.getText() == "Disegna")
 			{
 				/* Invia i valori dei controlli al GraphPanel */
 				int zoom = sldZoom.getValue();
@@ -36,12 +38,22 @@ public class MainFrame
 				if(zoom <= 50)
 					pnlGraph.setZoom((float) Math.log10(zoom / 5.0));
 				else
-					pnlGraph.setZoom(zoom - 50);
+					pnlGraph.setZoom(zoom - 50);	// Migliorare
 				pnlGraph.setWave(pnlWave.getSelectedId(), pnlWave.getSelectedWave());
 				pnlGraph.setSum(chckbxMostraSomma.isSelected());
 
 				/* Ridisegna il Panel */
 				pnlGraph.repaint();
+			}
+			else if(src.getText() == "Aggiorna")
+			{
+				function.setText(pnlGraph.getFunction());
+			}
+			else if(src.getText() == "Grafico")
+			{
+				pnlGraph.Parse(function.getText());
+				pnlWave.setSelectedWave(pnlGraph.getWave(0));
+				pnlWave.setSelectedId(0);
 			}
 		}
 
@@ -70,6 +82,8 @@ public class MainFrame
 	/* Inizializza i controlli dell'interfaccia grafica */
 	private void initialize()
 	{
+		ButtonListener BL = new ButtonListener();
+		
 		/* Frame principale */
 		mainFrame = new JFrame();
 		mainFrame.setBounds(100, 100, 640, 480);
@@ -120,8 +134,22 @@ public class MainFrame
 		
 		JButton btnDisegna = new JButton("Disegna");
 		btnDisegna.setBounds(63, 307, 105, 23);
-		btnDisegna.addMouseListener(new ButtonListener());
+		btnDisegna.addMouseListener(BL);
 		pnlView.add(btnDisegna);
+		
+		function = new JTextField("sin(x)");
+		function.setBounds(10, 200, 200, 20);
+		pnlView.add(function);
+		
+		JButton updateFunc = new JButton("Aggiorna");
+		updateFunc.setBounds(10, 225, 100, 20);
+		updateFunc.addMouseListener(BL);
+		pnlView.add(updateFunc);
+		
+		JButton drawFunc = new JButton("Grafico");
+		drawFunc.setBounds(115, 225, 95, 20);
+		drawFunc.addMouseListener(BL);
+		pnlView.add(drawFunc);
 		
 		mainFrame.setVisible(true);
 	}

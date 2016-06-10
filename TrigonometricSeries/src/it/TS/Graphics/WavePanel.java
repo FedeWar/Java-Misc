@@ -20,7 +20,7 @@ import it.TS.Math.Wave;
 
 public class WavePanel extends JPanel
 {
-	private static final long serialVersionUID = -896379151514256769L;
+	private static final long serialVersionUID = -6426568610069758982L;
 	
 	private GraphPanel	pnlGraph;
 	private JCheckBox	chckbxEvidenzia;
@@ -55,12 +55,12 @@ public class WavePanel extends JPanel
 				/* Se è stata premuta la label '+'
 				 * aggiunge un'onda alla lista*/
 				if(src.getText().compareTo("+") == 0)
-					pnlGraph.Waves.add(new Wave());
+					pnlGraph.addWave(new Wave());
 				
 				/* Se è stata premuta la label '-'
 				 * rimuove un'onda dalla lista */
 				else if(src.getText().compareTo("-") == 0)
-					pnlGraph.Waves.remove(getSelectedId());
+					pnlGraph.removeWave(getSelectedId());
 			}
 			else
 			{
@@ -84,8 +84,8 @@ public class WavePanel extends JPanel
 			int newId = getSelectedId();
 			if(newId < 0)
 				newId = setSelectedId(0);
-			else if(newId >= pnlGraph.Waves.size())
-				newId = setSelectedId(pnlGraph.Waves.size() - 1);
+			else if(newId >= pnlGraph.wavesCount())
+				newId = setSelectedId(pnlGraph.wavesCount() - 1);
 			
 			/* Aggiorna l'onda modificata */
 			pnlGraph.setWave(oldId, getSelectedWave());

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import it.TS.Math.Wave;
+import it.TS.Utils.Parser;
 
 /* Il pannello su cui vengono disegnate le onde */
 public class GraphPanel extends JPanel
@@ -17,7 +18,7 @@ public class GraphPanel extends JPanel
 	
 	private boolean			drawSum = true;
 	private float			zoomX, zoomY;
-	public	ArrayList<Wave> Waves;
+	private	ArrayList<Wave> Waves;
 
 	public GraphPanel(int x, int y, int width, int height)
 	{
@@ -40,6 +41,21 @@ public class GraphPanel extends JPanel
 		return Waves.get(id);
 	}
 	
+	public void addWave(Wave wave)
+	{
+		Waves.add(wave);
+	}
+	
+	public void removeWave(int index)
+	{
+		Waves.remove(index);
+	}
+	
+	public int wavesCount()
+	{
+		return Waves.size();
+	}
+	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -59,6 +75,47 @@ public class GraphPanel extends JPanel
 		
 		/* Calcola e disegna la somma di tutte le onde */
 		if(drawSum) drawSum(g2);
+	}
+	
+	public void setSum(boolean val)
+	{
+		drawSum = val;
+	}
+
+	public void setZoom(float val)
+	{
+		zoomX = (float) (2.0f / getWidth() * Math.PI) * val;
+		zoomY = (float) (2.0f / getHeight()) * val;
+	}
+
+	public String getFunction()
+	{
+		String function = Waves.get(0).toString();
+		
+		for(int i = 1; i < Waves.size(); i++)
+			function += " + " + Waves.get(i).toString();
+		
+		return function;
+	}
+
+	public void Parse(String function)
+	{
+		function = function.replaceAll(" ", "");
+		int s = function.indexOf('s');
+		Waves.clear();
+		
+		while(s != -1)
+		{
+			int start = function.lastIndexOf('+', s);
+			start = start < 0 ? 0 : start;
+			
+			int len = function.indexOf('+', function.indexOf(')', start));
+			len = len < 0 ? function.length() : len;
+			
+			Parser P = new Parser(function.substring(start, len));
+			Waves.add(P.parseWave());
+			s = function.indexOf('s', s + 1);
+		}
 	}
 	
 	private void drawSum(Graphics2D g2)
@@ -125,16 +182,5 @@ public class GraphPanel extends JPanel
 	private int graphToScreen(float y)
 	{
 		return (int) ((y / zoomY + getHeight() / 2));
-	}
-	
-	public void setSum(boolean val)
-	{
-		drawSum = val;
-	}
-
-	public void setZoom(float val)
-	{
-		zoomX = (float) (2.0f / getWidth() * Math.PI) * val;
-		zoomY = (float) (2.0f / getHeight()) * val;
 	}
 }
