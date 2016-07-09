@@ -24,14 +24,32 @@ public class MainWin extends JFrame
 	
 	private JPanel contentPane;
 	private JList<String> lstFracts;
-	private Frattale currFract;
 	private Canvas pnlCanvas;
 
 	/* Pannello sui cui disegnare */
 	private class Canvas extends JPanel
 	{
 		private static final long serialVersionUID = -6573971607519471731L;
-
+		private Frattale currFract;
+		private int oldSelection = -1;
+		
+		/* Crea un nuovo frattale da visualizzare */
+		public void newFract(String name)
+		{
+			// Ottiene l'id del frattale selezionato nella lista
+			int currentSelection = PluginManager.search(lstFracts.getSelectedValue());
+			
+			// Evita di disegnare più del necessario
+			if(currentSelection != oldSelection)
+			{
+				oldSelection = currentSelection;	// Cambia la vecchia selezione
+				currFract = PluginManager.create(	// Crea un nuovo frattale
+						currentSelection,
+						pnlCanvas.getWidth(),
+						pnlCanvas.getHeight());
+			}
+		}
+		
 		/* Ridisegna il pannello */
 		@Override
 		public void paintComponent(Graphics g)
@@ -49,29 +67,16 @@ public class MainWin extends JFrame
 	
 	private class ButtonListener implements ActionListener
 	{
-		private int oldSelection = -1;
-		
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			JButton button = (JButton)e.getSource();
 			
-			if(button.getText().compareTo("Disegna") == 0)
+			if(button.getText().compareTo("Disegna") == 0)			// Bottone "Disegna"
 			{
-				// Ottiene l'id del frattale selezionato nella lista
-				int currentSelection = PluginManager.search(lstFracts.getSelectedValue());
-				
-				// Evita di disegnare più del necessario
-				if(currentSelection != oldSelection)
-				{
-					oldSelection = currentSelection;	// Cambia la vecchia selezione
-					currFract = PluginManager.create(	// Instanzia il nuovo frattale
-						currentSelection,
-						pnlCanvas.getWidth(),
-						pnlCanvas.getHeight());
-				}
+				pnlCanvas.newFract(lstFracts.getSelectedValue());	// Cambia il frattale
+				repaint();											// Ridisegna la finestra
 			}
-			repaint();	// Ridisegna la finestra
 		}
 	}
 	
