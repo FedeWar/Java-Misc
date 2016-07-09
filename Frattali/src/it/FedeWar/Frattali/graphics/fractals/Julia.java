@@ -1,10 +1,10 @@
-package Frattali;
+package it.FedeWar.Frattali.graphics.fractals;
 
 import java.awt.Color;
 
-import it.fractals.FractalApp;
-import it.fractals.math.CMath;
-import it.fractals.math.Complex;
+import it.FedeWar.Frattali.graphics.FrattaleComplesso;
+import it.FedeWar.Frattali.math.CMath;
+import it.FedeWar.Frattali.math.Complex;
 
 public class Julia extends FrattaleComplesso
 {
@@ -23,10 +23,10 @@ public class Julia extends FrattaleComplesso
     		          z = CMath.Somma(z, c);
     		          temp = z;
     		    }
-    			FractalApp.mainInstance.canvas.setRGB(i, n,
-    					new Color(count*1.0f / (2 * MAX),
-    						(float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)),//(float) Math.sqrt((double)count/MAX),
-    						count*1.0f / MAX).getRGB());//(float)(1-Math.sqrt((double)count/MAX))
+    			Image.setRGB(i, n,
+    				new Color(count*1.0f / (2 * MAX),
+    					(float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)),//(float) Math.sqrt((double)count/MAX),
+    					count*1.0f / MAX).getRGB());//(float)(1-Math.sqrt((double)count/MAX))
     		}
     	}
     }
@@ -39,7 +39,15 @@ public class Julia extends FrattaleComplesso
 			c.r = 0.7885f * Math.cos(i);
 			c.i =  0.7885f * Math.sin(i);
 			Draw();
-			FractalApp.mainInstance.canvas.saveTo(path + (int)(i * 1000) + ".bmp");
+			//Image.saveTo(path + (int)(i * 1000) + ".bmp");
 		}
 	}
+	
+	/*public void saveTo(String path)
+	{
+		try {
+			File out = new File(path);
+			ImageIO.write(this, "bmp", out);
+		} catch (IOException e) { e.printStackTrace(); }
+	}*/
 }

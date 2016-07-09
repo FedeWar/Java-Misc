@@ -1,6 +1,6 @@
-package Frattali;
+package it.FedeWar.Frattali.graphics;
 
-import it.fractals.math.Complex;
+import it.FedeWar.Frattali.math.Complex;
 
 /* Classe base per frattali in due dimensioni */
 public abstract class FrattaleComplesso extends Frattale

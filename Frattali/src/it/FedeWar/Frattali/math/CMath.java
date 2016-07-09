@@ -1,4 +1,4 @@
-package it.fractals.math;
+package it.FedeWar.Frattali.math;
 
 public class CMath 
 {

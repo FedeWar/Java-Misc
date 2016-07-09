@@ -1,10 +1,10 @@
-package Frattali;
+package it.FedeWar.Frattali.graphics.fractals;
 
 import java.awt.Color;
 
-import it.fractals.FractalApp;
-import it.fractals.math.CMath;
-import it.fractals.math.Complex;
+import it.FedeWar.Frattali.graphics.FrattaleComplesso;
+import it.FedeWar.Frattali.math.CMath;
+import it.FedeWar.Frattali.math.Complex;
 
 /* Disegna il classico frattale di Mandelbrot */
 public class Mandelbrot extends FrattaleComplesso
@@ -29,7 +29,7 @@ public class Mandelbrot extends FrattaleComplesso
     		        z = CMath.Somma(z, c);
     		    }
     			Color c = new Color( 0, 0, count);
-    			FractalApp.mainInstance.canvas.setRGB(i,n, c.getRGB());
+    			Image.setRGB(i,n, c.getRGB());
     		}
     	}
 	}
