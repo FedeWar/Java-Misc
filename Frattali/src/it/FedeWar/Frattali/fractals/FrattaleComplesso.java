@@ -1,4 +1,4 @@
-package it.FedeWar.Frattali.graphics;
+package it.FedeWar.Frattali.fractals;
 
 import it.FedeWar.Frattali.math.Complex;
 

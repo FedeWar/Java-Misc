@@ -1,9 +1,9 @@
-package it.FedeWar.Frattali.graphics.fractals;
+package it.FedeWar.Frattali.fractals.plugins;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import it.FedeWar.Frattali.graphics.Frattale;
+import it.FedeWar.Frattali.fractals.Frattale;
 
 public class Sierpinski extends Frattale //Questo frattale non usa il piano complesso
 {

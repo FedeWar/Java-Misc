@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
-import it.FedeWar.Frattali.graphics.Frattale;
+import it.FedeWar.Frattali.fractals.Frattale;
 
 /* Gestione dei plugin, la classe non può essere instanziata */
 public abstract class PluginManager
@@ -24,14 +24,15 @@ public abstract class PluginManager
 	@SuppressWarnings("unchecked")
 	private static void loadBuiltinFractals()
 	{
+		String pluginsPath = "it.FedeWar.Frattali.fractals.plugins.";
 		try {
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass("it.FedeWar.Frattali.Graphics.fractals.Mandelbrot"));
+			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Mandelbrot"));
 			names.addElement("Mandelbrot");
 			
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass("it.FedeWar.Frattali.Graphics.fractals.Julia"));
+			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Julia"));
 			names.addElement("Julia");
 			
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass("it.FedeWar.Frattali.Graphics.fractals.Sierpinski"));
+			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Sierpinski"));
 			names.addElement("Sierpinski");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

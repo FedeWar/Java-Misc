@@ -1,8 +1,8 @@
-package it.FedeWar.Frattali.graphics.fractals;
+package it.FedeWar.Frattali.fractals.plugins;
 
 import java.awt.Color;
 
-import it.FedeWar.Frattali.graphics.FrattaleComplesso;
+import it.FedeWar.Frattali.fractals.FrattaleComplesso;
 import it.FedeWar.Frattali.math.CMath;
 import it.FedeWar.Frattali.math.Complex;
 

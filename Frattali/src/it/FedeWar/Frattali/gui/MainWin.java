@@ -16,13 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import it.FedeWar.Frattali.PluginManager;
-import it.FedeWar.Frattali.graphics.Frattale;
+import it.FedeWar.Frattali.fractals.Frattale;
 
 public class MainWin extends JFrame
 {
 	private static final long serialVersionUID = -393757332107664646L;
 	
-	private int height, width;
 	private JPanel contentPane;
 	private JList<String> lstFracts;
 	private Frattale currFract;
@@ -83,8 +82,8 @@ public class MainWin extends JFrame
 	{
 		super("Fractal Viewer");
 		
-		height = Toolkit.getDefaultToolkit().getScreenSize().height;
-		width = Toolkit.getDefaultToolkit().getScreenSize().width;
+		int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		int width = Toolkit.getDefaultToolkit().getScreenSize().width;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, width, height);
