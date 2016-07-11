@@ -3,9 +3,10 @@ package it.FedeWar.GiocoDellaVita.graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+/* Immagine i cui pixel sono di grandezza a piacere */
 public class Image extends BufferedImage
 {
-	public int Tile;
+	private int Tile;
 	
 	public Image(int w, int h, int c, int tile)
 	{
@@ -18,6 +19,12 @@ public class Image extends BufferedImage
 	{
 		X *= Tile;
 		Y *= Tile;
+		
+		drawPointA(X, Y, color);
+	}
+	
+	public void drawPointA(int X, int Y, int color)
+	{
 		int endX = Tile + X - (X % Tile);
 		int endY = Tile + Y - (Y % Tile);
 		

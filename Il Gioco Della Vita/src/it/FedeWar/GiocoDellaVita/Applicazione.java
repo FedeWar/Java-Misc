@@ -72,7 +72,10 @@ public class Applicazione extends JFrame
 	public void exportTo(String path)
 	{
 		E.Init(win.canvas);
-		E.exportTo(path);
+		
+		// Se l'utente chiude la finestra il percorso sarà nullo
+		if(path != null)
+			E.exportTo(path);
 	}
 	
 	public void importFrom(String path)
