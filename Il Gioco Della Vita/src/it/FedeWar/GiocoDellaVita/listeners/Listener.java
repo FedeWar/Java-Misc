@@ -1,4 +1,4 @@
-package it.life.listeners;
+package it.FedeWar.GiocoDellaVita.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import it.life.Applicazione;
+import it.FedeWar.GiocoDellaVita.Applicazione;
 
 public class Listener implements ActionListener
 {

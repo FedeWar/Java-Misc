@@ -1,4 +1,4 @@
-package it.life.listeners;
+package it.FedeWar.GiocoDellaVita.listeners;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -6,7 +6,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.SwingUtilities;
 
-import it.life.graphics.Image;
+import it.FedeWar.GiocoDellaVita.graphics.Image;
 
 public class DrawingListener implements MouseMotionListener
 {

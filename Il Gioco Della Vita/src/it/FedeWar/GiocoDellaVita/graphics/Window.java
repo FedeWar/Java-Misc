@@ -1,4 +1,4 @@
-package it.life.graphics;
+package it.FedeWar.GiocoDellaVita.graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,20 +10,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import it.life.Applicazione;
-import it.life.engine.Engine;
-import it.life.listeners.DrawingListener;
-import it.life.listeners.Listener;
+import it.FedeWar.GiocoDellaVita.Applicazione;
+import it.FedeWar.GiocoDellaVita.engine.Engine;
+import it.FedeWar.GiocoDellaVita.listeners.DrawingListener;
+import it.FedeWar.GiocoDellaVita.listeners.Listener;
 
 //Bisogna commentare tutto il codice
 public class Window extends JPanel
 {
-	// Proprietà del pannello
+	// Proprietï¿½ del pannello
 	private static final long serialVersionUID = -3327143243211825258L;
 	private Dimension Size;
 	
-	// Proprietà della simulazione
-	private boolean drawingMode = false;	// Se è in modalità disegno
+	// Proprietï¿½ della simulazione
+	private boolean drawingMode = false;	// Se ï¿½ in modalitï¿½ disegno
 	
 	//Controlli
 	private JButton btnDraw, btnStart, btnExport, btnImport;// Bottoni

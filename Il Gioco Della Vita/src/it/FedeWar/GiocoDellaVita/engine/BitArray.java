@@ -1,4 +1,4 @@
-package it.life.engine;
+package it.FedeWar.GiocoDellaVita.engine;
 
 public class BitArray
 {

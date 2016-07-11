@@ -1,4 +1,4 @@
-package it.life.engine;
+package it.FedeWar.GiocoDellaVita.engine;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import it.life.graphics.Image;
+import it.FedeWar.GiocoDellaVita.graphics.Image;
 
 public class Engine
 {
@@ -83,7 +83,7 @@ public class Engine
 			{
 				for(int Y = 0; Y < Mat[currBuf].height(); Y++)
 				{
-					val = BR.read() == '1';					// Verifica se è un uno
+					val = BR.read() == '1';					// Verifica se ï¿½ un uno
 					I.drawPoint(X, Y, COLORS[val ? 0 : 1]);	// Lo disegna
 				}
 			}

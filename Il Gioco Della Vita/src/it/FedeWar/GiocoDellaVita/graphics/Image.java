@@ -1,5 +1,5 @@
-package it.life.graphics;
-//migliorare la classe, renderla più elastica
+package it.FedeWar.GiocoDellaVita.graphics;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
