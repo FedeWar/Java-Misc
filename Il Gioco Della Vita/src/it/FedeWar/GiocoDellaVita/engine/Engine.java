@@ -10,54 +10,67 @@ import java.io.IOException;
 
 import it.FedeWar.GiocoDellaVita.graphics.Image;
 
+/* Gestisce l'evolversi del gioco */
 public class Engine
 {
 	private final int[] COLORS = new int[]{Color.WHITE.getRGB(), Color.BLACK.getRGB(), Color.RED.getRGB()};
-	private BitArray[] Mat;
-	private int currBuf = 0;
-	private int otherBuf = 1;
-	private Image I;
-	public boolean initialized = false;
 	
+	private BitArray[]	Mat;		// Le due matrici
+	private int			currBuf;	// Il buffer attualmente in uso
+	private int			otherBuf;	// L'altro buffer
+	private Image		targetImg;	// L'immagine su cui disegnare
+	
+	/* Costruittore */
 	public Engine(int W, int H)
 	{
-		// Crea i due array
+		currBuf = 0;
+		otherBuf = 1;
 		Mat = new BitArray[] { new BitArray(W, H), new BitArray(W, H)};
 	}
 
 	/* Trasforma l'immagine passata come argomento in una matrice */
 	public void Init(Image i)
 	{
-		I = i;
-		initialized = true;
+		targetImg = i;
 		
 		for(int x = 0; x < Mat[0].width(); x++)
 			for(int y = 0; y < Mat[0].height(); y++)
-				Mat[0].set(x, y, I.getElementColor(x, y) == COLORS[0]);
+				Mat[0].set(x, y, targetImg.getElementColor(x, y) == COLORS[0]);
 	}
 
 	public void Refresh()
 	{
-		for(int X = 0; X < Mat[0].width(); X++)		// Itera su tutti gli elementi
+		// Itera su tutti gli elementi della matrice
+		for(int X = 0; X < Mat[0].width(); X++)
 		{
 			for(int Y = 0; Y < Mat[0].height(); Y++)
 			{
-				if(I.getElementColor(X, Y) == COLORS[2])
+				// Ignora gli elementi di colore rosso
+				if(targetImg.getElementColor(X, Y) == COLORS[2])
 					continue;
-				int count = 0;						// Quanti vicini sono vivi
-				int startx = (X == 0) ? 0 : X - 1;	// Da dove parte, non deve strabordare
+				
+				int count = 0;	// Quanti vicini sono vivi
+				
+				// Da dove cominciare a calcolare
+				int startx = (X == 0) ? 0 : X - 1;
 				int starty = (Y == 0) ? 0 : Y - 1;
-				int endx = (X == Mat[0].width() - 1) ? X : (X + 1);	// Dove interrompe
+				
+				// Dove interrompere
+				int endx = (X == Mat[0].width() - 1) ? X : (X + 1);
 				int endy = (Y == Mat[0].height() - 1) ? Y : (Y + 1);
 				
-				for(int x = startx; x <= endx; x++)			// Itera sugli 8 elementi vicini
+				// Itera sugli elementi vicini (max 8)
+				for(int x = startx; x <= endx; x++)
 					for(int y = starty; y <= endy; y++)
-						if(x != X || x != y)				// Non deve contare se stesso
+					{
+						// Deve ignorare se stesso
+						if(x != X || x != y)
 							count += Mat[currBuf].get(x, y);// Somma il valore del vicino
+					}
 				
-				boolean lives = count > 2 && count < 5;		// Vive o muore?
-				Mat[otherBuf].set(X, Y, lives);				// Lo imposta come deve
-				I.drawPoint(X, Y, COLORS[lives ? 0 : 1]);	// Disegna
+				boolean lives = count > 2 && count < 5;				// Vive o muore?
+				Mat[otherBuf].set(X, Y, lives);						// Lo imposta nell'altro buffer
+				targetImg.drawPoint(X, Y, COLORS[lives ? 0 : 1]);	// Disegna
 			}
 		}
 		
@@ -69,7 +82,7 @@ public class Engine
 	
 	public void importFrom(String path, Image i)
 	{
-		I = i;
+		targetImg = i;
 		boolean val;
 		
 		try{
@@ -84,7 +97,7 @@ public class Engine
 				for(int Y = 0; Y < Mat[currBuf].height(); Y++)
 				{
 					val = BR.read() == '1';					// Verifica se � un uno
-					I.drawPoint(X, Y, COLORS[val ? 0 : 1]);	// Lo disegna
+					targetImg.drawPoint(X, Y, COLORS[val ? 0 : 1]);	// Lo disegna
 				}
 			}
 			BR.close();

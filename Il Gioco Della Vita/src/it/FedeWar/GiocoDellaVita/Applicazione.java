@@ -71,8 +71,7 @@ public class Applicazione extends JFrame
 
 	public void exportTo(String path)
 	{
-		if(!E.initialized)
-			E.Init(win.canvas);
+		E.Init(win.canvas);
 		E.exportTo(path);
 	}
 	
