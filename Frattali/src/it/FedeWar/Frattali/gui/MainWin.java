@@ -1,8 +1,6 @@
 package it.FedeWar.Frattali.gui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import it.FedeWar.Frattali.PluginManager;
-import it.FedeWar.Frattali.fractals.Frattale;
 
 public class MainWin extends JFrame
 {
@@ -25,45 +22,6 @@ public class MainWin extends JFrame
 	private JPanel contentPane;
 	private JList<String> lstFracts;
 	private Canvas pnlCanvas;
-
-	/* Pannello sui cui disegnare */
-	private class Canvas extends JPanel
-	{
-		private static final long serialVersionUID = -6573971607519471731L;
-		private Frattale currFract;
-		private int oldSelection = -1;
-		
-		/* Crea un nuovo frattale da visualizzare */
-		public void newFract(String name)
-		{
-			// Ottiene l'id del frattale selezionato nella lista
-			int currentSelection = PluginManager.search(lstFracts.getSelectedValue());
-			
-			// Evita di disegnare più del necessario
-			if(currentSelection != oldSelection)
-			{
-				oldSelection = currentSelection;	// Cambia la vecchia selezione
-				currFract = PluginManager.create(	// Crea un nuovo frattale
-						currentSelection,
-						pnlCanvas.getWidth(),
-						pnlCanvas.getHeight());
-			}
-		}
-		
-		/* Ridisegna il pannello */
-		@Override
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			Graphics2D g2 = (Graphics2D) g;
-			
-			if(currFract != null)
-			{
-				currFract.Draw();
-				g2.drawImage(currFract.getImage(), null, null);
-			}
-		}
-	}
 	
 	private class ButtonListener implements ActionListener
 	{

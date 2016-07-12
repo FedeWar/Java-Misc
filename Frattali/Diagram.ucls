@@ -58,23 +58,14 @@
   </class>  
   <class id="7" language="java" name="it.FedeWar.Frattali.gui.MainWin.ButtonListener" project="Frattali" 
     file="/Frattali/src/it/FedeWar/Frattali/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="754" y="-70"/>    
+    <position height="-1" width="-1" x="753" y="-131"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="it.FedeWar.Frattali.gui.MainWin.Canvas" project="Frattali" 
-    file="/Frattali/src/it/FedeWar/Frattali/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="505" y="-73"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" name="it.FedeWar.Frattali.gui.MainWin" project="Frattali" 
+  <class id="8" language="java" name="it.FedeWar.Frattali.gui.MainWin" project="Frattali" 
     file="/Frattali/src/it/FedeWar/Frattali/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="648" y="-303"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -83,131 +74,133 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <package id="10" language="java" name="it.FedeWar.Frattali.fractals.plugins" project="Frattali" 
+  <package id="9" language="java" name="it.FedeWar.Frattali.fractals.plugins" project="Frattali" 
     file="/Frattali/src/it/FedeWar/Frattali/fractals/plugins" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="107" y="-37"/>    
     <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
+  <class id="10" language="java" name="it.FedeWar.Frattali.gui.Canvas" project="Frattali" 
+    file="/Frattali/src/it/FedeWar/Frattali/gui/Canvas.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="500" y="-102"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <dependency id="11">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
   <dependency id="12">    
-    <bendpoint x="331" y="-29"/>    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="6"/>  
+    <bendpoint x="-107" y="-29"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
   </dependency>  
   <dependency id="13">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="8"/>  
-  </dependency>  
-  <dependency id="14">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="TARGET" refId="4"/>  
   </dependency>  
-  <dependency id="15">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <association id="16">    
+  <association id="14">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="17" name="c">        
+      <attribute id="15" name="trasl">        
         <position height="0" width="0" x="74" y="-63"/>      
       </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
-        <position height="0" width="0" x="74" y="-63"/>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="19">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <dependency id="20">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <nesting id="21">    
-    <bendpoint x="504" y="-181"/>    
-    <end type="SOURCE" refId="9"/>    
+  <dependency id="17">    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="8"/>  
-  </nesting>  
-  <dependency id="22">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="5"/>  
   </dependency>  
-  <association id="23">    
-    <bendpoint x="260" y="-194"/>    
+  <dependency id="18">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="19">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="24" name="currFract">        
-        <position height="16" width="53" x="393" y="-82"/>      
-      </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
-        <position height="14" width="23" x="305" y="-45"/>      
-      </multiplicity>    
+      <attribute id="20" name="pnlCanvas"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="26">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="27" name="pnlCanvas">        
-        <position height="16" width="59" x="386" y="-187"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1">        
-        <position height="14" width="23" x="536" y="-160"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="29">    
-    <bendpoint x="751" y="-183"/>    
+  <dependency id="22">    
+    <bendpoint x="331" y="-29"/>    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
-  <generalization id="30">    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <generalization id="23">    
     <bendpoint x="349" y="-44"/>    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="5"/>  
   </generalization>  
-  <association id="31">    
+  <association id="24">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="32" name="temp">        
-        <position height="0" width="0" x="74" y="-63"/>      
+      <attribute id="25" name="z">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
+      <multiplicity id="26" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="34">    
-    <bendpoint x="-107" y="-29"/>    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="3"/>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
   </dependency>  
-  <dependency id="35">    
+  <dependency id="28">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="30">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="31" name="temp">        
+        <position height="0" width="0" x="74" y="-63"/>      
+      </attribute>      
+      <multiplicity id="32" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="33">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <dependency id="34">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <association id="36">    
+  <association id="35">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="37" name="trasl">        
+      <attribute id="36" name="c">        
         <position height="0" width="0" x="74" y="-63"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="0" width="0" x="74" y="-63"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="40" name="z"/>      
-      <multiplicity id="41" minimum="0" maximum="1"/>    
+  <association id="38">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="39" name="currFract"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
