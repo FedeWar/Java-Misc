@@ -15,7 +15,6 @@
 	You should have received a copy of the GNU General Public License
 	along with Fractnet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package it.FedeWar.Fractnet.math;
 
 public class Complex
@@ -24,22 +23,31 @@ public class Complex
 	public double i;
 	public double mod;
 	
-	public Complex(double real, double immag)//Costruttore
+	public Complex(double real, double imag)
 	{
 		r = real;
-		i = immag;
+		i = imag;
 	}
-	public double Modulo()
+	public double norm()
 	{
 		mod = Math.sqrt(r*r + i*i);
 		return mod;
 	}
-	public Complex Potenza(int n)
+	public Complex pow(int n)
 	{
 		if(n == 2)
 		{
 			return new Complex((r*r)-(i*i), 2*r*i);
 		}
 		return null;
+	}
+	
+	public static Complex Parse(String str)
+	{
+		Complex C = new Complex(0, 0);
+		int commaIndex = str.indexOf(';');
+		C.r = Double.parseDouble(str.substring(0, commaIndex));
+		C.i = Double.parseDouble(str.substring(commaIndex + 1));
+		return C;
 	}
 }
