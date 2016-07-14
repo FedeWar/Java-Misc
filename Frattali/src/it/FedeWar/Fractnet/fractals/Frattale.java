@@ -30,7 +30,7 @@ public abstract class Frattale
 	
 	public Frattale() {}	// Non deve prendere parametri
 	
-	public void Init(int width, int height)
+	public void init(int width, int height)
 	{
 		Width = width;
 		Height = height;
@@ -38,8 +38,6 @@ public abstract class Frattale
 	}
 	
 	public void Draw() {}
-	
-	public void setC(double r, double i) {}
 	
 	public BufferedImage getImage()
 	{

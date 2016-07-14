@@ -21,41 +21,37 @@ package it.FedeWar.Fractnet.fractals;
 import it.FedeWar.Fractnet.math.Complex;
 
 /* Classe base per frattali in due dimensioni */
-public abstract class FrattaleComplesso extends Frattale
+public abstract class ComplexFract extends Frattale
 {
-	protected int MAX = 255;
+	protected final int MAX = 255;
 	protected int count = 0;
 
 	public double zoom = 0;
 	public Complex trasl;
 	protected Complex c;
-	public Complex z, temp;
+	public Complex z;
 	
-	public FrattaleComplesso()
-	{
-		
-	}
+	/* Costruttore, deve essere vuoto */
+	public ComplexFract() {}
 	
 	@Override
-	public void Init(int width, int height)
+	public void init(int width, int height)
 	{
-		super.Init(width, height);
+		super.init(width, height);
 		z = new Complex(0,0);
 		c = new Complex(0,0);
-		temp = new Complex(0,0);
 		trasl = new Complex(Width / 2, Height / 2);
 		zoom = Height / 4;
 	}
 	
-	@Override
 	public void setC(double r, double i)
 	{
-		if(c == null)
-			c = new Complex(r, i);
-		else
-		{
-			c.r = r;
-			c.i = i;
-		}
+		c.r = r;
+		c.i = i;
+	}
+	
+	public void setC(Complex C)
+	{
+		c = C;
 	}
 }

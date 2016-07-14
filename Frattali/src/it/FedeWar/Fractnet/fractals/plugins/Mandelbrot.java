@@ -20,12 +20,12 @@ package it.FedeWar.Fractnet.fractals.plugins;
 
 import java.awt.Color;
 
-import it.FedeWar.Fractnet.fractals.FrattaleComplesso;
+import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.math.CMath;
 import it.FedeWar.Fractnet.math.Complex;
 
 /* Disegna il classico frattale di Mandelbrot */
-public class Mandelbrot extends FrattaleComplesso
+public class Mandelbrot extends ComplexFract
 {
 	public Mandelbrot()
 	{
@@ -41,10 +41,10 @@ public class Mandelbrot extends FrattaleComplesso
     			c.r = (double)((i - trasl.r) / zoom);
     			c.i = (double)((n - trasl.i) / zoom);
     			z = new Complex(0,0);
-    			for(count = 0; count < MAX && z.Modulo() < 2.0f; count++)
+    			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
     			{
-    		        z = z.Potenza(2);
-    		        z = CMath.Somma(z, c);
+    		        z = z.pow(2);
+    		        z = CMath.sum(z, c);
     		    }
     			Color c = new Color( 0, 0, count);
     			Image.setRGB(i,n, c.getRGB());

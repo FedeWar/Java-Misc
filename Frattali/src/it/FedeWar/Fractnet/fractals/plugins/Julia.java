@@ -20,11 +20,11 @@ package it.FedeWar.Fractnet.fractals.plugins;
 
 import java.awt.Color;
 
-import it.FedeWar.Fractnet.fractals.FrattaleComplesso;
+import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.math.CMath;
 import it.FedeWar.Fractnet.math.Complex;
 
-public class Julia extends FrattaleComplesso
+public class Julia extends ComplexFract
 {
 	public Julia() {}
 	
@@ -34,11 +34,11 @@ public class Julia extends FrattaleComplesso
     	{
     		for(int n = 0; n < Height; n++)
     		{
-    			temp = new Complex((i - trasl.r) / zoom, -(n - trasl.i) / zoom);
+    			Complex temp = new Complex((i - trasl.r) / zoom, -(n - trasl.i) / zoom);
     			z = new Complex(0, 0);
-    			for(count = 0; count < MAX && temp.Modulo() < 2; count++){
-    		          z = temp.Potenza(2);
-    		          z = CMath.Somma(z, c);
+    			for(count = 0; count < MAX && temp.norm() < 2; count++){
+    		          z = temp.pow(2);
+    		          z = CMath.sum(z, c);
     		          temp = z;
     		    }
     			Image.setRGB(i, n,
