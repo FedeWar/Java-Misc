@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 
 import it.FedeWar.Fractnet.PluginManager;
 import it.FedeWar.Fractnet.fractals.Frattale;
+import it.FedeWar.Fractnet.fractals.ComplexFract;
+import it.FedeWar.Fractnet.math.Complex;
 
 /* Pannello sui cui disegnare */
 class Canvas extends JPanel
@@ -33,18 +35,25 @@ class Canvas extends JPanel
 	
 	private Frattale currFract;
 	private int oldSelection = -1;
+	private String oldArg = "0;0";
 	
 	/* Crea un nuovo frattale da visualizzare */
-	public void newFract(String name)
+	public void newFract(String name, String arg)
 	{
 		// Ottiene l'id del frattale selezionato nella lista
 		int currentSelection = PluginManager.search(name);
 		
-		// Evita di disegnare più del necessario
+		// Se il frattale selezionato è cambiato
 		if(currentSelection != oldSelection)
 		{
-			oldSelection = currentSelection;	// Cambia la vecchia selezione
+			oldSelection = currentSelection;
 			currFract = PluginManager.create(currentSelection, getWidth(), getHeight());
+		}
+		// Se l'argomento è cambiato e il frattale è complesso
+		if(arg.compareTo(oldArg) != 0 && currFract instanceof ComplexFract)
+		{
+			oldArg = arg;
+			((ComplexFract)currFract).setC(Complex.Parse(arg));
 		}
 	}
 	

@@ -32,6 +32,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import it.FedeWar.Fractnet.PluginManager;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JToolBar;
 
 
 /* Finestra principale dell'app, generata con WindowBuilder */
@@ -42,6 +46,7 @@ public class MainWin extends JFrame
 	private JPanel contentPane;
 	private JList<String> lstFracts;
 	private Canvas pnlCanvas;
+	private JTextField txtArg;
 	
 	private class ButtonListener implements ActionListener
 	{
@@ -54,7 +59,7 @@ public class MainWin extends JFrame
 			if(button.getText().compareTo("Disegna") == 0)
 			{
 				// Ridisegna il frattale e la finestra
-				pnlCanvas.newFract(lstFracts.getSelectedValue());
+				pnlCanvas.newFract(lstFracts.getSelectedValue(), txtArg.getText());
 				repaint();
 			}
 		}
@@ -93,10 +98,30 @@ public class MainWin extends JFrame
 		lstFracts.setBounds(width / 2 + 12, 12, 200, height / 2);
 		contentPane.add(lstFracts);
 		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(1154, -10, 200, 648);
+		contentPane.add(toolBar);
+		
+		JPanel panel = new JPanel();
+		toolBar.add(panel);
+		panel.setLayout(null);
+		
 		JButton btnDraw = new JButton("Disegna");
-		btnDraw.setBounds(905, 12, 117, 25);
+		btnDraw.setBounds(6, 22, 176, 25);
+		panel.add(btnDraw);
+		
+		JLabel lblArgomento = new JLabel("Argomento:");
+		lblArgomento.setHorizontalAlignment(SwingConstants.CENTER);
+		lblArgomento.setBounds(6, 72, 176, 15);
+		panel.add(lblArgomento);
+		
+		txtArg = new JTextField();
+		txtArg.setBounds(6, 99, 176, 19);
+		panel.add(txtArg);
+		txtArg.setHorizontalAlignment(SwingConstants.CENTER);
+		txtArg.setText("-0.70176;-0.3842");
+		txtArg.setColumns(10);
 		btnDraw.addActionListener(new ButtonListener());
-		contentPane.add(btnDraw);
 		
 		setVisible(true);
 	}
