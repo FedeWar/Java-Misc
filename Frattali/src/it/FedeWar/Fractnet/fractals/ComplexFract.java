@@ -18,27 +18,26 @@
 
 package it.FedeWar.Fractnet.fractals;
 
+import java.awt.image.BufferedImage;
+
 import it.FedeWar.Fractnet.math.Complex;
 
 /* Classe base per frattali in due dimensioni */
-public abstract class ComplexFract extends Frattale
+public abstract class ComplexFract extends Fractal
 {
 	protected final int MAX = 255;
-	protected int count = 0;
 
-	public double zoom = 0;
-	public Complex trasl;
+	protected double zoom = 0;
+	protected Complex trasl;
 	protected Complex c;
-	public Complex z;
 	
 	/* Costruttore, deve essere vuoto */
 	public ComplexFract() {}
 	
 	@Override
-	public void init(int width, int height)
+	public void init(int width, int height, BufferedImage targetImage)
 	{
-		super.init(width, height);
-		z = new Complex(0,0);
+		super.init(width, height, targetImage);
 		c = new Complex(0,0);
 		trasl = new Complex(Width / 2, Height / 2);
 		zoom = Height / 4;

@@ -27,13 +27,13 @@ import it.FedeWar.Fractnet.math.Complex;
 /* Disegna il classico frattale di Mandelbrot */
 public class Mandelbrot extends ComplexFract
 {
-	public Mandelbrot()
-	{
-		
-	}
+	public Mandelbrot() {}
 	
 	public void Draw()
 	{
+		int count;
+		Complex z;
+		
 		for(int i = 0; i < Width; i++)
     	{
     		for(int n = 0; n < Height; n++)

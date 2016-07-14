@@ -28,21 +28,18 @@ public abstract class Fractal
 	protected int Width, Height;
 	protected BufferedImage Image;
 	
-	public Fractal() {}	// Non deve prendere parametri
+	/* Viene chiamato dall'oggetto Class, non deve avere parametri */
+	public Fractal() {}
 	
-	public void init(int width, int height)
+	/* Inizializza l'oggetto, fa le veci del costruttore */
+	public void init(int width, int height, BufferedImage i)
 	{
 		Width = width;
 		Height = height;
-		Image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+		Image = i;
 	}
 	
 	public void Draw() {}
-	
-	public BufferedImage getImage()
-	{
-		return Image;
-	}
 	
 	public void animation(String path)
 	{

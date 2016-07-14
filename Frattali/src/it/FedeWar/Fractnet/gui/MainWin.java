@@ -89,9 +89,9 @@ public class MainWin extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		pnlCanvas = new Canvas();
+		pnlCanvas = new Canvas(width / 2, height - 120);
 		pnlCanvas.setBackground(Color.BLACK);
-		pnlCanvas.setBounds(0, 0, width / 2, height - 120);
+		pnlCanvas.setLocation(0, 0);
 		contentPane.add(pnlCanvas);
 		
 		lstFracts = new JList<String>(PluginManager.getNames());

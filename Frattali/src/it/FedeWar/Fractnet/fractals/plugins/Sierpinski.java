@@ -21,10 +21,12 @@ package it.FedeWar.Fractnet.fractals.plugins;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import it.FedeWar.Fractnet.fractals.Frattale;
+import it.FedeWar.Fractnet.fractals.Fractal;
 
-public class Sierpinski extends Frattale //Questo frattale non usa il piano complesso
+/* Frattale di Sierpinski, è un frattale semplice */
+public class Sierpinski extends Fractal
 {
+	@Override
 	public void Draw()
 	{
 		Graphics2D g = (Graphics2D)Image.getGraphics();
@@ -46,6 +48,7 @@ public class Sierpinski extends Frattale //Questo frattale non usa il piano comp
 			}
 		}
 	}
+	
 	public void Draw(int lato, int X, int Y)
 	{
 		Graphics2D g = (Graphics2D)Image.getGraphics();

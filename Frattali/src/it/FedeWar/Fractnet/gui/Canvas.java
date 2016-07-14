@@ -20,11 +20,12 @@ package it.FedeWar.Fractnet.gui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 import it.FedeWar.Fractnet.PluginManager;
-import it.FedeWar.Fractnet.fractals.Frattale;
+import it.FedeWar.Fractnet.fractals.Fractal;
 import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.math.Complex;
 
@@ -33,9 +34,17 @@ class Canvas extends JPanel
 {
 	private static final long serialVersionUID = -6573971607519471731L;
 	
-	private Frattale currFract;
+	private BufferedImage fractalImage;
+	private Fractal currFract;
 	private int oldSelection = -1;
 	private String oldArg = "0;0";
+	
+	public Canvas(int width, int height)
+	{
+		super();
+		setSize(width, height);
+		fractalImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+	}
 	
 	/* Crea un nuovo frattale da visualizzare */
 	public void newFract(String name, String arg)
@@ -48,9 +57,13 @@ class Canvas extends JPanel
 		{
 			oldSelection = currentSelection;
 			currFract = PluginManager.create(currentSelection, getWidth(), getHeight());
+			currFract.init(getWidth(), getHeight(), fractalImage);
+			
+			if(currFract instanceof ComplexFract)
+				((ComplexFract)currFract).setC(Complex.Parse(arg));
 		}
 		// Se l'argomento è cambiato e il frattale è complesso
-		if(arg.compareTo(oldArg) != 0 && currFract instanceof ComplexFract)
+		else if(arg.compareTo(oldArg) != 0 && currFract instanceof ComplexFract)
 		{
 			oldArg = arg;
 			((ComplexFract)currFract).setC(Complex.Parse(arg));
@@ -67,7 +80,7 @@ class Canvas extends JPanel
 		if(currFract != null)
 		{
 			currFract.Draw();
-			g2.drawImage(currFract.getImage(), null, null);
+			g2.drawImage(fractalImage, null, null);
 		}
 	}
 }

@@ -30,11 +30,14 @@ public class Julia extends ComplexFract
 	
 	public void Draw()
     {
+		int count;
+		Complex z, temp;
+		
     	for(int i = 0; i < Width; i++)
     	{
     		for(int n = 0; n < Height; n++)
     		{
-    			Complex temp = new Complex((i - trasl.r) / zoom, -(n - trasl.i) / zoom);
+    			temp = new Complex((i - trasl.r) / zoom, -(n - trasl.i) / zoom);
     			z = new Complex(0, 0);
     			for(count = 0; count < MAX && temp.norm() < 2; count++){
     		          z = temp.pow(2);

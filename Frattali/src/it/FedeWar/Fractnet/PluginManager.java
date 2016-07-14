@@ -22,18 +22,18 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
-import it.FedeWar.Fractnet.fractals.Frattale;
+import it.FedeWar.Fractnet.fractals.Fractal;
 
 /* Gestione dei plugin, la classe non può essere instanziata */
 public abstract class PluginManager
 {
 	private	static DefaultListModel<String> names;		// Lista nomi frattali disponibili
-	private	static ArrayList<Class<Frattale>> plugins;	// Lista classi dei frattali
+	private	static ArrayList<Class<Fractal>> plugins;	// Lista classi dei frattali
 	
 	/* Inizializza le liste */
 	static
 	{
-		plugins = new ArrayList<Class<Frattale>>();
+		plugins = new ArrayList<Class<Fractal>>();
 		names = new DefaultListModel<String>();
 		loadBuiltinFractals();
 	}
@@ -44,13 +44,13 @@ public abstract class PluginManager
 	{
 		String pluginsPath = "it.FedeWar.Fractnet.fractals.plugins.";
 		try {
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Mandelbrot"));
+			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Mandelbrot"));
 			names.addElement("Mandelbrot");
 			
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Julia"));
+			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Julia"));
 			names.addElement("Julia");
 			
-			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Sierpinski"));
+			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Sierpinski"));
 			names.addElement("Sierpinski");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -58,13 +58,12 @@ public abstract class PluginManager
 	}
 	
 	/* Alloca un frattale per essere disegnato */
-	public static Frattale create(int selected, int width, int height)
+	public static Fractal create(int selected, int width, int height)
 	{
 		try
 		{
 			// Crea, inizializza e restituisce un nuovo frattale
-			Frattale fra = plugins.get(selected).newInstance();
-			fra.init(width, height);
+			Fractal fra = plugins.get(selected).newInstance();
 			return fra;
 		}
 		catch (InstantiationException | IllegalAccessException e) {
@@ -77,10 +76,10 @@ public abstract class PluginManager
 	@SuppressWarnings("unchecked")
 	public static void add(String name)
 	{
-		Class<Frattale> plugin;
+		Class<Fractal> plugin;
 		try
 		{
-			plugin = (Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(name);
+			plugin = (Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(name);
 			plugins.add(plugin);
 			names.addElement(plugin.getName());
 		}
