@@ -23,12 +23,12 @@ import java.awt.image.BufferedImage;
 import javax.swing.JOptionPane;
 
 /* Classe base per disegnare frattali */
-public abstract class Frattale
+public abstract class Fractal
 {
 	protected int Width, Height;
 	protected BufferedImage Image;
 	
-	public Frattale() {}	// Non deve prendere parametri
+	public Fractal() {}	// Non deve prendere parametri
 	
 	public void init(int width, int height)
 	{
