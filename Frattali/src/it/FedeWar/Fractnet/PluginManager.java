@@ -42,7 +42,7 @@ public abstract class PluginManager
 	@SuppressWarnings("unchecked")
 	private static void loadBuiltinFractals()
 	{
-		String pluginsPath = "it.FedeWar.Frattali.fractals.plugins.";
+		String pluginsPath = "it.FedeWar.Fractnet.fractals.plugins.";
 		try {
 			plugins.add((Class<Frattale>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Mandelbrot"));
 			names.addElement("Mandelbrot");
@@ -64,7 +64,7 @@ public abstract class PluginManager
 		{
 			// Crea, inizializza e restituisce un nuovo frattale
 			Frattale fra = plugins.get(selected).newInstance();
-			fra.Init(width, height);
+			fra.init(width, height);
 			return fra;
 		}
 		catch (InstantiationException | IllegalAccessException e) {
