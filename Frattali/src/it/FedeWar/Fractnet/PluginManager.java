@@ -52,6 +52,9 @@ public abstract class PluginManager
 			
 			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "SierpinskiSquares"));
 			names.addElement("Tappeto di Sierpinski");
+			
+			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "SierpinskiTriangles"));
+			names.addElement("Triangoli di Sierpinski");
 		} catch (ClassNotFoundException e) {
 			System.err.println("Impossibile caricare la classe: " + e.getMessage());
 		}
