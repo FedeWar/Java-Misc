@@ -26,50 +26,40 @@ import it.FedeWar.Fractnet.fractals.Fractal;
 /* Frattale di Sierpinski, è un frattale semplice */
 public class SierpinskiSquares extends Fractal
 {
+	private Graphics2D g;	// GC, come campo diminuisce l'uso dello stack
+	
 	@Override
 	public void Draw()
 	{
-		Graphics2D g = (Graphics2D)Image.getGraphics();
+		// Prepara il canvas
+		g = (Graphics2D)Image.getGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, Width, Height);
+		g.setColor(Color.RED);
 		
 		int lato = Math.min(Width, Height) / 3;
 		
-		for(int x = 0; x < 3; x++)
-		{
-			for(int y = 0; y < 3; y++)
-			{
-				if(x == 1 && y == 1)
-				{
-					g.setColor(Color.BLACK);
-					g.drawRect(lato * x, lato * y, lato, lato);
-					continue;
-				}
-				g.setColor(Color.RED);
-				g.drawRect(lato * x, lato * y, lato, lato);
-				Draw(lato / 3,lato * x, lato * y);
-			}
-		}
+		Draw(lato, 0, 0);
 	}
 	
 	public void Draw(int lato, int X, int Y)
 	{
-		Graphics2D g = (Graphics2D)Image.getGraphics();
-		if(lato==0)return;
-		
+		// Itera sugli 8 quadrati più piccoli
 		for(int x = 0; x < 3; x++)
 		{
 			for(int y = 0; y < 3; y++)
 			{
-				if(x == 1 && y == 1)
+				// Se non è il quadrato centrale
+				if(x != 1 || y != 1)
 				{
-					g.setColor(Color.BLACK);
-					g.drawRect(X + lato * x, Y + lato * y, lato, lato);
-					continue;
+					// Se il quadrato ha raggiunto la dimensione minima
+					if(lato - 3 <= 0)
+						g.drawRect(X + lato * x, Y + lato * y, lato, lato);
+					
+					// Se è troppo grande chiama quelli più piccoli
+					else
+						Draw(lato / 3, X + lato * x, Y + lato * y);
 				}
-				g.setColor(Color.RED);
-				g.drawRect(X + lato * x, Y + lato * y, lato, lato);
-				Draw(lato / 3, X + lato * x, Y + lato * y);
 			}
 		}
 	}
