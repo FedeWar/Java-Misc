@@ -42,7 +42,7 @@ public class SierpinskiSquares extends Fractal
 		Draw(lato, 0, 0);
 	}
 	
-	public void Draw(int lato, int X, int Y)
+	/*public void Draw(int lato, int X, int Y)
 	{
 		// Itera sugli 8 quadrati più piccoli
 		for(int x = 0; x < 3; x++)
@@ -61,6 +61,34 @@ public class SierpinskiSquares extends Fractal
 						Draw(lato / 3, X + lato * x, Y + lato * y);
 				}
 			}
+		}
+	}*/
+	
+	public void Draw(int lato, int X, int Y)
+	{
+		// Se il quadrato ha raggiunto la dimensione minima
+		if(lato - 3 <= 0)
+		{
+			g.drawRect(X + lato * 0, Y + lato * 0, lato, lato);
+			g.drawRect(X + lato * 0, Y + lato * 1, lato, lato);
+			g.drawRect(X + lato * 0, Y + lato * 2, lato, lato);
+			g.drawRect(X + lato * 1, Y + lato * 0, lato, lato);
+			g.drawRect(X + lato * 1, Y + lato * 2, lato, lato);
+			g.drawRect(X + lato * 2, Y + lato * 0, lato, lato);
+			g.drawRect(X + lato * 2, Y + lato * 1, lato, lato);
+			g.drawRect(X + lato * 2, Y + lato * 2, lato, lato);
+		}
+		// Se è troppo grande chiama quelli più piccoli
+		else
+		{
+			Draw(lato / 3, X + lato * 0, Y + lato * 0);
+			Draw(lato / 3, X + lato * 0, Y + lato * 1);
+			Draw(lato / 3, X + lato * 0, Y + lato * 2);
+			Draw(lato / 3, X + lato * 1, Y + lato * 0);
+			Draw(lato / 3, X + lato * 1, Y + lato * 2);
+			Draw(lato / 3, X + lato * 2, Y + lato * 0);
+			Draw(lato / 3, X + lato * 2, Y + lato * 1);
+			Draw(lato / 3, X + lato * 2, Y + lato * 2);
 		}
 	}
 }
