@@ -26,15 +26,22 @@ import it.FedeWar.Fractnet.fractals.Fractal;
 public class SierpinskiTriangles extends Fractal
 {
 	private static final double MAX_DETAIL = 200;
-	Color colSet = Color.GREEN;
-	Color colBack = Color.BLACK;
+	
+	private Color foreground = Color.GREEN;
+	private Color background = Color.BLACK;
+	
+	public void setPalette(Color foreground, Color background)
+	{
+		this.foreground = foreground;
+		this.background = background;
+	}
 	
 	@Override
 	public void Draw()
 	{
 		// Prepara il canvas
 		Graphics2D g2 = (Graphics2D)Image.getGraphics();
-		g2.setColor(Color.BLACK);
+		g2.setColor(background);
 		g2.fillRect(0, 0, Width, Height);
 		
 		// Crea il primo triangolo
@@ -42,7 +49,6 @@ public class SierpinskiTriangles extends Fractal
 		firstTriangle.addPoint(Width / 2, 0);
 		firstTriangle.addPoint(0, Height);
 		firstTriangle.addPoint(Width, Height);
-		g2.setColor(colBack);
 		
 		// Disegna i triangoli più piccoli ricorsivamente
 		Draw(firstTriangle, 0);
@@ -98,7 +104,7 @@ public class SierpinskiTriangles extends Fractal
 		if(Math.pow(triangle.xpoints[0] - triangle.xpoints[1], 2) +
 			Math.pow(triangle.ypoints[0] - triangle.ypoints[1], 2) < MAX_DETAIL)
 		{
-			g2.setColor(colSet);
+			g2.setColor(foreground);
 			g2.fillPolygon(triangle);
 		}
 		// Se il triangolo è troppo grande disegna quelli più piccoli
