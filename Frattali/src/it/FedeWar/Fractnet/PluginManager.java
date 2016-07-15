@@ -50,10 +50,10 @@ public abstract class PluginManager
 			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Julia"));
 			names.addElement("Julia");
 			
-			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "Sierpinski"));
-			names.addElement("Sierpinski");
+			plugins.add((Class<Fractal>) ClassLoader.getSystemClassLoader().loadClass(pluginsPath + "SierpinskiSquares"));
+			names.addElement("Tappeto di Sierpinski");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			System.err.println("Impossibile caricare la classe: " + e.getMessage());
 		}
 	}
 	
