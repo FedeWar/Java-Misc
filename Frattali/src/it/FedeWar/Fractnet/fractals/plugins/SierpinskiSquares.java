@@ -30,7 +30,10 @@ public class SierpinskiSquares extends Fractal
 	public void Draw()
 	{
 		Graphics2D g = (Graphics2D)Image.getGraphics();
-		int lato = Image.getHeight() / 3;
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, Width, Height);
+		
+		int lato = Math.min(Width, Height) / 3;
 		
 		for(int x = 0; x < 3; x++)
 		{
