@@ -34,13 +34,26 @@ public abstract class ComplexFract extends Fractal
 	/* Costruttore, deve essere vuoto */
 	public ComplexFract() {}
 	
+	/* Inizializzazione oggetto, fa le veci del costruttore */
 	@Override
 	public void init(int width, int height, BufferedImage targetImage)
 	{
 		super.init(width, height, targetImage);
 		c = new Complex(0,0);
 		trasl = new Complex(Width / 2, Height / 2);
-		zoom = Height / 4;
+		zoom = Height / 2;
+	}
+	
+	/* Setter per zoom */
+	public void setZoom(double newZoom)
+	{
+		zoom = newZoom;
+	}
+	
+	/* Getter per zoom */
+	public double getZoom()
+	{
+		return zoom;
 	}
 	
 	public void setC(double r, double i)
@@ -49,6 +62,7 @@ public abstract class ComplexFract extends Fractal
 		c.i = i;
 	}
 	
+	/* Setter per c */
 	public void setC(Complex C)
 	{
 		c = C;

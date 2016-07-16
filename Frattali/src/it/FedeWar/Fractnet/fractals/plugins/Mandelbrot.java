@@ -18,36 +18,36 @@
 
 package it.FedeWar.Fractnet.fractals.plugins;
 
-import java.awt.Color;
-
 import it.FedeWar.Fractnet.fractals.ComplexFract;
-import it.FedeWar.Fractnet.math.CMath;
-import it.FedeWar.Fractnet.math.Complex;
+import it.FedeWar.Fractnet.math.*;
 
 /* Disegna il classico frattale di Mandelbrot */
 public class Mandelbrot extends ComplexFract
 {
+	/* Costruttore, non deve prendere parametri */
 	public Mandelbrot() {}
 	
-	public void Draw()
+	/* Calcola l'immagine */
+	public void draw()
 	{
 		int count;
-		Complex z;
+		Complex z = new Complex(0, 0);
 		
-		for(int i = 0; i < Width; i++)
+		for(int x = 0; x < Width; x++)
     	{
-    		for(int n = 0; n < Height; n++)
+    		for(int y = 0; y < Height; y++)
     		{
-    			c.r = (double)((i - trasl.r) / zoom);
-    			c.i = (double)((n - trasl.i) / zoom);
-    			z = new Complex(0,0);
+    			c.r = (double)(x - trasl.r) / zoom;
+    			c.i = (double)(y - trasl.i) / zoom;
+    			z.r = z.i = 0;
+    			
     			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
     			{
     		        z = z.pow(2);
     		        z = CMath.sum(z, c);
     		    }
-    			Color c = new Color( 0, 0, count);
-    			Image.setRGB(i,n, c.getRGB());
+    			
+    			Image.setRGB(x, y, (255 << 24) | count);
     		}
     	}
 	}
