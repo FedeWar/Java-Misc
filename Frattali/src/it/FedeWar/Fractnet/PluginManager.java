@@ -61,7 +61,7 @@ public abstract class PluginManager
 	}
 	
 	/* Alloca un frattale per essere disegnato */
-	public static Fractal create(int selected, int width, int height)
+	public static Fractal create(int selected)
 	{
 		try
 		{
