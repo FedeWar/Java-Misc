@@ -23,11 +23,12 @@ import java.awt.Graphics2D;
 
 import it.FedeWar.Fractnet.fractals.Fractal;
 
-/* Frattale di Sierpinski, è un frattale semplice */
+/* Tappeto di Sierpinski, è un frattale semplice */
 public class SierpinskiSquares extends Fractal
 {
 	private Graphics2D g;	// GC, come campo diminuisce l'uso dello stack
 	
+	/* Disegna il frattale */
 	@Override
 	public void Draw()
 	{
@@ -37,33 +38,12 @@ public class SierpinskiSquares extends Fractal
 		g.fillRect(0, 0, Width, Height);
 		g.setColor(Color.RED);
 		
+		// Disegna ricorsivamente
 		int lato = Math.min(Width, Height) / 3;
-		
 		Draw(lato, 0, 0);
 	}
 	
-	/*public void Draw(int lato, int X, int Y)
-	{
-		// Itera sugli 8 quadrati più piccoli
-		for(int x = 0; x < 3; x++)
-		{
-			for(int y = 0; y < 3; y++)
-			{
-				// Se non è il quadrato centrale
-				if(x != 1 || y != 1)
-				{
-					// Se il quadrato ha raggiunto la dimensione minima
-					if(lato - 3 <= 0)
-						g.drawRect(X + lato * x, Y + lato * y, lato, lato);
-					
-					// Se è troppo grande chiama quelli più piccoli
-					else
-						Draw(lato / 3, X + lato * x, Y + lato * y);
-				}
-			}
-		}
-	}*/
-	
+	/* Disegna ricorsivamente 8 quadrati */
 	public void Draw(int lato, int X, int Y)
 	{
 		// Se il quadrato ha raggiunto la dimensione minima
