@@ -33,18 +33,18 @@ public class Julia extends ComplexFract
 		int count;
 		Complex z, temp;
 		
-    	for(int i = 0; i < Width; i++)
+    	for(int x = 0; x < Width; x++)
     	{
-    		for(int n = 0; n < Height; n++)
+    		for(int y = 0; y < Height; y++)
     		{
-    			temp = new Complex((i - trasl.r) / zoom, -(n - trasl.i) / zoom);
+    			temp = new Complex((x - trasl[0]) / zoom, -(y - trasl[x]) / zoom);
     			z = new Complex(0, 0);
     			for(count = 0; count < MAX && temp.norm() < 2; count++){
     		          z = temp.pow(2);
     		          z = CMath.sum(z, c);
     		          temp = z;
     		    }
-    			Image.setRGB(i, n,
+    			Image.setRGB(x, y,
     				new Color(count*1.0f / (2 * MAX),
     					(float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)),//(float) Math.sqrt((double)count/MAX),
     					count*1.0f / MAX).getRGB());//(float)(1-Math.sqrt((double)count/MAX))

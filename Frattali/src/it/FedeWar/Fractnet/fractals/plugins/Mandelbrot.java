@@ -37,8 +37,8 @@ public class Mandelbrot extends ComplexFract
     	{
     		for(int y = 0; y < Height; y++)
     		{
-    			c.r = (double)(x - trasl.r) / zoom;
-    			c.i = (double)(y - trasl.i) / zoom;
+    			c.r = (double)(x - trasl[0]) / zoom;
+    			c.i = (double)(y - trasl[1]) / zoom;
     			z.r = z.i = 0;
     			
     			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
