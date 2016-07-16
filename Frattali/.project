@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>RES_FOLDER</name>
+			<value>$%7BPROJECT_LOC%7D/res</value>
+		</variable>
+	</variableList>
 </projectDescription>

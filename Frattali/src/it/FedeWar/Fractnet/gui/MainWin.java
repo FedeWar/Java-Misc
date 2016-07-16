@@ -26,8 +26,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -38,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JToolBar;
+import javax.swing.ImageIcon;
 
 /* Finestra principale dell'app, generata con WindowBuilder */
 public class MainWin extends JFrame
@@ -48,6 +47,8 @@ public class MainWin extends JFrame
 	private JList<String> lstFracts;
 	private Canvas pnlCanvas;
 	private JTextField txtArg;
+	private JButton btnZoomPlus;
+	JButton btnZoomLess;
 	
 	private class ButtonListener implements ActionListener
 	{
@@ -62,6 +63,16 @@ public class MainWin extends JFrame
 				// Ridisegna il frattale e la finestra
 				pnlCanvas.newFract(lstFracts.getSelectedValue(), txtArg.getText());
 				repaint();
+			}
+			// Viene incrementato lo zoom 
+			else if(button.equals(btnZoomPlus))
+			{
+				System.out.println("Increment zoom");
+			}
+			// Viene decrementato lo zoom
+			else if(button.equals(btnZoomLess))
+			{
+				System.out.println("Decrement zoom");
 			}
 		}
 	}
@@ -80,11 +91,8 @@ public class MainWin extends JFrame
 		setBounds(0, 0, width, height);
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		ButtonListener BL = new ButtonListener();
 		
-		JMenu mnuFile = new JMenu("File");
-		menuBar.add(mnuFile);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -123,12 +131,16 @@ public class MainWin extends JFrame
 		txtArg.setText("-0.70176;-0.3842");
 		txtArg.setColumns(10);
 		
-		JButton btnZoomPlus = new JButton("");
+		btnZoomPlus = new JButton("");
+		btnZoomPlus.setIcon(new ImageIcon(MainWin.class.getResource("/it/FedeWar/Fractnet/res/ZoomPlus.png")));
 		btnZoomPlus.setBounds(16, 130, 30, 30);
+		btnZoomPlus.addActionListener(BL);
 		panel.add(btnZoomPlus);
 		
-		JButton btnZoomLess = new JButton("");
+		btnZoomLess = new JButton("");
 		btnZoomLess.setBounds(145, 130, 30, 30);
+		btnZoomLess.setIcon(new ImageIcon(MainWin.class.getResource("/it/FedeWar/Fractnet/res/ZoomLess.png")));
+		btnZoomLess.addActionListener(BL);
 		panel.add(btnZoomLess);
 		
 		JButton btnMoveUp = new JButton("");
@@ -146,7 +158,7 @@ public class MainWin extends JFrame
 		JButton btnMoveDown = new JButton("");
 		btnMoveDown.setBounds(70, 230, 50, 50);
 		panel.add(btnMoveDown);
-		btnDraw.addActionListener(new ButtonListener());
+		btnDraw.addActionListener(BL);
 		
 		setVisible(true);
 	}
