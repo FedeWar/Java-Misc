@@ -48,6 +48,7 @@ public class MainWin extends JFrame
 	private JTextField txtArg;
 	private JButton btnZoomPlus, btnZoomLess;	// Controlli dello zoom
 	private JButton btnMove;
+	private JButton btnMoveUp, btnMoveDown, btnMoveRight, btnMoveLeft;
 	
 	private class ButtonListener implements ActionListener
 	{
@@ -66,10 +67,18 @@ public class MainWin extends JFrame
 			// Viene incrementato lo zoom 
 			else if(button.equals(btnZoomPlus))
 				pnlCanvas.setZoom(pnlCanvas.getZoom() * 2);
-			
 			// Viene decrementato lo zoom
 			else if(button.equals(btnZoomLess))
 				pnlCanvas.setZoom(pnlCanvas.getZoom() / 2);
+			
+			else if(button.equals(btnMoveUp))
+				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0], pnlCanvas.getTrasl()[1] + 10);
+			else if(button.equals(btnMoveDown))
+				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0], pnlCanvas.getTrasl()[1] - 10);
+			else if(button.equals(btnMoveRight))
+				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0] + 10, pnlCanvas.getTrasl()[1]);
+			else if(button.equals(btnMoveLeft))
+				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0] - 10, pnlCanvas.getTrasl()[1]);
 			
 			// Ridisegna l'interfaccia
 			else if(button.equals(btnMove))
@@ -146,20 +155,24 @@ public class MainWin extends JFrame
 		btnZoomLess.addActionListener(BL);
 		panel.add(btnZoomLess);
 		
-		JButton btnMoveUp = new JButton("");
+		btnMoveUp = new JButton("");
 		btnMoveUp.setBounds(70, 130, 50, 50);
+		btnMoveUp.addActionListener(BL);
 		panel.add(btnMoveUp);
 		
-		JButton btnMoveLeft = new JButton("");
+		btnMoveLeft = new JButton("");
 		btnMoveLeft.setBounds(20, 180, 50, 50);
+		btnMoveLeft.addActionListener(BL);
 		panel.add(btnMoveLeft);
 		
-		JButton btnMoveRight = new JButton("");
+		btnMoveRight = new JButton("");
 		btnMoveRight.setBounds(120, 180, 50, 50);
+		btnMoveRight.addActionListener(BL);
 		panel.add(btnMoveRight);
 		
-		JButton btnMoveDown = new JButton("");
+		btnMoveDown = new JButton("");
 		btnMoveDown.setBounds(70, 230, 50, 50);
+		btnMoveDown.addActionListener(BL);
 		panel.add(btnMoveDown);
 		
 		btnMove = new JButton("");

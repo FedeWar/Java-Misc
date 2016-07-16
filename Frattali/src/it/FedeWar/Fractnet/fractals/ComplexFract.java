@@ -28,7 +28,7 @@ public abstract class ComplexFract extends Fractal
 	protected final int MAX = 255;
 
 	protected double zoom = 0;
-	protected Complex trasl;
+	protected double[] trasl;
 	protected Complex c;
 	
 	/* Costruttore, deve essere vuoto */
@@ -40,8 +40,14 @@ public abstract class ComplexFract extends Fractal
 	{
 		super.init(width, height, targetImage);
 		c = new Complex(0,0);
-		trasl = new Complex(Width / 2, Height / 2);
+		trasl = new double[] {Width / 2, Height / 2};
 		zoom = Height / 2;
+	}
+	
+	public void setTrasl(double[] newTrasl)
+	{
+		trasl[0] = newTrasl[0];
+		trasl[1] = newTrasl[1];
 	}
 	
 	/* Setter per zoom */
