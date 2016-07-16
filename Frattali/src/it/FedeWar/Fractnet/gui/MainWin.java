@@ -43,12 +43,11 @@ public class MainWin extends JFrame
 {
 	private static final long serialVersionUID = -393757332107664646L;
 	
-	private JPanel contentPane;
 	private JList<String> lstFracts;
 	private Canvas pnlCanvas;
 	private JTextField txtArg;
-	private JButton btnZoomPlus;
-	JButton btnZoomLess;
+	private JButton btnZoomPlus, btnZoomLess;	// Controlli dello zoom
+	private JButton btnMove;
 	
 	private class ButtonListener implements ActionListener
 	{
@@ -57,23 +56,26 @@ public class MainWin extends JFrame
 		{
 			JButton button = (JButton)e.getSource();
 			
-			// È stato premuto il bottone: Disegna
+			// Viene chiesto di creare un nuovo frattale
 			if(button.getText().compareTo("Disegna") == 0)
 			{
-				// Ridisegna il frattale e la finestra
 				pnlCanvas.newFract(lstFracts.getSelectedValue(), txtArg.getText());
 				repaint();
 			}
+			
 			// Viene incrementato lo zoom 
 			else if(button.equals(btnZoomPlus))
-			{
-				System.out.println("Increment zoom");
-			}
+				pnlCanvas.setZoom(pnlCanvas.getZoom() * 2);
+			
 			// Viene decrementato lo zoom
 			else if(button.equals(btnZoomLess))
-			{
-				System.out.println("Decrement zoom");
-			}
+				pnlCanvas.setZoom(pnlCanvas.getZoom() / 2);
+			
+			// Ridisegna l'interfaccia
+			else if(button.equals(btnMove))
+				pnlCanvas.apply();
+				
+			repaint();
 		}
 	}
 	
@@ -93,7 +95,7 @@ public class MainWin extends JFrame
 		
 		ButtonListener BL = new ButtonListener();
 		
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -117,6 +119,7 @@ public class MainWin extends JFrame
 		
 		JButton btnDraw = new JButton("Disegna");
 		btnDraw.setBounds(6, 22, 176, 25);
+		btnDraw.addActionListener(BL);
 		panel.add(btnDraw);
 		
 		JLabel lblArgomento = new JLabel("Argomento:");
@@ -158,7 +161,11 @@ public class MainWin extends JFrame
 		JButton btnMoveDown = new JButton("");
 		btnMoveDown.setBounds(70, 230, 50, 50);
 		panel.add(btnMoveDown);
-		btnDraw.addActionListener(BL);
+		
+		btnMove = new JButton("");
+		btnMove.setBounds(70, 180, 50, 50);
+		btnMove.addActionListener(BL);
+		panel.add(btnMove);
 		
 		setVisible(true);
 	}

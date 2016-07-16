@@ -47,13 +47,13 @@ public abstract class ComplexFract extends Fractal
 	/* Setter per zoom */
 	public void setZoom(double newZoom)
 	{
-		zoom = newZoom;
+		zoom = newZoom * Height / 2.0;
 	}
 	
 	/* Getter per zoom */
 	public double getZoom()
 	{
-		return zoom;
+		return zoom * 2.0 / Height;
 	}
 	
 	public void setC(double r, double i)

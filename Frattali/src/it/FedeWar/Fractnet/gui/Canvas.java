@@ -18,8 +18,10 @@
 
 package it.FedeWar.Fractnet.gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -34,16 +36,21 @@ class Canvas extends JPanel
 {
 	private static final long serialVersionUID = -6573971607519471731L;
 	
-	private BufferedImage fractalImage;
-	private Fractal currFract;
-	private int oldSelection = -1;
-	private String oldArg = "0;0";
+	private Rectangle		zoomBounds;
+	private double			zoomVal = 1.0;
+	
+	private BufferedImage	fractalImage;
+	private Fractal			currFract;
+	private int				oldSelection = -1;
+	private String			oldArg = "0;0";
+	private boolean			refreshFractal = true;
 	
 	public Canvas(int width, int height)
 	{
 		super();
 		setSize(width, height);
 		fractalImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+		zoomBounds = new Rectangle(0, 0, 0, 0);
 	}
 	
 	/* Crea un nuovo frattale da visualizzare */
@@ -56,18 +63,28 @@ class Canvas extends JPanel
 		if(currentSelection != oldSelection)
 		{
 			oldSelection = currentSelection;
-			currFract = PluginManager.create(currentSelection, getWidth(), getHeight());
+			
+			// Alloca e inizializza il nuovo frattale
+			currFract = PluginManager.create(currentSelection);
 			currFract.init(getWidth(), getHeight(), fractalImage);
 			
+			// Imposta i parametri per i frattali complessi
 			if(currFract instanceof ComplexFract)
+			{
 				((ComplexFract)currFract).setC(Complex.Parse(arg));
+				zoomVal = 1.0;
+			}
 		}
+		
 		// Se l'argomento è cambiato e il frattale è complesso
 		else if(arg.compareTo(oldArg) != 0 && currFract instanceof ComplexFract)
 		{
 			oldArg = arg;
 			((ComplexFract)currFract).setC(Complex.Parse(arg));
 		}
+		
+		// Al prossimo refresh ridisegna il frattale
+		refreshFractal = true;
 	}
 	
 	/* Ridisegna il pannello */
@@ -76,11 +93,80 @@ class Canvas extends JPanel
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		
-		if(currFract != null)
+
+		// Ridisegna il frattale
+		if(refreshFractal && currFract != null)
 		{
-			currFract.Draw();
+			currFract.draw();
 			g2.drawImage(fractalImage, null, null);
+			
+			// Azzera lo zoom corrente
+			if(currFract instanceof ComplexFract)
+				zoomVal = ((ComplexFract) currFract).getZoom();
 		}
+		
+		// Non ridisegna il frattale ma solo il rettangolo dello zoom
+		else if(!refreshFractal)
+		{
+			g2.drawImage(fractalImage, null, null);
+			
+			// Se supporta lo zoom, calcola i bordi dello zoom
+			if(currFract instanceof ComplexFract)
+			{
+				g2.setColor(Color.WHITE);
+				genBounds();
+				g2.drawRect(zoomBounds.x, zoomBounds.y, zoomBounds.width, zoomBounds.height);
+			}
+		}
+	}
+
+	/* Calcola il bordo dello zoom,
+	 * non controla che il frattale sia complesso */
+	public void genBounds()
+	{
+		double fractZoom = ((ComplexFract) currFract).getZoom();
+
+		// Lo zoom sta aumentando, calcola il nuovo bordo
+		if(zoomVal > fractZoom)
+		{
+			double rapp = fractZoom / zoomVal;	// Rapporto vecchio e nuovo zoom
+			double W = rapp * getWidth();		// La larghezza del rettangolo
+			double H = rapp * getHeight();		// L'altezza del rettangolo
+			
+			zoomBounds.setBounds(
+				(int)(getWidth() / 2.0 - W / 2),
+				(int)(getHeight() / 2.0 - H / 2),
+				(int)(W), (int)(H));
+		}
+
+		// L'immagine sta venendo rimpicciolita,
+		// non si può disegnare il bordo
+		else
+			zoomBounds.setBounds(0, 0, getWidth(), getHeight());
+	}
+
+	/* Applica le modifiche fatte dall'utente */
+	public void apply()
+	{
+		refreshFractal = true;	// Al refresh ridisegna il frattale
+		
+		// Aggiorna lo zoom del frattale
+		if(currFract instanceof ComplexFract)
+			((ComplexFract) currFract).setZoom(zoomVal);
+		
+		// TODO apply trasl too
+	}
+	
+	/* Setter per lo zoom */
+	public void setZoom(double newZoom)
+	{
+		zoomVal = newZoom;
+		refreshFractal = false;
+	}
+	
+	/* Getter per lo zoom */
+	public double getZoom()
+	{
+		return zoomVal;
 	}
 }
