@@ -28,7 +28,7 @@ public class Julia extends ComplexFract
 {
 	public Julia() {}
 	
-	public void Draw()
+	public void draw()
     {
 		int count;
 		Complex z, temp;
@@ -59,7 +59,7 @@ public class Julia extends ComplexFract
 		{
 			c.r = 0.7885f * Math.cos(i);
 			c.i =  0.7885f * Math.sin(i);
-			Draw();
+			draw();
 			//Image.saveTo(path + (int)(i * 1000) + ".bmp");
 		}
 	}

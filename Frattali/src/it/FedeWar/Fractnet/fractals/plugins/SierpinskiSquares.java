@@ -30,7 +30,7 @@ public class SierpinskiSquares extends Fractal
 	
 	/* Disegna il frattale */
 	@Override
-	public void Draw()
+	public void draw()
 	{
 		// Prepara il canvas
 		g = (Graphics2D)Image.getGraphics();

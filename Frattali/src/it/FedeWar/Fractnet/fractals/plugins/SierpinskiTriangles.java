@@ -37,7 +37,7 @@ public class SierpinskiTriangles extends Fractal
 	}
 	
 	@Override
-	public void Draw()
+	public void draw()
 	{
 		// Prepara il canvas
 		Graphics2D g2 = (Graphics2D)Image.getGraphics();

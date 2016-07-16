@@ -15,7 +15,6 @@
 	You should have received a copy of the GNU General Public License
 	along with Fractnet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package it.FedeWar.Fractnet.fractals;
 
 import java.awt.image.BufferedImage;
@@ -39,9 +38,11 @@ public abstract class Fractal
 		Image = i;
 	}
 	
-	public void Draw() {}
+	/* Disegna il frattale */
+	public void draw() {}
 	
-	public void animation(String path)
+	/* Genera un animazione */
+	public void animation(String path)	// TODO, NON ANCORA IMPLEMENTATO
 	{
 		JOptionPane.showMessageDialog(null, "Animazione non disponibile!", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
