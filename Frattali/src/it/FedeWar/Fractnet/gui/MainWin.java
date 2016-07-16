@@ -32,11 +32,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import it.FedeWar.Fractnet.PluginManager;
+import it.FedeWar.Fractnet.gui.Canvas;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JToolBar;
-
 
 /* Finestra principale dell'app, generata con WindowBuilder */
 public class MainWin extends JFrame
@@ -99,7 +100,7 @@ public class MainWin extends JFrame
 		contentPane.add(lstFracts);
 		
 		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(1154, -10, 200, 648);
+		toolBar.setBounds(1154, 0, 200, 648);
 		contentPane.add(toolBar);
 		
 		JPanel panel = new JPanel();
@@ -121,6 +122,30 @@ public class MainWin extends JFrame
 		txtArg.setHorizontalAlignment(SwingConstants.CENTER);
 		txtArg.setText("-0.70176;-0.3842");
 		txtArg.setColumns(10);
+		
+		JButton btnZoomPlus = new JButton("");
+		btnZoomPlus.setBounds(16, 130, 30, 30);
+		panel.add(btnZoomPlus);
+		
+		JButton btnZoomLess = new JButton("");
+		btnZoomLess.setBounds(145, 130, 30, 30);
+		panel.add(btnZoomLess);
+		
+		JButton btnMoveUp = new JButton("");
+		btnMoveUp.setBounds(70, 130, 50, 50);
+		panel.add(btnMoveUp);
+		
+		JButton btnMoveLeft = new JButton("");
+		btnMoveLeft.setBounds(20, 180, 50, 50);
+		panel.add(btnMoveLeft);
+		
+		JButton btnMoveRight = new JButton("");
+		btnMoveRight.setBounds(120, 180, 50, 50);
+		panel.add(btnMoveRight);
+		
+		JButton btnMoveDown = new JButton("");
+		btnMoveDown.setBounds(70, 230, 50, 50);
+		panel.add(btnMoveDown);
 		btnDraw.addActionListener(new ButtonListener());
 		
 		setVisible(true);

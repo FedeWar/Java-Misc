@@ -11,25 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="it.FedeWar.Fractnet.gui.MainWin.ButtonListener" project="Fractnet" 
-    file="/Fractnet/src/it/FedeWar/Fractnet/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="733" y="353"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="it.FedeWar.Fractnet.gui.MainWin" project="Fractnet" 
-    file="/Fractnet/src/it/FedeWar/Fractnet/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="732" y="204"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="it.FedeWar.Fractnet.gui.Canvas" project="Fractnet" 
+  <class id="2" language="java" name="it.FedeWar.Fractnet.gui.Canvas" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/gui/Canvas.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="482" y="347"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -38,7 +20,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="it.FedeWar.Fractnet.PluginManager" project="Fractnet" 
+  <class id="3" language="java" name="it.FedeWar.Fractnet.PluginManager" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/PluginManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="479" y="101"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -47,7 +29,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="it.FedeWar.Fractnet.fractals.Fractal" project="Fractnet" 
+  <class id="4" language="java" name="it.FedeWar.Fractnet.fractals.Fractal" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/fractals/Fractal.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="207" y="47"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -56,7 +38,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="it.FedeWar.Fractnet.fractals.ComplexFract" project="Fractnet" 
+  <class id="5" language="java" name="it.FedeWar.Fractnet.fractals.ComplexFract" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/fractals/ComplexFract.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="217" y="289"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -65,7 +47,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="it.FedeWar.Fractnet.fractals.plugins.Mandelbrot" project="Fractnet" 
+  <class id="6" language="java" name="it.FedeWar.Fractnet.fractals.plugins.Mandelbrot" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/fractals/plugins/Mandelbrot.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-10" y="293"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -74,7 +56,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="it.FedeWar.Fractnet.math.CMath" project="Fractnet" 
+  <class id="7" language="java" name="it.FedeWar.Fractnet.math.CMath" project="Fractnet" 
     file="/Fractnet/src/it/FedeWar/Fractnet/math/CMath.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-7" y="106"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -83,70 +65,80 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="10">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <dependency id="11">    
-    <end type="SOURCE" refId="3"/>    
+  <class id="8" language="java" name="it.FedeWar.Fractnet.gui.MainWin.ButtonListener" project="Fractnet" 
+    file="/Fractnet/src/it/FedeWar/Fractnet/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="749" y="392"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="it.FedeWar.Fractnet.gui.MainWin" project="Fractnet" 
+    file="/Fractnet/src/it/FedeWar/Fractnet/gui/MainWin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="720" y="230"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="12">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="7"/>  
   </generalization>  
-  <dependency id="14">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <dependency id="15">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="16">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <association id="17">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="18" name="currFract">        
+  <association id="11">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="12" name="currFract">        
         <position height="0" width="0" x="6" y="-36"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
+      <multiplicity id="13" minimum="0" maximum="1">        
         <position height="0" width="0" x="6" y="-36"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="20">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <association id="21">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="22" name="pnlCanvas">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </generalization>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
+  <dependency id="14">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
   </dependency>  
+  <nesting id="15">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <dependency id="16">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="17">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="18" name="pnlCanvas"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
