@@ -18,8 +18,6 @@
 
 package it.FedeWar.Fractnet.fractals.plugins;
 
-import java.awt.Color;
-
 import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.math.CMath;
 import it.FedeWar.Fractnet.math.Complex;
@@ -31,23 +29,24 @@ public class Julia extends ComplexFract
 	public void draw()
     {
 		int count;
-		Complex z, temp;
+		Complex z = new Complex(0, 0);
 		
     	for(int x = 0; x < Width; x++)
     	{
     		for(int y = 0; y < Height; y++)
     		{
-    			temp = new Complex((x - trasl[0]) / zoom, -(y - trasl[x]) / zoom);
-    			z = new Complex(0, 0);
-    			for(count = 0; count < MAX && temp.norm() < 2; count++){
-    		          z = temp.pow(2);
+    			z.r = (double)(1.0 * x * clipWidth / Width - clipPos[0]);
+    			z.i = (double)(1.0 * y * clipWidth / Height - clipPos[1]);
+    			
+    			for(count = 0; count < MAX && z.norm() < 2; count++)
+    			{
+    		          z = z.pow(2);
     		          z = CMath.sum(z, c);
-    		          temp = z;
     		    }
-    			Image.setRGB(x, y,
-    				new Color(count*1.0f / (2 * MAX),
-    					(float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)),//(float) Math.sqrt((double)count/MAX),
-    					count*1.0f / MAX).getRGB());//(float)(1-Math.sqrt((double)count/MAX))
+    			
+    			Image.setRGB(x, y, (255 << 24) |
+    				(int)(count*1.0f / (2 * MAX)) << 16 |
+    				(int)((float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)) * 256) << 8);
     		}
     	}
     }
