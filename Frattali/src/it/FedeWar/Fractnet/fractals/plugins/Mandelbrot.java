@@ -37,8 +37,7 @@ public class Mandelbrot extends ComplexFract
     	{
     		for(int y = 0; y < Height; y++)
     		{
-    			c.r = (double)(x - trasl[0]) / zoom;
-    			c.i = (double)(y - trasl[1]) / zoom;
+    			screenToFractal(x, y);
     			z.r = z.i = 0;
     			
     			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
@@ -50,6 +49,13 @@ public class Mandelbrot extends ComplexFract
     			Image.setRGB(x, y, (255 << 24) | count);
     		}
     	}
+	}
+	
+	/* Converte il punto x,y sullo schermo in coordinate complesse */
+	private void screenToFractal(int x, int y)
+	{
+		c.r = (double)(1.0 * x * clipWidth / Width - clipPos[0]);
+		c.i = (double)(1.0 * y * clipWidth / Height - clipPos[1]);
 	}
 	
 	/* Mandelbrot non accetta argomenti aggiuntivi */

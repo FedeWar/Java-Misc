@@ -27,8 +27,8 @@ public abstract class ComplexFract extends Fractal
 {
 	protected final int MAX = 255;
 
-	protected double zoom = 0;
-	protected double[] trasl;
+	protected double clipWidth = 2.0;
+	protected double[] clipPos;
 	protected Complex c;
 	
 	/* Costruttore, deve essere vuoto */
@@ -39,27 +39,34 @@ public abstract class ComplexFract extends Fractal
 	public void init(int width, int height, BufferedImage targetImage)
 	{
 		super.init(width, height, targetImage);
-		c = new Complex(0,0);
-		trasl = new double[] {Width / 2, Height / 2};
-		zoom = Height / 2;
+		c = new Complex(0, 0);
+		clipPos = new double[] {1, 1};
 	}
 	
-	public void setTrasl(double[] newTrasl)
+	public void setClipPos(double[] newTrasl)
 	{
-		trasl[0] = newTrasl[0];
-		trasl[1] = newTrasl[1];
+		clipPos[0] = newTrasl[0];
+		clipPos[1] = newTrasl[1];
+	}
+	
+	public double[] getClipPos()
+	{
+		return new double[] { clipPos[0], clipPos[1]};
 	}
 	
 	/* Setter per zoom */
-	public void setZoom(double newZoom)
+	public void setClipWidth(double newZoom)
 	{
-		zoom = newZoom * Height / 2.0;
+		// Compensa lo spostamento per mantenere centrata l'immagine
+		clipPos[0] -= (clipWidth - newZoom) / 2;
+		clipPos[1] -= (clipWidth - newZoom) / 2;
+		clipWidth = newZoom;
 	}
 	
 	/* Getter per zoom */
-	public double getZoom()
+	public double getClipWidth()
 	{
-		return zoom * 2.0 / Height;
+		return clipWidth;
 	}
 	
 	public void setC(double r, double i)
@@ -72,5 +79,17 @@ public abstract class ComplexFract extends Fractal
 	public void setC(Complex C)
 	{
 		c = C;
+	}
+
+	public void addTrasl(double[] newTrasl)
+	{
+		clipPos[0] += newTrasl[0];
+		clipPos[1] += newTrasl[1];
+	}
+	
+	public void subTrasl(double[] newTrasl)
+	{
+		clipPos[0] -= newTrasl[0];
+		clipPos[1] -= newTrasl[1];
 	}
 }

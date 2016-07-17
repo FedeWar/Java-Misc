@@ -66,19 +66,19 @@ public class MainWin extends JFrame
 			
 			// Viene incrementato lo zoom 
 			else if(button.equals(btnZoomPlus))
-				pnlCanvas.setZoom(pnlCanvas.getZoom() * 2);
+				pnlCanvas.setZoom(pnlCanvas.getZoom() / 2);
 			// Viene decrementato lo zoom
 			else if(button.equals(btnZoomLess))
-				pnlCanvas.setZoom(pnlCanvas.getZoom() / 2);
+				pnlCanvas.setZoom(pnlCanvas.getZoom() * 2);
 			
 			else if(button.equals(btnMoveUp))
-				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0], pnlCanvas.getTrasl()[1] + 10);
+				pnlCanvas.incTrasl(0, 1);
 			else if(button.equals(btnMoveDown))
-				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0], pnlCanvas.getTrasl()[1] - 10);
+				pnlCanvas.incTrasl(0, -1);
 			else if(button.equals(btnMoveRight))
-				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0] + 10, pnlCanvas.getTrasl()[1]);
+				pnlCanvas.incTrasl(-1, 0);
 			else if(button.equals(btnMoveLeft))
-				pnlCanvas.setTrasl(pnlCanvas.getTrasl()[0] - 10, pnlCanvas.getTrasl()[1]);
+				pnlCanvas.incTrasl(1, 0);
 			
 			// Ridisegna l'interfaccia
 			else if(button.equals(btnMove))
