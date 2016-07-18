@@ -15,19 +15,38 @@
 	You should have received a copy of the GNU General Public License
 	along with Fractnet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package it.FedeWar.Fractnet.fractals.plugins;
 
 import it.FedeWar.Fractnet.fractals.ComplexFract;
-import it.FedeWar.Fractnet.math.CMath;
-import it.FedeWar.Fractnet.math.Complex;
+import it.FedeWar.Fractnet.fractals.Palette;
+import it.FedeWar.Fractnet.math.*;
 
 public class Julia extends ComplexFract
 {
-	public Julia() {}
+	private class StdPalette extends Palette
+	{
+		@Override
+		public int getRed(int x)
+		{
+			return (int)(x * 1.0f / (2 * MAX));
+		}
+		
+		@Override
+		public int getGreen(int x)
+		{
+			return (int)((float)Math.abs(Math.sin(x * 1.0f / MAX * 2 * Math.PI)) * MAX);
+		}
+		
+		@Override
+		public int getBlue(int x)
+		{
+			return 0;
+		}
+	}
 	
 	public void draw()
     {
+		StdPalette palette = new StdPalette();
 		int count;
 		Complex z = new Complex(0, 0);
 		
@@ -38,15 +57,13 @@ public class Julia extends ComplexFract
     			z.r = (double)(1.0 * x * clipWidth / Width - clipPos[0]);
     			z.i = (double)(1.0 * y * clipWidth / Height - clipPos[1]);
     			
-    			for(count = 0; count < MAX && z.norm() < 2; count++)
+    			for(count = 0; count < MAX && z.sqrdNorm() < 4; count++)
     			{
     		          z = z.pow(2);
     		          z = CMath.sum(z, c);
     		    }
     			
-    			Image.setRGB(x, y, (255 << 24) |
-    				(int)(count*1.0f / (2 * MAX)) << 16 |
-    				(int)((float)Math.abs(Math.sin(count*1.0f / MAX * 2 * Math.PI)) * 256) << 8);
+    			Image.setRGB(x, y, palette.getRGB(count));
     		}
     	}
     }
