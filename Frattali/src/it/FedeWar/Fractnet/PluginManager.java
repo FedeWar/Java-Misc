@@ -63,16 +63,17 @@ public abstract class PluginManager
 	/* Alloca un frattale per essere disegnato */
 	public static Fractal create(int selected)
 	{
+		Fractal fra = null;
+		
 		try
 		{
-			// Crea, inizializza e restituisce un nuovo frattale
-			Fractal fra = plugins.get(selected).newInstance();
-			return fra;
+			fra = plugins.get(selected).newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e) {
 			System.err.println("Errore allocazione oggetto, è un frattale valido?");
 		}
-		return null;
+		
+		return fra;
 	}
 	
 	/* Carica un nuovo frattale e lo aggiunge alla lista */
