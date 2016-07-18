@@ -41,6 +41,7 @@ public abstract class Palette
 	
 	/**
 	 * Vedere la descrizione di {@link getRed}
+	 * 
 	 * @version 1.0, 18/07/2016
 	 * @since 1.0, 18/07/2016
 	 * 
@@ -51,6 +52,7 @@ public abstract class Palette
 	
 	/**
 	 * Vedere la descrizione di {@link getRed}
+	 * 
 	 * @version 1.0, 18/07/2016
 	 * @since 1.0, 18/07/2016
 	 * 
