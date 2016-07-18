@@ -28,11 +28,19 @@ public class Complex
 		r = real;
 		i = imag;
 	}
+	
+	/* La norma al quadrato */
+	public double sqrdNorm()
+	{
+		return r * r + i * i;
+	}
+	
 	public double norm()
 	{
 		mod = Math.sqrt(r*r + i*i);
 		return mod;
 	}
+	
 	public Complex pow(int n)
 	{
 		if(n == 2)
