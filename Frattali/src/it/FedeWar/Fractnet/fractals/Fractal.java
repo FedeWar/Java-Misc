@@ -39,7 +39,7 @@ public abstract class Fractal
 	}
 	
 	/* Disegna il frattale */
-	public void draw() {}
+	public abstract void draw();
 	
 	/* Genera un animazione */
 	public void animation(String path)	// TODO, NON ANCORA IMPLEMENTATO
