@@ -4,6 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/usr/lib64/eclipse/plugins/org.eclipse.swt_3.104.2.v20160416-2200.jar"/>
 	<classpathentry kind="lib" path="/usr/lib64/eclipse/swt.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JOGL"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JOGL">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/lib64/eclipse/JOGL/linux-amd64"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
