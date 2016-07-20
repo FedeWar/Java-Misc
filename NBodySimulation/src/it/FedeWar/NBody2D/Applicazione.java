@@ -8,12 +8,20 @@ import it.FedeWar.NBody2D.GUI.SimulationWin;
 /* Punto di accesso per l'applicazione */
 public class Applicazione
 {
-	
+
 	public static void main(String[] args) throws InterruptedException
 	{
 		MainWin MW = new MainWin();		// Crea una finestra
 		Sim_Info SI = MW.open();		// La avvia e aspetta i dati indietro
-		SimulationWin SW = new SimulationWin(SI, new Engine(SI));
-		SW.open();
+
+		if(SI.opengl)
+		{
+
+		}
+		else
+		{
+			SimulationWin SW = new SimulationWin(new Engine(SI));
+			SW.open(SI);
+		}
 	}
 }

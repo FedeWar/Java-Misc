@@ -9,15 +9,15 @@ public class Engine
 	public Engine(Sim_Info si)
 	{
 		G_Obj.staticInit(this);
-		go = new G_Obj[si.getProperty(Sim_Info.OBJCOUNT)];
+		go = new G_Obj[si.obj_count];
 		pnum_objs = go.length;
 		
-		int defaultMass = si.getProperty(3);
-		int defaultRadius = si.getProperty(4);
-		int massVariation = si.getProperty(5);
-		int radiusVariation = si.getProperty(6);
-		int dimX = si.getProperty(7);
-		int dimY = si.getProperty(8);
+		int defaultMass = si.standard_mass;
+		int defaultRadius = si.standard_radius;
+		int massVariation = si.mass_variation;
+		int radiusVariation = si.radius_variation;
+		int dimX = si.dim_x;
+		int dimY = si.dim_y;
 		
 		for(int i = 0; i < go.length; i++)
 		{

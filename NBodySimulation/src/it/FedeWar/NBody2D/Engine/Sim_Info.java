@@ -1,12 +1,14 @@
 package it.FedeWar.NBody2D.Engine;
 
 /* L'insieme dei delle impostazioni per la simulazione */
-public interface Sim_Info
+public class Sim_Info
 {
-	int WIDTH = 0;
-	int HEIGHT = 1;
-	int OBJCOUNT = 2;
-	
-	public int getProperty(int index);
-	public void setProperty(int index, int val);
+	public int standard_mass;
+	public int width, height;
+	public int obj_count;
+	public int mass_variation;
+	public int standard_radius;
+	public int radius_variation;
+	public int dim_x, dim_y;
+	public boolean opengl = true;	// true per debug
 }

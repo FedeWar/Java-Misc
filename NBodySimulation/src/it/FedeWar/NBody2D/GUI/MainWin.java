@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
 import it.FedeWar.NBody2D.Engine.Sim_Info;
-import it.FedeWar.NBody2D.Engine.Sim_Info_v1;
 
 import org.eclipse.swt.widgets.Label;
 
@@ -42,20 +41,21 @@ public class MainWin
 
 	}
 
+	/* Impacchetta le informazioni */
 	private void packInfo()
 	{
-		SI = new Sim_Info_v1();
-		SI.setProperty(0, Integer.parseInt(txtWidth.getText()));
-		SI.setProperty(1, Integer.parseInt(txtHeight.getText()));
-		SI.setProperty(2, Integer.parseInt(txtObjCount.getText()));
-		SI.setProperty(3, Integer.parseInt(txtStandardMass.getText()));
-		SI.setProperty(4, Integer.parseInt(txtStandardRadius.getText()));
-		SI.setProperty(5, Integer.parseInt(txtMassVariation.getText()));
-		SI.setProperty(6, Integer.parseInt(txtRadiusVariation.getText()));
+		SI = new Sim_Info();
+		SI.width = Integer.parseInt(txtWidth.getText());
+		SI.height = Integer.parseInt(txtHeight.getText());
+		SI.obj_count = Integer.parseInt(txtObjCount.getText());
+		SI.standard_mass = Integer.parseInt(txtStandardMass.getText());
+		SI.standard_radius = Integer.parseInt(txtStandardRadius.getText());
+		SI.mass_variation = Integer.parseInt(txtMassVariation.getText());
+		SI.radius_variation = Integer.parseInt(txtRadiusVariation.getText());
 		
 		String D = txtDimentions.getText();
-		SI.setProperty(7, Integer.parseInt(D.substring(0, D.indexOf(';'))));
-		SI.setProperty(8, Integer.parseInt(D.substring(D.indexOf(';') + 1, D.length())));
+		SI.dim_x = Integer.parseInt(D.substring(0, D.indexOf(';')));
+		SI.dim_y = Integer.parseInt(D.substring(D.indexOf(';') + 1, D.length()));
 	}
 
 
