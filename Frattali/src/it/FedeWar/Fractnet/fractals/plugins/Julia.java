@@ -46,16 +46,18 @@ public class Julia extends ComplexFract
 	
 	public void draw()
     {
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
 		StdPalette palette = new StdPalette();
 		int count;
 		Complex z = new Complex(0, 0);
 		
-    	for(int x = 0; x < Width; x++)
+    	for(int x = 0; x < width; x++)
     	{
-    		for(int y = 0; y < Height; y++)
+    		for(int y = 0; y < height; y++)
     		{
-    			z.r = (double)(1.0 * x * clipWidth / Width - clipPos[0]);
-    			z.i = (double)(1.0 * y * clipWidth / Height - clipPos[1]);
+    			z.r = (double)(1.0 * x * clipWidth / width - clipPos[0]);
+    			z.i = (double)(1.0 * y * clipWidth / height - clipPos[1]);
     			
     			for(count = 0; count < MAX && z.sqrdNorm() < 4; count++)
     			{
@@ -63,7 +65,7 @@ public class Julia extends ComplexFract
     		          z = CMath.sum(z, c);
     		    }
     			
-    			Image.setRGB(x, y, palette.getRGB(count));
+    			canvas.setRGB(x, y, palette.getRGB(count));
     		}
     	}
     }

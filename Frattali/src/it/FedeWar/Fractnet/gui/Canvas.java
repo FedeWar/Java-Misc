@@ -68,7 +68,7 @@ class Canvas extends JPanel
 			
 			// Alloca e inizializza il nuovo frattale
 			currFract = PluginManager.create(currentSelection);
-			currFract.init(getWidth(), getHeight(), fractalImage);
+			currFract.init(fractalImage);
 			
 			// Imposta i parametri per i frattali complessi
 			if(currFract instanceof ComplexFract)

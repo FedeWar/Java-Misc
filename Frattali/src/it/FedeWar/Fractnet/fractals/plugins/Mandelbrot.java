@@ -50,15 +50,18 @@ public class Mandelbrot extends ComplexFract
 	/* Calcola l'immagine */
 	public void draw()
 	{
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
 		int count;
 		StdPalette palette = new StdPalette();
 		Complex z = new Complex(0, 0);
 		
-		for(int x = 0; x < Width; x++)
+		for(int x = 0; x < width; x++)
     	{
-    		for(int y = 0; y < Height; y++)
+    		for(int y = 0; y < height; y++)
     		{
-    			screenToFractal(x, y);
+    			c.r = 1.0 * x * clipWidth / width - clipPos[0];
+    			c.i = 1.0 * y * clipWidth / height - clipPos[1];
     			z.r = z.i = 0;
     			
     			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
@@ -67,16 +70,9 @@ public class Mandelbrot extends ComplexFract
     		        z = CMath.sum(z, c);
     		    }
     			
-    			Image.setRGB(x, y, palette.getRGB(count));
+    			canvas.setRGB(x, y, palette.getRGB(count));
     		}
     	}
-	}
-	
-	/* Converte il punto x,y sullo schermo in coordinate complesse */
-	private void screenToFractal(int x, int y)
-	{
-		c.r = (double)(1.0 * x * clipWidth / Width - clipPos[0]);
-		c.i = (double)(1.0 * y * clipWidth / Height - clipPos[1]);
 	}
 	
 	/* Mandelbrot non accetta argomenti aggiuntivi */

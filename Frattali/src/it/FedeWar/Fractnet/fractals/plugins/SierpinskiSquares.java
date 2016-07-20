@@ -32,14 +32,18 @@ public class SierpinskiSquares extends Fractal
 	@Override
 	public void draw()
 	{
+		// Dimensioni del frattale
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+		
 		// Prepara il canvas
-		g = (Graphics2D)Image.getGraphics();
+		g = (Graphics2D)canvas.getGraphics();
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, Width, Height);
+		g.fillRect(0, 0, width, height);
 		g.setColor(Color.RED);
 		
 		// Disegna ricorsivamente
-		int lato = Math.min(Width, Height) / 3;
+		int lato = Math.min(width, height) / 3;
 		Draw(lato, 0, 0);
 	}
 	

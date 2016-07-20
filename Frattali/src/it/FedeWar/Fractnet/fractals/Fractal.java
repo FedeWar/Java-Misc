@@ -21,21 +21,40 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
 
-/* Classe base per disegnare frattali */
+/**
+ * @author FedeWar
+ * @version 2.0
+ * 
+ * Fornisce una base per lo sviluppo di implementazioni
+ * di frattali da eseguire e visualizzare all'interno
+ * dell'applicazione.
+ */
 public abstract class Fractal
 {
-	protected int Width, Height;
-	protected BufferedImage Image;
+	/**
+	 * Immagine su cui disegnare il frattale, non
+	 * appartiene al frattale ma alla GUI quindi non
+	 * deve essere cancellato o riallocato.
+	 */
+	protected BufferedImage canvas;
 	
 	/* Viene chiamato dall'oggetto Class, non deve avere parametri */
 	public Fractal() {}
 	
 	/* Inizializza l'oggetto, fa le veci del costruttore */
-	public void init(int width, int height, BufferedImage i)
+	public void init(BufferedImage target)
 	{
-		Width = width;
-		Height = height;
-		Image = i;
+		canvas = target;
+	}
+	
+	public int width()
+	{
+		return canvas.getWidth();
+	}
+	
+	public int height()
+	{
+		return canvas.getHeight();
 	}
 	
 	/* Disegna il frattale */

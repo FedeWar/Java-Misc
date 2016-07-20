@@ -36,9 +36,9 @@ public abstract class ComplexFract extends Fractal
 	
 	/* Inizializzazione oggetto, fa le veci del costruttore */
 	@Override
-	public void init(int width, int height, BufferedImage targetImage)
+	public void init(BufferedImage targetImage)
 	{
-		super.init(width, height, targetImage);
+		super.init(targetImage);
 		c = new Complex(0, 0);
 		clipPos = new double[] {1, 1};
 	}

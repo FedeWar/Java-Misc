@@ -39,16 +39,20 @@ public class SierpinskiTriangles extends Fractal
 	@Override
 	public void draw()
 	{
+		// Dimensioni del frattale
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+		
 		// Prepara il canvas
-		Graphics2D g2 = (Graphics2D)Image.getGraphics();
+		Graphics2D g2 = (Graphics2D)canvas.getGraphics();
 		g2.setColor(background);
-		g2.fillRect(0, 0, Width, Height);
+		g2.fillRect(0, 0, width, height);
 		
 		// Crea il primo triangolo
 		Polygon firstTriangle = new Polygon();
-		firstTriangle.addPoint(Width / 2, 0);
-		firstTriangle.addPoint(0, Height);
-		firstTriangle.addPoint(Width, Height);
+		firstTriangle.addPoint(width / 2, 0);
+		firstTriangle.addPoint(0, height);
+		firstTriangle.addPoint(width, height);
 		
 		// Disegna i triangoli più piccoli ricorsivamente
 		Draw(firstTriangle, 0);
@@ -61,7 +65,7 @@ public class SierpinskiTriangles extends Fractal
 	{
 		// Ottiene ogni volta l'oggetto grafico, la VM metterà il
 		// risultato di getGraphics in cache e ottimizzerà questa linea
-		Graphics2D g2 = (Graphics2D) Image.getGraphics();
+		Graphics2D g2 = (Graphics2D) canvas.getGraphics();
 		
 		// Crea il triangolo e i buffer per i vertici
 		Polygon triangle = new Polygon();
