@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.*;
 
 import it.FedeWar.NBody2D.Engine.Engine;
 import it.FedeWar.NBody2D.Engine.Sim_Info;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 public class SimulationWin
 {
@@ -91,7 +90,7 @@ public class SimulationWin
 		lblObjsCount.setAlignment(SWT.RIGHT);
 		lblObjsCount.setBounds(shell.getSize().x - 260 - 16, 10, 260, 20);
 		lblObjsCount.setText("Numero Oggetti: 0");
-		lblObjsCount.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		lblObjsCount.setForeground(display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		
 		/*Label lblTime = new Label(shell, SWT.NONE);
 		lblTime.setAlignment(SWT.RIGHT);
@@ -101,7 +100,7 @@ public class SimulationWin
 			lblTime.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		*/
 		lblFPS = new Label(shell, SWT.NONE);
-		lblFPS.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		lblFPS.setForeground(display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 		lblFPS.setAlignment(SWT.RIGHT);
 		lblFPS.setBounds(shell.getSize().x - 276, 62, 260, 20);
 		lblFPS.setText("Frame al Secondo: 0");
