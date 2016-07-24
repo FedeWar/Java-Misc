@@ -5,21 +5,20 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.*;
 
-import it.FedeWar.NBody2D.Engine.Engine;
-import it.FedeWar.NBody2D.Engine.Sim_Info;
+import it.FedeWar.NBody2D.Engine.Engine_2D.*;
 
 public class SimulationWin
 {
 	private Color[] colorPalette;
-	private Engine E;
+	private Simulation_2D sim;
 	private Shell shell;
 	private Label lblObjsCount, lblFPS;
 	private int posX, posY;		// Quanto la camera si è spostata
 	
 	/* Costruttore, inizializzazione variabili */
-	public SimulationWin(Engine e)
+	public SimulationWin(Simulation_2D sim)
 	{
-		E = e;
+		this.sim = sim;
 	}
 	
 	/* Listener per il disegno sulla finestra, viene chiamato ogni
@@ -29,16 +28,19 @@ public class SimulationWin
 		@Override
 		public void paintControl(PaintEvent arg0)
 		{
+			// Ottiene l'engine
+			Engine_2D e = sim.getEngine();
+			
 			// Disegna lo sfondo
 			arg0.gc.setBackground(colorPalette[0]);
 			arg0.gc.fillRectangle(0, 0, shell.getSize().x, shell.getSize().y);
 
 			// Disegna tutti gli oggetti, uno per uno
 			arg0.gc.setForeground(colorPalette[1]);
-			for(int i = 0; i < E.pnum_objs; i++)
-				E.go[i].draw(arg0.gc, posX, posY);
+			for(int i = 0; i < e.pnum_objs; i++)
+				e.go[i].draw(arg0.gc, posX, posY);
 			
-			lblObjsCount.setText("Numero Oggetti: " + E.pnum_objs);
+			lblObjsCount.setText("Numero Oggetti: " + e.pnum_objs);
 		}
 	}
 	
@@ -73,10 +75,12 @@ public class SimulationWin
 	 * Open the window.
 	 * @wbp.parser.entryPoint
 	 */
-	public void open(Sim_Info SI)
+	public void open()
 	{
 		long benchStart = 0;	// Estremi per il benchmarking
 		int frames = 0;			// Frame calcolati in un secondo
+		
+		Sim_Info_2D info = (Sim_Info_2D) sim.getInfo();
 		
 		// Crea un nuovo display e lo usa per creare una palette 
 		Display display = Display.getDefault();
@@ -84,7 +88,7 @@ public class SimulationWin
 			display.getSystemColor(SWT.COLOR_BLACK),
 			display.getSystemColor(SWT.COLOR_DARK_GRAY)};
 		
-		createShell(SI.width, SI.height, SI.opengl);
+		createShell(info.winDim.width, info.winDim.height);
 		
 		lblObjsCount = new Label(shell, SWT.NONE);
 		lblObjsCount.setAlignment(SWT.RIGHT);
@@ -120,7 +124,7 @@ public class SimulationWin
 			
 			// Nuovo frame
 			frames++;
-			E.refresh();
+			sim.refresh();
 			shell.redraw();
 			
 			if (!display.readAndDispatch())
@@ -131,7 +135,7 @@ public class SimulationWin
 	}
 	
 	/* Inizializza la shell */
-	private void createShell(int width, int height, boolean opengl)
+	private void createShell(int width, int height)
 	{
 		shell = new Shell();
 		shell.setSize(width, height);

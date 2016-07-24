@@ -3,6 +3,7 @@ package it.FedeWar.NBody2D.GUI.OpenGL;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
 
+import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL3;
 
 public class VBO
@@ -21,7 +22,7 @@ public class VBO
 	
 	public void bufferData(Buffer data)
 	{
-		gl.glBufferData(GL3.GL_ARRAY_BUFFER, data.capacity(), data, GL3.GL_STATIC_DRAW);
+		gl.glBufferData(GL3.GL_ARRAY_BUFFER, data.limit() * Buffers.SIZEOF_FLOAT, data, GL3.GL_STATIC_DRAW);
 	}
 	
 	public void bind()

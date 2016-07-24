@@ -1,5 +1,5 @@
-package it.FedeWar.NBody2D.Engine;
-//vettore bi-dimensionali con componenti reali
+package it.FedeWar.NBody2D.Engine.Engine_2D;
+
 public class Vector2f
 {
 	public float x;

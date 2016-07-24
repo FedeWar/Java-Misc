@@ -2,6 +2,7 @@ package it.FedeWar.NBody2D.GUI.OpenGL;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.eclipse.swt.SWT;
@@ -39,7 +40,7 @@ public class GLWin implements GLEventListener
 		// Crea il frame
 		Display display = Display.getDefault();
 		shell = new Shell();
-		shell.setSize(SI.width, SI.height);
+		//shell.setSize(SI.width, SI.height);
 		shell.setText("Simulazione N-Corpi");
 
 		// Crea il contesto OpenGL
@@ -47,10 +48,6 @@ public class GLWin implements GLEventListener
 		GLCanvas canvas = new GLCanvas(shell, SWT.NO_BACKGROUND, glCapabilities, null);
 		canvas.setBounds(0, 0, shell.getSize().x, shell.getSize().y);
 		canvas.addGLEventListener(this);
-
-		// Alloca la memoria
-		
-		// chiama CUDA
 		
 		shell.open();
 		shell.layout();
@@ -74,6 +71,15 @@ public class GLWin implements GLEventListener
 		// Linka e crea il programma
 		glProgram = linkShaders(new int[] { vertex, fragment });
 		gl.glUseProgram(glProgram);
+		
+		VAO vao = new VAO(gl);
+		vao.bind();
+		VBO vbo = new VBO(gl);
+		vbo.bind();
+		vbo.bufferData(FloatBuffer.allocate(10));
+		vbo.addToVAO();
+		vbo.unbind();
+		vao.unbind();
 	}
 
 	@Override
