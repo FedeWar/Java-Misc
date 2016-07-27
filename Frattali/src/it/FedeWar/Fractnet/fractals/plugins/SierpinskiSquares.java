@@ -26,53 +26,53 @@ import it.FedeWar.Fractnet.fractals.Fractal;
 /* Tappeto di Sierpinski, è un frattale semplice */
 public class SierpinskiSquares extends Fractal
 {
-	private Graphics2D g;	// GC, come campo diminuisce l'uso dello stack
+	/* Graphics Context, è un campo poiché bisogna ridurre
+	 * l'uso dello stack, che viene usato dal metodo ricorsivo */
+	private Graphics2D g;
 	
 	/* Disegna il frattale */
 	@Override
 	public void draw()
-	{
-		// Dimensioni del frattale
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
-		
+	{	
 		// Prepara il canvas
 		g = (Graphics2D)canvas.getGraphics();
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, width(), height());
 		g.setColor(Color.RED);
 		
 		// Disegna ricorsivamente
-		int lato = Math.min(width, height) / 3;
-		Draw(lato, 0, 0);
+		Draw(Math.min(width(), height()) / 3, 0, 0);
 	}
 	
-	/* Disegna ricorsivamente 8 quadrati */
+	/* Disegna ricorsivamente 8 quadrati, si sarebbe
+	 * potuto scrivere con due for annidati, ma essendo
+	 * il numero di iterazioni costante ho optato per
+	 * unroll. */
 	public void Draw(int lato, int X, int Y)
 	{
 		// Se il quadrato ha raggiunto la dimensione minima
 		if(lato - 3 <= 0)
 		{
-			g.drawRect(X + lato * 0, Y + lato * 0, lato, lato);
-			g.drawRect(X + lato * 0, Y + lato * 1, lato, lato);
-			g.drawRect(X + lato * 0, Y + lato * 2, lato, lato);
-			g.drawRect(X + lato * 1, Y + lato * 0, lato, lato);
-			g.drawRect(X + lato * 1, Y + lato * 2, lato, lato);
-			g.drawRect(X + lato * 2, Y + lato * 0, lato, lato);
-			g.drawRect(X + lato * 2, Y + lato * 1, lato, lato);
-			g.drawRect(X + lato * 2, Y + lato * 2, lato, lato);
+			g.drawRect(X				, Y					, lato, lato);
+			g.drawRect(X				, Y + lato			, lato, lato);
+			g.drawRect(X				, Y + lato + lato	, lato, lato);
+			g.drawRect(X + lato			, Y					, lato, lato);
+			g.drawRect(X + lato			, Y + lato + lato	, lato, lato);
+			g.drawRect(X + lato + lato	, Y					, lato, lato);
+			g.drawRect(X + lato + lato	, Y + lato			, lato, lato);
+			g.drawRect(X + lato + lato	, Y + lato + lato	, lato, lato);
 		}
 		// Se è troppo grande chiama quelli più piccoli
 		else
 		{
-			Draw(lato / 3, X + lato * 0, Y + lato * 0);
-			Draw(lato / 3, X + lato * 0, Y + lato * 1);
-			Draw(lato / 3, X + lato * 0, Y + lato * 2);
-			Draw(lato / 3, X + lato * 1, Y + lato * 0);
-			Draw(lato / 3, X + lato * 1, Y + lato * 2);
-			Draw(lato / 3, X + lato * 2, Y + lato * 0);
-			Draw(lato / 3, X + lato * 2, Y + lato * 1);
-			Draw(lato / 3, X + lato * 2, Y + lato * 2);
+			Draw(lato / 3, X				, Y					);
+			Draw(lato / 3, X				, Y + lato			);
+			Draw(lato / 3, X				, Y + lato + lato	);
+			Draw(lato / 3, X + lato			, Y					);
+			Draw(lato / 3, X + lato			, Y + lato + lato	);
+			Draw(lato / 3, X + lato + lato	, Y					);
+			Draw(lato / 3, X + lato + lato	, Y + lato			);
+			Draw(lato / 3, X + lato + lato	, Y + lato + lato	);
 		}
 	}
 }
