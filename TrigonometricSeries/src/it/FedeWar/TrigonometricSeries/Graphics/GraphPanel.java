@@ -1,4 +1,4 @@
-package it.TS.Graphics;
+package it.FedeWar.TrigonometricSeries.Graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import it.TS.Math.Wave;
-import it.TS.Utils.Parser;
+import it.FedeWar.TrigonometricSeries.Math.Wave;
+import it.FedeWar.TrigonometricSeries.Utils.Parser;
 
 /* Il pannello su cui vengono disegnate le onde */
 public class GraphPanel extends JPanel
@@ -153,7 +153,7 @@ public class GraphPanel extends JPanel
 
 	private void drawWave(int index, Graphics2D g2)
 	{
-		/* L'onda deve essere centrata, così
+		/* L'onda deve essere centrata, cosï¿½
 		 * calcola lo spostamento per posizionarla
 		 * al centro del canvas */
 		int offsetY = getHeight() / 2;

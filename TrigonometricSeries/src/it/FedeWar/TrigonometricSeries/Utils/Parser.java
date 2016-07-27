@@ -1,6 +1,6 @@
-package it.TS.Utils;
+package it.FedeWar.TrigonometricSeries.Utils;
 
-import it.TS.Math.Wave;
+import it.FedeWar.TrigonometricSeries.Math.Wave;
 
 /* Esegue il parsing della stringa function */
 public class Parser

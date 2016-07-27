@@ -1,4 +1,4 @@
-package it.TS.Math;
+package it.FedeWar.TrigonometricSeries.Math;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 //Rendere questa classe e Wave imparentate
 
-/* Un onda più complessa, generata da più onde */
+/* Un onda piï¿½ complessa, generata da piï¿½ onde */
 public class ComplexWave
 {
 	public ArrayList<Wave>	Waves;		//La lista delle onde da sommare

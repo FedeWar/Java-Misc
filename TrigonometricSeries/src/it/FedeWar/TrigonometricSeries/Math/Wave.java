@@ -1,4 +1,4 @@
-package it.TS.Math;
+package it.FedeWar.TrigonometricSeries.Math;
 
 import java.awt.Color;
 import java.awt.Dimension;

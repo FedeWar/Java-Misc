@@ -1,4 +1,4 @@
-package it.TS.Graphics;
+package it.FedeWar.TrigonometricSeries.Graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import it.TS.Math.Wave;
+import it.FedeWar.TrigonometricSeries.Math.Wave;
 
 public class WavePanel extends JPanel
 {
@@ -52,12 +52,12 @@ public class WavePanel extends JPanel
 				/* Ottiene la sorgente dell'evento */
 				JLabel src = (JLabel)arg0.getSource();
 				
-				/* Se è stata premuta la label '+'
+				/* Se ï¿½ stata premuta la label '+'
 				 * aggiunge un'onda alla lista*/
 				if(src.getText().compareTo("+") == 0)
 					pnlGraph.addWave(new Wave());
 				
-				/* Se è stata premuta la label '-'
+				/* Se ï¿½ stata premuta la label '-'
 				 * rimuove un'onda dalla lista */
 				else if(src.getText().compareTo("-") == 0)
 					pnlGraph.removeWave(getSelectedId());

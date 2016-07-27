@@ -1,4 +1,4 @@
-package it.TS.Graphics;
+package it.FedeWar.TrigonometricSeries.Graphics;
 
 import java.awt.Font;
 import java.awt.event.MouseEvent;
