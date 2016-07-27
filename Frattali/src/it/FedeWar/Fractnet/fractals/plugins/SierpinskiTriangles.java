@@ -39,20 +39,16 @@ public class SierpinskiTriangles extends Fractal
 	@Override
 	public void draw()
 	{
-		// Dimensioni del frattale
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
-		
 		// Prepara il canvas
 		Graphics2D g2 = (Graphics2D)canvas.getGraphics();
 		g2.setColor(background);
-		g2.fillRect(0, 0, width, height);
+		g2.fillRect(0, 0, width(), height());
 		
 		// Crea il primo triangolo
 		Polygon firstTriangle = new Polygon();
-		firstTriangle.addPoint(width / 2, 0);
-		firstTriangle.addPoint(0, height);
-		firstTriangle.addPoint(width, height);
+		firstTriangle.addPoint(width() / 2, 0);
+		firstTriangle.addPoint(0, height());
+		firstTriangle.addPoint(width(), height());
 		
 		// Disegna i triangoli più piccoli ricorsivamente
 		Draw(firstTriangle, 0);
