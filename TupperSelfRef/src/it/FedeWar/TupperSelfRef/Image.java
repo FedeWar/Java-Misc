@@ -1,9 +1,8 @@
-package it.tupper;
+package it.FedeWar.TupperSelfRef;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-/* Immagine i cui pixel invece di avere dimensione di un 1px hanno dimensione Tile px */
 public class Image extends BufferedImage
 {
 	public int Tile;
