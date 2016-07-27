@@ -15,7 +15,6 @@
 	You should have received a copy of the GNU General Public License
 	along with Fractnet.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package it.FedeWar.Fractnet.fractals;
 
 import java.awt.image.BufferedImage;
@@ -27,8 +26,28 @@ public abstract class ComplexFract extends Fractal
 {
 	protected final int MAX = 255;
 
-	protected double clipWidth = 2.0;
-	protected double[] clipPos;
+	/* La distanza tra i bordi del rettangolo da visualizzare,
+	 * se viene visualizzata una porzione di frattale da -1 a 1
+	 * la clipSize è 2 (1-(-1)).
+	 * Questa è la rappresentazione in forma di array della matrice:
+	 * +-------+-------+
+	 * | XSize |   0   |
+	 * +-------+-------+
+	 * |   0   | YSize |
+	 * +-------+-------+ */
+	protected double[] clipSize = { 2.0, 2.0 };
+	protected double[] clipPos = { 1.0, 1.0 };
+	
+	/* Rappresentazione in forma di array della matrice di rotazione:
+	 * +------+------+
+	 * |cos(a)|  0   |
+	 * +------+------+
+	 * |  0   |sin(a)|
+	 * +------+------+
+	 * Essendo una matrice diagonale il "formato array"
+	 * permette di risparmiare memoria e tempo. */
+	protected double[] rotation = { 1.0, -1.0 };
+	
 	protected Complex c;
 	
 	/* Costruttore, deve essere vuoto */
@@ -40,7 +59,6 @@ public abstract class ComplexFract extends Fractal
 	{
 		super.init(targetImage);
 		c = new Complex(0, 0);
-		clipPos = new double[] {1, 1};
 	}
 	
 	public void setClipPos(double[] newTrasl)
@@ -54,25 +72,19 @@ public abstract class ComplexFract extends Fractal
 		return new double[] { clipPos[0], clipPos[1]};
 	}
 	
-	/* Setter per zoom */
+	/* Setter per lo zoom */
 	public void setClipWidth(double newZoom)
 	{
 		// Compensa lo spostamento per mantenere centrata l'immagine
-		clipPos[0] -= (clipWidth - newZoom) / 2;
-		clipPos[1] -= (clipWidth - newZoom) / 2;
-		clipWidth = newZoom;
+		clipPos[0] -= (clipSize[0] - newZoom) / 2;
+		clipPos[1] -= (clipSize[1] - newZoom) / 2;
+		clipSize[0] = clipSize[1] = newZoom;
 	}
 	
-	/* Getter per zoom */
+	/* Getter per lo zoom */
 	public double getClipWidth()
 	{
-		return clipWidth;
-	}
-	
-	public void setC(double r, double i)
-	{
-		c.r = r;
-		c.i = i;
+		return clipSize[0];
 	}
 	
 	/* Setter per c */

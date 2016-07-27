@@ -60,8 +60,11 @@ public class Mandelbrot extends ComplexFract
     	{
     		for(int y = 0; y < height; y++)
     		{
-    			c.r = 1.0 * x * clipWidth / width - clipPos[0];
-    			c.i = 1.0 * y * clipWidth / height - clipPos[1];
+    			// La proiezione dalle coordinate dello schermo a quelle
+    			// del frattale avviene con la formula:
+    			// z = rot * (p * clipSize / screenSize - clipPos)
+    			c.r = rotation[0] * (x * clipSize[0] / width() - clipPos[0]);
+    			c.i = rotation[1] * (y * clipSize[1] / height() - clipPos[1]);
     			z.r = z.i = 0;
     			
     			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
