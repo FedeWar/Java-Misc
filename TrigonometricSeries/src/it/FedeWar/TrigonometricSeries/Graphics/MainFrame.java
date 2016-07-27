@@ -102,7 +102,7 @@ public class MainFrame
 		pnlWave.setLayout(null);
 		
 		JPanel pnlView = new JPanel();
-		pnlView.setBounds(10, 353, 238, 341);
+		pnlView.setBounds(8, 307, 238, 341);
 		mainFrame.getContentPane().add(pnlView);
 		pnlView.setLayout(null);
 		
