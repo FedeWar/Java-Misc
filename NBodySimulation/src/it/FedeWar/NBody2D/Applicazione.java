@@ -4,7 +4,6 @@ import it.FedeWar.NBody2D.Engine.Simulation;
 import it.FedeWar.NBody2D.Engine.CUDA.Simulation_CUDA;
 import it.FedeWar.NBody2D.Engine.Engine_2D.*;
 import it.FedeWar.NBody2D.GUI.*;
-import it.FedeWar.NBody2D.GUI.OpenGL.*;
 
 /* Punto di accesso per l'applicazione */
 public class Applicazione
