@@ -1,13 +1,13 @@
 package it.FedeWar.NBody2D.Engine;
 
-import org.eclipse.swt.widgets.Composite;
+import javax.swing.JPanel;
 
 public abstract class Simulation
 {
 	protected Sim_Info info;
 	protected Engine engine;
 	
-	public abstract void genGUI(Composite father);
+	public abstract void genGUI(JPanel father);
 	public abstract void packInfo();
 	public abstract void genEngine();
 	

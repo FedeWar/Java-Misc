@@ -1,24 +1,23 @@
 package it.FedeWar.NBody2D.Engine.Engine_2D;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import it.FedeWar.NBody2D.Engine.Simulation;
 
 public class Simulation_2D extends Simulation
 {
-	private Text txtWinDims;
-	private Text txtObjCount;
-	private Text txtMassVariation;
-	private Text txtRadiusVariation;
-	private Text txtStandardMass;
-	private Text txtStandardRadius;
-	private Text txtSpaceDims;
+	private JTextField txtWinDims;
+	private JTextField txtObjCount;
+	private JTextField txtMassVariation;
+	private JTextField txtRadiusVariation;
+	private JTextField txtStandardMass;
+	private JTextField txtStandardRadius;
+	private JTextField txtSpaceDims;
 
 	@Override
 	public void genEngine()
@@ -59,69 +58,81 @@ public class Simulation_2D extends Simulation
 	}
 
 	@Override
-	public void genGUI(Composite father)
+	public void genGUI(JPanel father)
 	{
-		Display display = Display.getDefault();
+		Dimension display = Toolkit.getDefaultToolkit().getScreenSize();
 
-		txtWinDims = new Text(father, SWT.BORDER);
-		txtWinDims.setText("" + display.getBounds().width + ";" + display.getBounds().height);
-		txtWinDims.setBounds(189, 30, 98, 33);
-
-		Label lblWinDims = new Label(father, SWT.CENTER);
+		JLabel lblWinDims = new JLabel("Dimensioni Finestra");
+		lblWinDims.setHorizontalAlignment(JLabel.CENTER);
 		lblWinDims.setBounds(10, 30, 188, 33);
-		lblWinDims.setText("Dimensioni Finestra");
+		father.add(lblWinDims);
+		
+		txtWinDims = new JTextField();
+		txtWinDims.setText("" + display.width + ";" + display.height);
+		txtWinDims.setBounds(189, 30, 98, 33);
+		father.add(txtWinDims);
 
-		txtObjCount = new Text(father, SWT.BORDER);
-		txtObjCount.setText("256");
+		txtObjCount = new JTextField("256");
 		txtObjCount.setBounds(204, 108, 83, 33);
+		father.add(txtObjCount);
 
-		Label lblObjCount = new Label(father, SWT.CENTER);
+		JLabel lblObjCount = new JLabel("Numero Oggetti");
+		lblObjCount.setHorizontalAlignment(JLabel.CENTER);
 		lblObjCount.setBounds(10, 108, 188, 33);
-		lblObjCount.setText("Numero Oggetti");
+		father.add(lblObjCount);
 
-		txtMassVariation = new Text(father, SWT.BORDER);
-		txtMassVariation.setText("0");
+		txtMassVariation = new JTextField("0");
 		txtMassVariation.setBounds(204, 186, 83, 33);
+		father.add(txtMassVariation);
 
-		Label lblMassVariation = new Label(father, SWT.NONE);
-		lblMassVariation.setAlignment(SWT.CENTER);
+		JLabel lblMassVariation = new JLabel();
+		lblMassVariation.setHorizontalAlignment(JLabel.CENTER);
 		lblMassVariation.setBounds(10, 186, 188, 33);
 		lblMassVariation.setText("Variazione Massa");
+		father.add(lblMassVariation);
 
-		txtRadiusVariation = new Text(father, SWT.BORDER);
+		txtRadiusVariation = new JTextField();
 		txtRadiusVariation.setText("0");
 		txtRadiusVariation.setBounds(204, 264, 83, 33);
+		father.add(txtRadiusVariation);
 
-		Label lblRadVariation = new Label(father, SWT.NONE);
-		lblRadVariation.setAlignment(SWT.CENTER);
+		JLabel lblRadVariation = new JLabel();
+		lblRadVariation.setHorizontalAlignment(JLabel.CENTER);
 		lblRadVariation.setBounds(10, 264, 188, 33);
 		lblRadVariation.setText("Variazione Raggio");
+		father.add(lblRadVariation);
 
-		txtStandardMass = new Text(father, SWT.BORDER);
+		txtStandardMass = new JTextField();
 		txtStandardMass.setText("1");
 		txtStandardMass.setBounds(204, 147, 83, 33);
+		father.add(txtStandardMass);
 
-		txtStandardRadius = new Text(father, SWT.BORDER);
+		txtStandardRadius = new JTextField();
 		txtStandardRadius.setText("1");
 		txtStandardRadius.setBounds(204, 225, 83, 33);
-
-		Label lblStandardRadius = new Label(father, SWT.NONE);
-		lblStandardRadius.setAlignment(SWT.CENTER);
+		father.add(txtStandardRadius);
+		
+		JLabel lblStandardRadius = new JLabel();
+		lblStandardRadius.setHorizontalAlignment(JLabel.CENTER);
 		lblStandardRadius.setBounds(10, 225, 188, 33);
 		lblStandardRadius.setText("Raggio Standard");
+		father.add(lblStandardRadius);
 
-		Label lblStandardMass = new Label(father, SWT.NONE);
-		lblStandardMass.setAlignment(SWT.CENTER);
+		JLabel lblStandardMass = new JLabel("Massa Standard");
+		lblStandardMass.setHorizontalAlignment(JLabel.CENTER);
 		lblStandardMass.setBounds(10, 147, 188, 33);
-		lblStandardMass.setText("Massa Standard");
+		father.add(lblStandardMass);
 
-		txtSpaceDims = new Text(father, SWT.BORDER);
+		txtSpaceDims = new JTextField();
 		txtSpaceDims.setBounds(189, 69, 98, 33);
 		txtSpaceDims.setText("500;500");
+		father.add(txtSpaceDims);
 
-		Label lblDimentions = new Label(father, SWT.NONE);
-		lblDimentions.setAlignment(SWT.CENTER);
+		JLabel lblDimentions = new JLabel("Dimensioni Spazio");
+		lblDimentions.setHorizontalAlignment(JLabel.CENTER);
 		lblDimentions.setBounds(10, 69, 188, 33);
-		lblDimentions.setText("Dimensioni Spazio");
+		father.add(lblDimentions);
+		
+		father.repaint();
 	}
 }

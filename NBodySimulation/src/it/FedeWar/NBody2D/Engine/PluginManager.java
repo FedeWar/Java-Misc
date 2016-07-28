@@ -2,17 +2,19 @@ package it.FedeWar.NBody2D.Engine;
 
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+
 /* Gestione dei plugin, la classe non può essere instanziata */
 public abstract class PluginManager
 {
-	private	static String[] names;		// Lista nomi frattali disponibili
+	private	static DefaultListModel<String> names;		// Lista nomi frattali disponibili
 	private	static ArrayList<Class<Simulation>> plugins;// Lista classi dei frattali
 	
 	/* Inizializza le liste */
 	static
 	{
 		plugins = new ArrayList<Class<Simulation>>();
-		names = new String[1];
+		names = new DefaultListModel<String>();
 		loadBuiltinFractals();
 	}
 	
@@ -26,7 +28,13 @@ public abstract class PluginManager
 				ClassLoader.getSystemClassLoader().loadClass(
 					pluginsPath + "Engine_2D.Simulation_2D"));
 			
-			names[0] = "Simulazione 2D No GPU";
+			names.addElement("Simulazione 2D No GPU");
+			
+			plugins.add((Class<Simulation>)
+					ClassLoader.getSystemClassLoader().loadClass(
+						pluginsPath + "CUDA.Simulation_CUDA"));
+				
+			names.addElement("Simulazione CUDA");
 			
 		} catch (ClassNotFoundException e) {
 			System.err.println("Impossibile caricare la classe: " + e.getMessage());
@@ -66,7 +74,7 @@ public abstract class PluginManager
 	}
 	
 	/* Getter per la lista dei nomi */
-	public static String[] getNames()
+	public static DefaultListModel<String> getNames()
 	{
 		return names;
 	}
@@ -74,8 +82,8 @@ public abstract class PluginManager
 	/* Restituisce l'id del frattale selezionato */
 	public static int search(String key)
 	{
-		for(int i = 0; i < names.length; i++)
-			if(names[i] == key)
+		for(int i = 0; i < names.size(); i++)
+			if(names.get(i) == key)
 				return i;
 		return -1;
 	}

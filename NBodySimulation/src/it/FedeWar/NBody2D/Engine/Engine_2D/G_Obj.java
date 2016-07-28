@@ -1,6 +1,6 @@
 package it.FedeWar.NBody2D.Engine.Engine_2D;
 
-import org.eclipse.swt.graphics.GC;
+import java.awt.Graphics2D;
 
 public class G_Obj
 {
@@ -92,9 +92,9 @@ public class G_Obj
 	}
 
 	/* Disegna l'oggetto su un Contesto Grafico */
-	public void draw(GC gc, int posX, int posY)
+	public void draw(Graphics2D g2, int posX, int posY)
 	{
-		gc.drawOval(
+		g2.drawOval(
 			(int)(Pos.x - Radius - posX),
 			(int)(Pos.y - Radius - posY),
 			(int)(Radius * 2),

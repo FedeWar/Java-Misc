@@ -1,51 +1,98 @@
 package it.FedeWar.NBody2D.GUI;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import it.FedeWar.NBody2D.Engine.Engine_2D.*;
 
-public class SimulationWin
+public class SimulationWin extends JFrame
 {
+	private static final long serialVersionUID = -8171820409697626939L;
+	
 	private Color[] colorPalette;
 	private Simulation_2D sim;
-	private Shell shell;
-	private Label lblObjsCount, lblFPS;
+	private JLabel lblObjsCount, lblFPS;
 	private int posX, posY;		// Quanto la camera si è spostata
 	
-	/* Costruttore, inizializzazione variabili */
-	public SimulationWin(Simulation_2D sim)
+	/* Pannello per disegnare gli oggetti */
+	private class Canvas extends JPanel
 	{
-		this.sim = sim;
-	}
-	
-	/* Listener per il disegno sulla finestra, viene chiamato ogni
-	 * volta che la finestra viene modificata e ad ogni frame */
-	private class Painter implements PaintListener
-	{
-		@Override
-		public void paintControl(PaintEvent arg0)
+		private static final long serialVersionUID = 2647550373102965024L;
+
+		public void paintComponent(Graphics g)
 		{
-			// Ottiene l'engine
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D) g;
 			Engine_2D e = sim.getEngine();
-			
+
 			// Disegna lo sfondo
-			arg0.gc.setBackground(colorPalette[0]);
-			arg0.gc.fillRectangle(0, 0, shell.getSize().x, shell.getSize().y);
+			g2.setColor(colorPalette[0]);
+			g2.fillRect(0, 0, getSize().width - 1, getSize().height - 1);
 
 			// Disegna tutti gli oggetti, uno per uno
-			arg0.gc.setForeground(colorPalette[1]);
+			g2.setColor(colorPalette[1]);
 			for(int i = 0; i < e.pnum_objs; i++)
-				e.go[i].draw(arg0.gc, posX, posY);
-			
+				e.go[i].draw(g2, posX, posY);
+
 			lblObjsCount.setText("Numero Oggetti: " + e.pnum_objs);
 		}
 	}
 	
+	/* Costruttore, inizializzazione variabili */
+	public SimulationWin(Simulation_2D sim)
+	{
+		super("Simulazione 2D");
+		
+		Sim_Info_2D info = (Sim_Info_2D) sim.getInfo();
+		this.sim = sim;
+		colorPalette = new Color[]{ Color.BLACK, Color.LIGHT_GRAY };
+		
+		setSize(info.winDim);
+		setLayout(null);
+		//addKeyListener(new Keyboard());
+		//addPaintListener(new Painter());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Canvas pnlDraw = new Canvas();
+		int lato = Math.min(info.winDim.width, info.winDim.height);
+		pnlDraw.setBounds(0, 0, lato, lato);
+		this.add(pnlDraw);
+		
+		lblObjsCount = new JLabel("Numero Oggetti: 0");
+		lblObjsCount.setHorizontalAlignment(JLabel.RIGHT);
+		lblObjsCount.setBounds(0, 10, info.winDim.width - 10, 20);
+		lblObjsCount.setForeground(Color.LIGHT_GRAY);
+		this.add(lblObjsCount);
+		
+		/*Label lblTime = new Label(shell, SWT.NONE);
+		lblTime.setAlignment(SWT.RIGHT);
+		lblTime.setBounds(shell.getSize().x - 260 - 16, 36, 260, 20);
+		lblTime.setText("Tempo Passato: 0s");
+		if(!SI.opengl)
+			lblTime.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		*/
+		lblFPS = new JLabel("Frame al Secondo: 0");
+		lblFPS.setForeground(Color.LIGHT_GRAY);
+		lblFPS.setHorizontalAlignment(JLabel.RIGHT);
+		lblFPS.setBounds(0, 62, info.winDim.width - 10, 20);
+		this.add(lblFPS);
+		
+		setVisible(true);
+	}
+	
+	public Dimension getPreferredSize()
+	{
+		return getSize();
+	}
+
 	/* Listener per i comandi da tastiera della shell */
-	private class Keyboard implements KeyListener
+	/*private class Keyboard implements KeyListener
 	{
 		@Override
 		public void keyPressed(KeyEvent arg0)
@@ -69,7 +116,7 @@ public class SimulationWin
 		}
 
 		@Override public void keyReleased(KeyEvent arg0) {}
-	}
+	}*/
 	
 	/**
 	 * Open the window.
@@ -80,39 +127,7 @@ public class SimulationWin
 		long benchStart = 0;	// Estremi per il benchmarking
 		int frames = 0;			// Frame calcolati in un secondo
 		
-		Sim_Info_2D info = (Sim_Info_2D) sim.getInfo();
-		
-		// Crea un nuovo display e lo usa per creare una palette 
-		Display display = Display.getDefault();
-		colorPalette = new Color[] {
-			display.getSystemColor(SWT.COLOR_BLACK),
-			display.getSystemColor(SWT.COLOR_DARK_GRAY)};
-		
-		createShell(info.winDim.width, info.winDim.height);
-		
-		lblObjsCount = new Label(shell, SWT.NONE);
-		lblObjsCount.setAlignment(SWT.RIGHT);
-		lblObjsCount.setBounds(shell.getSize().x - 260 - 16, 10, 260, 20);
-		lblObjsCount.setText("Numero Oggetti: 0");
-		lblObjsCount.setForeground(display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-		
-		/*Label lblTime = new Label(shell, SWT.NONE);
-		lblTime.setAlignment(SWT.RIGHT);
-		lblTime.setBounds(shell.getSize().x - 260 - 16, 36, 260, 20);
-		lblTime.setText("Tempo Passato: 0s");
-		if(!SI.opengl)
-			lblTime.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-		*/
-		lblFPS = new Label(shell, SWT.NONE);
-		lblFPS.setForeground(display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-		lblFPS.setAlignment(SWT.RIGHT);
-		lblFPS.setBounds(shell.getSize().x - 276, 62, 260, 20);
-		lblFPS.setText("Frame al Secondo: 0");
-
-		shell.open();
-		shell.layout();
-		
-		while (!shell.isDisposed())
+		while (isVisible())
 		{
 			// Benchmark
 			if(System.currentTimeMillis() - benchStart >= 1000)
@@ -125,22 +140,10 @@ public class SimulationWin
 			// Nuovo frame
 			frames++;
 			sim.refresh();
-			shell.redraw();
+			repaint();
 			
-			if (!display.readAndDispatch())
-			{
-				display.sleep();
-			}
+			try { Thread.sleep(1000 / 120);	// 120 = max fps
+			} catch (InterruptedException e) {}
 		}
-	}
-	
-	/* Inizializza la shell */
-	private void createShell(int width, int height)
-	{
-		shell = new Shell();
-		shell.setSize(width, height);
-		shell.setText("Simulazione");
-		shell.addKeyListener(new Keyboard());
-		shell.addPaintListener(new Painter());
 	}
 }

@@ -4,21 +4,20 @@ import it.FedeWar.NBody2D.Engine.Engine;
 
 public class CuEngine extends Engine
 {
-	public CuEngine(Sim_Info_Acc si)
-	{
-		super(si);
-		
+	static {
 		try{
-			System.loadLibrary("");
+			System.load("/home/FedeWar/Programmazione/Cuda/NBody API/Debug/libNBody API.so");
 		} catch(UnsatisfiedLinkError e) {
-			
+			System.err.println("Impossibile caricare la libreria: " + e.getMessage());
 		}
-		
-		init(si);
 	}
 	
+	public CuEngine(Sim_Info_Acc si)
+	{
+		//init(si);
+	}
+	
+	@Override public native void refresh();
 	private native void init(Sim_Info_Acc si);
-	@Override
-	public native void refresh();
 	public native void destroy();
 }
