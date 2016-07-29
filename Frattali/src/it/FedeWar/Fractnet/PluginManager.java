@@ -102,7 +102,7 @@ public abstract class PluginManager
 	public static int search(String key)
 	{
 		for(int i = 0; i < names.size(); i++)
-			if(names.getElementAt(i) == key)
+			if(names.get(i) == key)
 				return i;
 		return -1;
 	}
