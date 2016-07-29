@@ -12,6 +12,6 @@ public class Sim_Info_Acc extends Sim_Info
 	
 	public int spaceDimX, spaceDimY, spaceDimZ;
 	
-	public int vboID;
+	public int vbo_id;
 	// TODO, impostazioni GPU
 }

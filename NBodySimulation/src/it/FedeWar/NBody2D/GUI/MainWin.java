@@ -37,7 +37,7 @@ public class MainWin extends JFrame
 			// Premuto "Cambia simulazione"
 			else if(src.compareTo("Cambia Simulazione") == 0) {
 				sim = PluginManager.create(lstSims.getSelectedIndex());
-				sim.genGUI(pnlSim);
+				sim.createSettingsGUI(pnlSim);
 			}
 		}
 	}

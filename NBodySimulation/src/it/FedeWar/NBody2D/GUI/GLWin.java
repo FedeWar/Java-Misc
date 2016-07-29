@@ -15,9 +15,11 @@ public class GLWin
 	private long window;
 	int WIDTH = 480;
 	int HEIGHT = 360;
+	Simulation_CUDA sim;
 
 	public GLWin(Simulation_CUDA cuda)
 	{
+		sim = cuda;
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
 		glfwDefaultWindowHints();
@@ -51,33 +53,27 @@ public class GLWin
 		glfwShowWindow(window);
 	}
 
-	private void loop()
-	{
-		// This line is critical for LWJGL's interoperation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
-
-		// Set the clear color
-		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-
-		// Run the rendering loop until the user has attempted to close
-		// the window or has pressed the ESCAPE key.
-		while ( !glfwWindowShouldClose(window) ) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-			
-			glfwSwapBuffers(window); // swap the color buffers
-			// Poll for window events. The key callback above will only be
-			// invoked during this call.
-			glfwPollEvents();
-		}
-	}
-
 	public void open()
 	{
-		loop();
+		GL.createCapabilities();				// Crea un glCtx
+		sim.initEngine();						// Crea l'engine
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// Colore di sfondo
+		
+		while (!glfwWindowShouldClose(window))
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+			
+			sim.render();
+//			glBegin(GL_TRIANGLES);
+//			glColor3f(1.0f, 0.0f, 0.0f);
+//			glVertex2f(0.200f, 0.100f);
+//			glVertex2f(0.300f, 0.400f);
+//			glVertex2f(0.100f, 0.400f);
+//			glEnd();
+
+			glfwSwapBuffers(window);	// Swap buffers
+			glfwPollEvents();			// Controlla gli eventi
+		}
 	}
 
 	public void dispose()

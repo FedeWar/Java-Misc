@@ -17,8 +17,6 @@ public class Applicazione
 		if(SI == null)
 			return;
 		
-		SI.genEngine();
-		
 		// TODO, questo sistema non è compatibile con PluginManager
 		if(SI instanceof Simulation_2D)
 		{

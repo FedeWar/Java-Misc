@@ -29,7 +29,6 @@ public class SimulationWin extends JFrame
 		{
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
-			Engine_2D e = sim.getEngine();
 
 			// Disegna lo sfondo
 			g2.setColor(colorPalette[0]);
@@ -37,10 +36,10 @@ public class SimulationWin extends JFrame
 
 			// Disegna tutti gli oggetti, uno per uno
 			g2.setColor(colorPalette[1]);
-			for(int i = 0; i < e.pnum_objs; i++)
-				e.go[i].draw(g2, posX, posY);
+			for(int i = 0; i < sim.pnum_objs; i++)
+				sim.go[i].draw(g2, posX, posY);
 
-			lblObjsCount.setText("Numero Oggetti: " + e.pnum_objs);
+			lblObjsCount.setText("Numero Oggetti: " + sim.pnum_objs);
 		}
 	}
 	
@@ -51,6 +50,7 @@ public class SimulationWin extends JFrame
 		
 		Sim_Info_2D info = (Sim_Info_2D) sim.getInfo();
 		this.sim = sim;
+		sim.initEngine();
 		colorPalette = new Color[]{ Color.BLACK, Color.LIGHT_GRAY };
 		
 		setSize(info.winDim);

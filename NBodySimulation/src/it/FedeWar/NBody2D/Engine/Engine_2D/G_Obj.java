@@ -6,7 +6,7 @@ public class G_Obj
 {
 	private static float G;			// Costante di gravitazione
 	private static float t_gap;		// Passo temporale
-	private static Engine_2D E;		// Il motore a cui fare riferimento
+	private static Simulation_2D E;	// Il motore a cui fare riferimento
 	private static Vector2f dst;	// Evita di riallocarlo ogni volta
 	
 	private		float		Radius; // Il raggio del corpo
@@ -16,7 +16,7 @@ public class G_Obj
 	private 	Vector2f	Acc;	// L' accelerazione
 	
 	/* Inizializza i campi statici */
-	public static void staticInit(Engine_2D e)
+	public static void staticInit(Simulation_2D e)
 	{
 		G = 0.001f;
 		t_gap = 1.0f;
