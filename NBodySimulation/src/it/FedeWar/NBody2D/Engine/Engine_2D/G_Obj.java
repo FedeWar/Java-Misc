@@ -70,7 +70,7 @@ public class G_Obj
 				// Il nuovo raggio si calcola con il teorema di pitagora per mantere l'area costante
 				Radius = (int) Math.sqrt(Radius * Radius + E.go[i].Radius * E.go[i].Radius);
 				
-				// Per calcolare la nuova velocità fa canservare la quantità di moto
+				// Per calcolare la nuova velocità fa conservare la quantità di moto
 				Vel.x = ((Mass * Vel.x) + (O1.Mass * O1.Vel.x)) / (Mass + O1.Mass);
 				Vel.y = ((Mass * Vel.y) + (O1.Mass * O1.Vel.y)) / (Mass + O1.Mass);
 				
