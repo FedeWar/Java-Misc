@@ -10,7 +10,7 @@ public class G_Obj
 	private static Vec3f dst;			// Evita di riallocarlo ogni volta
 	private	static float[] positions;	// Tutte le posizioni degli oggetti
 	
-	private		float	radius; 		// Il raggio del corpo
+	//private		float	radius; 		// Il raggio del corpo
 	private		int		mass;			// La massa del corpo
 	private		int		pos_id;			// Indice della posizione nell'array
 	private		Vec3f	velocity;		// La velocità
@@ -23,13 +23,14 @@ public class G_Obj
 		t_gap = 1.0f;
 		dst = new Vec3f(0, 0, 0);
 		E = e;
+		G_Obj.positions = positions;
 	}
 	
 	/* Costruttore, inizializza i campi */
 	public G_Obj(int mass, int radius, int pos)
 	{
 		this.mass = mass;
-		this.radius = radius;
+		//this.radius = radius;
 		this.pos_id = pos;
 		velocity = new Vec3f(0, 0, 0);
 		acceleration = new Vec3f(0, 0, 0);
@@ -66,7 +67,7 @@ public class G_Obj
 					positions[O1.pos_id + 2] - positions[pos_id + 2]);
 			
 			// Se la distanza è minore della somma dei raggi
-			if(dst.length() <= radius + O1.radius)
+			/*if(dst.length() <= radius + O1.radius)
 			{
 				// Se questo oggetto è più piccolo di O1
 				if(radius < O1.radius)
@@ -91,11 +92,11 @@ public class G_Obj
 				E.go[i] = E.go[E.pnum_objs - 1];
 				E.pnum_objs--;
 			}
-			else
+			else*/
 			{
 				// La distanza da O1 quadra
 				float dstQuadra = dst.x * dst.x + dst.y * dst.y + dst.z * dst.z;
-				float mod = (float) Math.sqrt(dstQuadra);		// La distanza da O1
+				float mod = (float) Math.sqrt(dstQuadra + 0.1);// La distanza da O1
 				float acc = G * O1.mass / dstQuadra;			// L'accelerazione
 				
 				// Calcola la nuova accelerazione

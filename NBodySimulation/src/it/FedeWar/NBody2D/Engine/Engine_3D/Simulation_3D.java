@@ -24,11 +24,20 @@ public class Simulation_3D extends Simulation
 	private long wndHandle;		// Handle per la finestra
 	private float[] posBuffer;	// Tutte le posizioni degli oggetti, per il VBO
 	int vbo_id;					// Puntatore al VBO
+	Pipeline pipeline;
 	
 	@Override
 	public void initEngine()
 	{
-		posBuffer = new float[info.obj_count * 3];
+		posBuffer = new float[info.obj_count * 3];/*{
+				-0.5f, -0.5f, -3,
+				-0.5f, 0.5f, -3,
+				0.5f, -0.5f, -3,
+				
+				-0.5f, 0.5f, -3,
+				0.5f, 0.5f, -3,
+				0.5f, -0.5f, -3
+		};*/
 		G_Obj.staticInit(this, posBuffer);
 		
 		go = new G_Obj[info.obj_count];
@@ -43,7 +52,7 @@ public class Simulation_3D extends Simulation
 		{
 			posBuffer[i * 3] = (float)(Math.random() * info.spaceDim[0]);
 			posBuffer[i * 3 + 1] = (float)(Math.random() * info.spaceDim[1]);
-			posBuffer[i * 3 + 2] = (float)(Math.random() * info.spaceDim[2]);
+			posBuffer[i * 3 + 2] = -(float)(Math.random() * info.spaceDim[2]);
 			
 			go[i] = new G_Obj(
 				defaultMass + (int)(Math.random() * massVariation * 2 - massVariation),
@@ -61,6 +70,15 @@ public class Simulation_3D extends Simulation
 			go[i].updateAcc();				// Ne ricalcola l'accelerazione
 		for(int i = 0; i < pnum_objs; i++)	// Per ogni oggetto
 			go[i].updatePos();				// Ne ricalcola la velocità
+		
+		// Copia i dati nel VBO
+		FloatBuffer data = BufferUtils.createFloatBuffer(posBuffer.length);
+		data.put(posBuffer);
+		data.flip();
+		
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	@Override
@@ -69,13 +87,13 @@ public class Simulation_3D extends Simulation
 		info = new Sim_Info();
 		
 		info.deltaT = 1;
-		info.G = 1;
+		info.G = 0.01;
 		info.mass_variation = 0;
 		info.standard_mass = 1;
-		info.standard_radius = 3;
+		info.standard_radius = 1;
 		info.radius_variation = 0;
-		info.spaceDim = new double[] { 1, 1, 1 };
-		info.obj_count = 6;
+		info.spaceDim = new double[] { 15, 15, 15 };
+		info.obj_count = 128;
 		info.winDim = new Dimension(500, 500);
 	}
 
@@ -91,7 +109,7 @@ public class Simulation_3D extends Simulation
 			throw new IllegalStateException("Unable to initialize GLFW");
 		
 		// Crea la finestra e verifica che sia valida
-		wndHandle = glfwCreateWindow(1000, 700, "Hello World!", NULL, NULL);
+		wndHandle = glfwCreateWindow(info.winDim.width, info.winDim.height, "Hello World!", NULL, NULL);
 		if (wndHandle == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 		
@@ -105,9 +123,13 @@ public class Simulation_3D extends Simulation
 		GL.createCapabilities();
 		
 		// Crea la pipeline
-		Pipeline pipeline = new Pipeline("shaders/vertex.glsl", "shaders/fragment.glsl");
+		pipeline = new Pipeline("shaders/vertex.glsl", "shaders/fragment.glsl");
 		pipeline.use();
-		pipeline.setUniform("test", 0.5f);
+		pipeline.setUniform("test", 1.0f);
+		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);
+		pipeline.bindProjectionMatrix();
+		
+		setCallbacks();
 		
 		initEngine();
 		
@@ -122,19 +144,70 @@ public class Simulation_3D extends Simulation
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			
-			glDrawArrays(GL_TRIANGLES, 0, info.obj_count);
+			glDrawArrays(GL_POINTS, 0, info.obj_count);
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glDisableClientState(GL_VERTEX_ARRAY);
 
 			glfwSwapBuffers(wndHandle);
 			glfwPollEvents();
+			
+			refresh();
+			//pipeline.cameraPos.x += 0.01f;
+			//pipeline.bindProjectionMatrix();
 		}
 		
 		// Libera le risorse
 		glfwFreeCallbacks(wndHandle);
 		glfwDestroyWindow(wndHandle);
 		glfwTerminate();
+	}
+	
+	private void setCallbacks()
+	{
+		// Callback per il resize della finestra
+		glfwSetWindowSizeCallback(wndHandle, (window, width, height) -> {
+			glViewport(0, 0, width, height);
+			pipeline.createProjectionMatrix(width / height);
+		});
+		
+		// Callback per la tastiera
+		glfwSetKeyCallback(wndHandle, (window, key, scancode, action, mods) -> {
+			switch(key)
+			{
+			case GLFW_KEY_UP:
+				pipeline.cameraRot.add(-0.01f, 0, 0, 0);
+				break;
+				
+			case GLFW_KEY_DOWN:
+				pipeline.cameraRot.add(0.01f, 0, 0, 0);
+				break;
+				
+			case GLFW_KEY_LEFT:
+				pipeline.cameraRot.add(0, -0.01f, 0, 0);
+				break;
+				
+			case GLFW_KEY_RIGHT:
+				pipeline.cameraRot.add(0, 0.01f, 0, 0);
+				break;
+				
+			case GLFW_KEY_W:
+				pipeline.cameraPos.add(
+						(float) (Math.sin(pipeline.cameraRot.y) * 0.1),
+						(float) (Math.sin(pipeline.cameraRot.x) * 0.1),
+						(float) (Math.cos(pipeline.cameraRot.y) * 0.1));
+				break;
+				
+			case GLFW_KEY_S:
+				pipeline.cameraPos.sub(
+						(float) (Math.sin(pipeline.cameraRot.y) * 0.1),
+						(float) (Math.sin(pipeline.cameraRot.x) * 0.1),
+						(float) (Math.cos(pipeline.cameraRot.y) * 0.1));
+				break;
+				
+			}
+			pipeline.bindProjectionMatrix();
+		});
 	}
 	
 	private static int createVBO(float[] vertexes)
