@@ -5,7 +5,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import it.FedeWar.NBody2D.Engine.CUDA.Simulation_CUDA;
@@ -22,6 +21,7 @@ public class GLWin
 		sim = cuda;
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
+		
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -36,13 +36,9 @@ public class GLWin
 		});
 
 		// Get the resolution of the primary monitor
-		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		/*GLFWVidMode vidmode = */glfwGetVideoMode(glfwGetPrimaryMonitor());
 		// Center our window
-		glfwSetWindowPos(
-				window,
-				(vidmode.width() - WIDTH) / 2,
-				(vidmode.height() - HEIGHT) / 2
-				);
+		glfwSetWindowPos(window, 200, 200);
 
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(window);
@@ -64,12 +60,6 @@ public class GLWin
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 			
 			sim.render();
-//			glBegin(GL_TRIANGLES);
-//			glColor3f(1.0f, 0.0f, 0.0f);
-//			glVertex2f(0.200f, 0.100f);
-//			glVertex2f(0.300f, 0.400f);
-//			glVertex2f(0.100f, 0.400f);
-//			glEnd();
 
 			glfwSwapBuffers(window);	// Swap buffers
 			glfwPollEvents();			// Controlla gli eventi

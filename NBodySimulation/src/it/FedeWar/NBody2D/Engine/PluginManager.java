@@ -32,10 +32,15 @@ public abstract class PluginManager
 			
 			plugins.add((Class<Simulation>)
 					ClassLoader.getSystemClassLoader().loadClass(
+						pluginsPath + "Engine_3D.Simulation_3D"));
+				
+			names.addElement("Simulazione 3D");
+			
+			plugins.add((Class<Simulation>)
+					ClassLoader.getSystemClassLoader().loadClass(
 						pluginsPath + "CUDA.Simulation_CUDA"));
 				
 			names.addElement("Simulazione CUDA");
-			
 		} catch (ClassNotFoundException e) {
 			System.err.println("Impossibile caricare la classe: " + e.getMessage());
 		}
@@ -66,7 +71,7 @@ public abstract class PluginManager
 		{
 			plugin = (Class<Simulation>) ClassLoader.getSystemClassLoader().loadClass(name);
 			plugins.add(plugin);
-			//names.addElement(plugin.getName());
+			names.addElement(plugin.getName());
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Non è stato possibile caricare la classe!");

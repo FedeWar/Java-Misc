@@ -3,6 +3,7 @@ package it.FedeWar.NBody2D;
 import it.FedeWar.NBody2D.Engine.Simulation;
 import it.FedeWar.NBody2D.Engine.CUDA.Simulation_CUDA;
 import it.FedeWar.NBody2D.Engine.Engine_2D.*;
+import it.FedeWar.NBody2D.Engine.Engine_3D.Simulation_3D;
 import it.FedeWar.NBody2D.GUI.*;
 
 /* Punto di accesso per l'applicazione */
@@ -27,6 +28,12 @@ public class Applicazione
 		{
 			GLWin GW = new GLWin((Simulation_CUDA)SI);
 			GW.open();
+		}
+		else if(SI instanceof Simulation_3D)
+		{
+			Simulation_3D S3 = new Simulation_3D();
+			S3.packInfo();
+			S3.createSimulationGUI();
 		}
 	}
 }

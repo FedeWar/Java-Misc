@@ -1,5 +1,8 @@
+#version 130
+
+attribute vec3 vertices;
 
 void main()
 {
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+	gl_Position = vec4(vertices, 1);
 }

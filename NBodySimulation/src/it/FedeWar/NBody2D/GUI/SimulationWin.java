@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.sun.javafx.geom.Vec2f;
+
+import it.FedeWar.NBody2D.Engine.Sim_Info;
 import it.FedeWar.NBody2D.Engine.Engine_2D.*;
 
 public class SimulationWin extends JFrame
@@ -18,7 +21,7 @@ public class SimulationWin extends JFrame
 	private Color[] colorPalette;
 	private Simulation_2D sim;
 	private JLabel lblObjsCount, lblFPS;
-	private int posX, posY;		// Quanto la camera si è spostata
+	private Vec2f camera;
 	
 	/* Pannello per disegnare gli oggetti */
 	private class Canvas extends JPanel
@@ -36,8 +39,10 @@ public class SimulationWin extends JFrame
 
 			// Disegna tutti gli oggetti, uno per uno
 			g2.setColor(colorPalette[1]);
-			for(int i = 0; i < sim.pnum_objs; i++)
-				sim.go[i].draw(g2, posX, posY);
+			sim.setGC(g2, camera);
+			sim.refresh();
+			//for(int i = 0; i < sim.pnum_objs; i++)
+			//	sim.go[i].draw(g2, posX, posY);
 
 			lblObjsCount.setText("Numero Oggetti: " + sim.pnum_objs);
 		}
@@ -48,10 +53,11 @@ public class SimulationWin extends JFrame
 	{
 		super("Simulazione 2D");
 		
-		Sim_Info_2D info = (Sim_Info_2D) sim.getInfo();
+		Sim_Info info = sim.getInfo();
 		this.sim = sim;
 		sim.initEngine();
 		colorPalette = new Color[]{ Color.BLACK, Color.LIGHT_GRAY };
+		camera = new Vec2f(0, 0);
 		
 		setSize(info.winDim);
 		setLayout(null);
@@ -139,7 +145,6 @@ public class SimulationWin extends JFrame
 			
 			// Nuovo frame
 			frames++;
-			sim.refresh();
 			repaint();
 			
 			try { Thread.sleep(1000 / 120);	// 120 = max fps

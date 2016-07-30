@@ -14,7 +14,7 @@ import java.awt.Dimension;
  * @since 1.0
  * @date 24/07/2016
  * */
-public abstract class Sim_Info
+public class Sim_Info
 {
 	/**
 	 * La quantità di oggetti da creare e utilizzare.
@@ -45,4 +45,12 @@ public abstract class Sim_Info
 	 * @since 1.0
 	 */
 	public Dimension winDim;
+	
+	public int standard_mass;
+	public int mass_variation;
+	
+	public int standard_radius;
+	public int radius_variation;
+	
+	public double[] spaceDim;
 }
