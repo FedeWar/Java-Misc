@@ -39,14 +39,15 @@ public abstract class ComplexFract extends Fractal
 	protected double[] clipPos = { 1.0, 1.0 };
 	
 	/* Rappresentazione in forma di array della matrice di rotazione:
-	 * +------+------+
-	 * |cos(a)|  0   |
-	 * +------+------+
-	 * |  0   |sin(a)|
-	 * +------+------+
-	 * Essendo una matrice diagonale il "formato array"
-	 * permette di risparmiare memoria e tempo. */
-	protected double[] rotation = { 1.0, -1.0 };
+	 * +------+-------+
+	 * |cos(a)|-sin(a)|
+	 * +------+-------+
+	 * |sin(a)|cos(a) |
+	 * +------+-------+
+	 */
+	protected double[] rotation = {
+			Math.cos(0), -Math.sin(0),
+			Math.sin(0), Math.cos(0) };
 	
 	protected Complex c;
 	
@@ -103,5 +104,13 @@ public abstract class ComplexFract extends Fractal
 	{
 		clipPos[0] -= newTrasl[0];
 		clipPos[1] -= newTrasl[1];
+	}
+	
+	public void rotate(double angle)
+	{
+		rotation[0] = Math.cos(angle);
+		rotation[2] = Math.sin(angle);
+		rotation[1] = -rotation[2];
+		rotation[3] = rotation[0];
 	}
 }
