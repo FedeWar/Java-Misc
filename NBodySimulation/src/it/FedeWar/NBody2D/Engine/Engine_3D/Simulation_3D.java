@@ -24,7 +24,8 @@ public class Simulation_3D extends Simulation
 	private long wndHandle;		// Handle per la finestra
 	private float[] posBuffer;	// Tutte le posizioni degli oggetti, per il VBO
 	int vbo_id;					// Puntatore al VBO
-	Pipeline pipeline;
+	int floor;
+	RenderEngine pipeline;
 	
 	@Override
 	public void initEngine()
@@ -60,7 +61,18 @@ public class Simulation_3D extends Simulation
 				i * 3);
 		}
 		
+		float[] floorBuffer = {
+				0, -1, 0,
+				10, -1, 0,
+				10, -1, 10,
+				
+				0, -1, 0,
+				10, -1, 10,
+				0, -1, 10
+		};
+		
 		vbo_id = createVBO(posBuffer);
+		floor = createVBO(floorBuffer);
 	}
 	
 	@Override
@@ -123,7 +135,7 @@ public class Simulation_3D extends Simulation
 		GL.createCapabilities();
 		
 		// Crea la pipeline
-		pipeline = new Pipeline("shaders/vertex.glsl", "shaders/fragment.glsl");
+		pipeline = new RenderEngine("shaders/vertex.glsl", "shaders/fragment.glsl");
 		pipeline.use();
 		pipeline.setUniform("test", 1.0f);
 		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);
@@ -141,10 +153,16 @@ public class Simulation_3D extends Simulation
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			glEnableClientState(GL_VERTEX_ARRAY);
+			
+			// Particelle
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
-			
 			glDrawArrays(GL_POINTS, 0, info.obj_count);
+			
+			// Floor
+			glBindBuffer(GL_ARRAY_BUFFER, floor);
+			glVertexPointer(3, GL_FLOAT, 0, 0);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glDisableClientState(GL_VERTEX_ARRAY);
@@ -153,8 +171,6 @@ public class Simulation_3D extends Simulation
 			glfwPollEvents();
 			
 			refresh();
-			//pipeline.cameraPos.x += 0.01f;
-			//pipeline.bindProjectionMatrix();
 		}
 		
 		// Libera le risorse
@@ -176,33 +192,33 @@ public class Simulation_3D extends Simulation
 			switch(key)
 			{
 			case GLFW_KEY_UP:
-				pipeline.cameraRot.add(-0.01f, 0, 0, 0);
+				pipeline.pitch -= 0.01f;
 				break;
 				
 			case GLFW_KEY_DOWN:
-				pipeline.cameraRot.add(0.01f, 0, 0, 0);
+				pipeline.pitch += 0.01f;
 				break;
 				
 			case GLFW_KEY_LEFT:
-				pipeline.cameraRot.add(0, -0.01f, 0, 0);
+				pipeline.yaw -= 0.01f;
 				break;
 				
 			case GLFW_KEY_RIGHT:
-				pipeline.cameraRot.add(0, 0.01f, 0, 0);
+				pipeline.yaw += 0.01f;
 				break;
 				
 			case GLFW_KEY_W:
 				pipeline.cameraPos.add(
-						(float) (Math.sin(pipeline.cameraRot.y) * 0.1),
-						(float) (Math.sin(pipeline.cameraRot.x) * 0.1),
-						(float) (Math.cos(pipeline.cameraRot.y) * 0.1));
+						(float) (Math.sin(pipeline.yaw) * -0.1),
+						(float) (Math.sin(pipeline.pitch) * 0.1),
+						(float) (Math.cos(pipeline.yaw) * 0.1));
 				break;
 				
 			case GLFW_KEY_S:
 				pipeline.cameraPos.sub(
-						(float) (Math.sin(pipeline.cameraRot.y) * 0.1),
-						(float) (Math.sin(pipeline.cameraRot.x) * 0.1),
-						(float) (Math.cos(pipeline.cameraRot.y) * 0.1));
+						(float) (Math.sin(pipeline.yaw) * -0.1),
+						(float) (Math.sin(pipeline.pitch) * 0.1),
+						(float) (Math.cos(pipeline.yaw) * 0.1));
 				break;
 				
 			}

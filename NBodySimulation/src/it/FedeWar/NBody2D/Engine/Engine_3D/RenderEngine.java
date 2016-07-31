@@ -11,18 +11,17 @@ import org.joml.*;
 
 import com.sun.prism.impl.BufferUtil;
 
-public class Pipeline
+public class RenderEngine
 {
 	private int pipeline;
 	private int vertex, fragment;
 	Vector3f cameraPos;
-	Quaternionf cameraRot;
+	float pitch = 0, yaw = 0;
 	
-	Matrix4f target = new Matrix4f();
 	Matrix4f projection;
 	
 	/* Crea una pipeline con due shaders */
-	public Pipeline(String vxPath, String fsPath)
+	public RenderEngine(String vxPath, String fsPath)
 	{
 		pipeline = glCreateProgram();
 		
@@ -51,7 +50,6 @@ public class Pipeline
 		}
 		
 		cameraPos = new Vector3f(0, 0, 0);
-		cameraRot = new Quaternionf(0, 0, 0);
 	}
 	
 	public void setUniform(String name, float value)
@@ -114,15 +112,17 @@ public class Pipeline
 	public void createProjectionMatrix(float ratio)
 	{
 		projection = new Matrix4f().setPerspective(
-				(float) (Math.PI / 1.5),
-				ratio, 1, 100);
+				(float) (Math.PI / 2),
+				ratio, 0.1f, 100);
 	}
 	
 	/* Tiene conto della camera e invia alla GPU */
 	public void bindProjectionMatrix()
 	{
-		Matrix4f cam = new Matrix4f().translate(cameraPos).rotate(cameraRot);
-		projection.mul(cam, target);
-		setUniform("projection", target);
+		Matrix4f cam = new Matrix4f(projection);
+		cam.rotate(pitch, 1, 0, 0);
+		cam.rotate(yaw, 0, 1, 0);
+		cam.translate(cameraPos, cam);
+		setUniform("projection", cam);
 	}
 }
