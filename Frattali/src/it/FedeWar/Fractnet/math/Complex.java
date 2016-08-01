@@ -21,33 +21,51 @@ public class Complex
 {
 	public double r;
 	public double i;
-	public double mod;
 	
-	public Complex(double real, double imag)
-	{
+	public Complex(double real, double imag) {
 		r = real;
 		i = imag;
 	}
 	
 	/* La norma al quadrato */
-	public double sqrdNorm()
-	{
+	public double sqrdNorm() {
 		return r * r + i * i;
 	}
 	
-	public double norm()
-	{
-		mod = Math.sqrt(r*r + i*i);
-		return mod;
+	/* Norma del vettore */
+	public double norm() {
+		return Math.sqrt(sqrdNorm());
 	}
 	
-	public Complex pow(int n)
-	{
-		if(n == 2)
-		{
-			return new Complex((r*r)-(i*i), 2*r*i);
-		}
-		return null;
+	public void copy(Complex to) {
+		to.r = r;
+		to.i = i;
+	}
+	
+	public String toString() {
+		return r + " + " + i + " * i";
+	}
+	
+	public void add(Complex a) {
+		r += a.r;
+		i += a.i;
+	}
+	
+	public void sub(Complex a) {
+		r -= a.r;
+		i -= a.i;
+	}
+	
+	public void mul(Complex a) {
+		double tr = r * a.r - i * a.i;
+		double ti = r * a.i + i * a.r;
+		r = tr;
+		i = ti;
+	}
+	
+	public void pow(int n) {
+		for(int i = 1; i < n; i++)
+			mul(this);
 	}
 	
 	public static Complex Parse(String str)

@@ -20,24 +20,27 @@ package it.FedeWar.Fractnet.math;
 
 public class CMath 
 {
-	public static Complex sum(Complex a1, Complex a2)
+	public static Complex add(Complex a1, Complex a2)
 	{
-		return new Complex(a1.r+a2.r, a1.i+a2.i);
+		return new Complex(a1.r + a2.r, a1.i + a2.i);
 	}
 	
 	public static Complex sub(Complex a1, Complex a2)
 	{
-		return new Complex(a1.r-a2.r, a1.i-a2.i);
+		return new Complex(a1.r - a2.r, a1.i - a2.i);
 	}
 	
 	public static Complex mul(Complex a1, Complex a2)
 	{
-		return new Complex((a1.r*a2.r)-(a1.i*a2.i), (a1.i*a2.r)+(a1.r*a2.i));
+		return new Complex(
+				a1.r * a2.r - a1.i * a2.i,
+				a1.i * a2.r + a1.r * a2.i);
 	}
 	
 	public static Complex div(Complex a1, Complex a2)
 	{
-		return new Complex(((a1.r*a2.r)+(a1.i*a2.i))/((a2.r*a2.r)+(a2.i*a2.i)),
-				((a2.r*a1.i)-(a2.i*a1.r))/((a2.r*a2.r)+(a2.i*a2.i)));
+		return new Complex(
+				(a1.r * a2.r + a1.i * a2.i) / (a2.r * a2.r + a2.i * a2.i),
+				(a2.r * a1.i - a2.i * a1.r) / (a2.r*a2.r + a2.i*a2.i));
 	}
 }
