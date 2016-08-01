@@ -1,5 +1,5 @@
 /* Copyright 2016 Federico Guerra aka FedeWar
-	
+
 	This file is part of Fractnet.
 
 	Fractnet is free software: you can redistribute it and/or modify
@@ -30,51 +30,45 @@ public class Julia extends ComplexFract
 		{
 			return (int)(x * 1.0f / (2 * MAX));
 		}
-		
+
 		@Override
 		public int getGreen(int x)
 		{
 			return (int)((float)Math.abs(Math.sin(x * 1.0f / MAX * 2 * Math.PI)) * MAX);
 		}
-		
+
 		@Override
 		public int getBlue(int x)
 		{
 			return 0;
 		}
 	}
-	
+
 	public void draw()
-    {
+	{
 		StdPalette palette = new StdPalette();
 		int count;
 		Complex z = new Complex(0, 0);
-		
+
 		rotate(Math.PI / 2);
-		
-    	for(int x = 0; x < width(); x++)
-    	{
-    		for(int y = 0; y < height(); y++)
-    		{
-    			// La proiezione dalle coordinate dello schermo a quelle
-    			// del frattale avviene con la formula:
-    			// z = rot * (p * clipSize / screenSize - clipPos)
-    			double posX = x * clipSize[0] / width() - clipPos[0];
-    			double posY = y * clipSize[1] / height() - clipPos[1];
-    			z.r = rotation[0] * posX + rotation[1] * posY;
-    			z.i = rotation[2] * posX + rotation[3] * posY;
-    			
-    			for(count = 0; count < MAX && z.sqrdNorm() < 4; count++)
-    			{
-    		          z = z.pow(2);
-    		          z = CMath.sum(z, c);
-    		    }
-    			
-    			canvas.setRGB(x, y, palette.getRGB(count));
-    		}
-    	}
-    }
-	
+
+		for(int x = 0; x < width(); x++)
+		{
+			for(int y = 0; y < height(); y++)
+			{
+				toFractalCoordinates(x, y, z);
+
+				for(count = 0; count < MAX && z.sqrdNorm() < 4.0; count++)
+				{
+					z.pow(2);
+					z.add(c);
+				}
+
+				canvas.setRGB(x, y, palette.getRGB(count));
+			}
+		}
+	}
+
 	@Override
 	public void animation(String path)
 	{
@@ -86,7 +80,7 @@ public class Julia extends ComplexFract
 			//Image.saveTo(path + (int)(i * 1000) + ".bmp");
 		}
 	}
-	
+
 	/*public void saveTo(String path)
 	{
 		try {

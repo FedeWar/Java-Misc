@@ -1,5 +1,5 @@
 /* Copyright 2016 Federico Guerra aka FedeWar
-	
+
 	This file is part of Fractnet.
 
 	Fractnet is free software: you can redistribute it and/or modify
@@ -29,24 +29,21 @@ public class Mandelbrot extends ComplexFract
 	{
 
 		@Override
-		public int getRed(int x)
-		{
+		public int getRed(int x) {
 			return 0;
 		}
 
 		@Override
-		public int getGreen(int x)
-		{
+		public int getGreen(int x) {
 			return 0;
 		}
 
 		@Override
-		public int getBlue(int x)
-		{
+		public int getBlue(int x) {
 			return x;
 		}
 	}
-	
+
 	/* Calcola l'immagine */
 	public void draw()
 	{
@@ -55,33 +52,25 @@ public class Mandelbrot extends ComplexFract
 		int count;
 		StdPalette palette = new StdPalette();
 		Complex z = new Complex(0, 0);
-		
-		rotate(-Math.PI / 2);
-		
+
 		for(int x = 0; x < width; x++)
-    	{
-    		for(int y = 0; y < height; y++)
-    		{
-    			// La proiezione dalle coordinate dello schermo a quelle
-    			// del frattale avviene con la formula:
-    			// z = rot * (p * clipSize / screenSize - clipPos)
-    			double posX = x * clipSize[0] / width() - clipPos[0];
-    			double posY = y * clipSize[1] / height() - clipPos[1];
-    			c.r = rotation[0] * posX + rotation[1] * posY;
-    			c.i = rotation[2] * posX + rotation[3] * posY;
-    			z.r = z.i = 0;
-    			
-    			for(count = 0; count < MAX && z.norm() < 2.0f; count++)
-    			{
-    		        z = z.pow(2);
-    		        z = CMath.sum(z, c);
-    		    }
-    			
-    			canvas.setRGB(x, y, palette.getRGB(count));
-    		}
-    	}
+		{
+			for(int y = 0; y < height; y++)
+			{
+				toFractalCoordinates(x, y, c);
+				c.copy(z);
+
+				for(count = 1; count < MAX && z.sqrdNorm() < 4.0; count++)
+				{
+					z.pow(2);
+					z.add(c);
+				}
+
+				canvas.setRGB(x, y, palette.getRGB(count));
+			}
+		}
 	}
-	
+
 	/* Mandelbrot non accetta argomenti aggiuntivi */
 	public void setC(double r, double i) {}
 }

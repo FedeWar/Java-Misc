@@ -24,7 +24,7 @@ import it.FedeWar.Fractnet.math.Complex;
 /* Classe base per frattali in due dimensioni */
 public abstract class ComplexFract extends Fractal
 {
-	protected final int MAX = 255;
+	protected int MAX = 255;
 
 	/* La distanza tra i bordi del rettangolo da visualizzare,
 	 * se viene visualizzata una porzione di frattale da -1 a 1
@@ -51,7 +51,7 @@ public abstract class ComplexFract extends Fractal
 	
 	protected Complex c;
 	
-	/* Costruttore, deve essere vuoto */
+	/* Costruttore, non deve avere parametri*/
 	public ComplexFract() {}
 	
 	/* Inizializzazione oggetto, fa le veci del costruttore */
@@ -62,15 +62,22 @@ public abstract class ComplexFract extends Fractal
 		c = new Complex(0, 0);
 	}
 	
+	/* Converte le coordinate dello schermo in coordinate complesse */
+	public void toFractalCoordinates(int x, int y, Complex out)
+	{
+		// La proiezione dalle coordinate dello schermo a quelle
+		// del frattale avviene con la formula:
+		// z = rot * (p * clipSize / screenSize - clipPos)
+		double posX = x * clipSize[0] / width() - clipPos[0];
+		double posY = y * clipSize[1] / height() - clipPos[1];
+		out.r = rotation[0] * posX + rotation[1] * posY;
+		out.i = rotation[2] * posX + rotation[3] * posY;
+	}
+	
 	public void setClipPos(double[] newTrasl)
 	{
 		clipPos[0] = newTrasl[0];
 		clipPos[1] = newTrasl[1];
-	}
-	
-	public double[] getClipPos()
-	{
-		return new double[] { clipPos[0], clipPos[1]};
 	}
 	
 	/* Setter per lo zoom */
