@@ -21,12 +21,15 @@ package it.FedeWar.Fractnet.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 import it.FedeWar.Fractnet.PluginManager;
 import it.FedeWar.Fractnet.fractals.Fractal;
+import it.FedeWar.Fractnet.fractals.plugins.Julia;
 import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.math.Complex;
 
@@ -48,11 +51,31 @@ class Canvas extends JPanel
 	private String			oldArg = "0;0";
 	private boolean			refreshFractal = true;
 	
+	private class ClickListener implements MouseListener
+	{
+
+		@Override
+		public void mouseClicked(MouseEvent arg)
+		{
+			Julia J = (Julia) currFract;
+			Complex p = new Complex(0, 0);
+			J.toFractalCoordinates(arg.getPoint().x, arg.getPoint().y, p);
+			System.out.println(p);
+		}
+
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mousePressed(MouseEvent arg0) {}
+		public void mouseReleased(MouseEvent arg0) {}
+		
+	}
+	
 	public Canvas(int width, int height)
 	{
 		setSize(width, height);
 		fractalImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 		newClipPos = new double[] {1, 1};
+		addMouseListener(new ClickListener());
 	}
 	
 	/* Crea un nuovo frattale da visualizzare */
@@ -178,6 +201,7 @@ class Canvas extends JPanel
 	{
 		newClipWidth = newZoom;
 		refreshFractal = false;
+		System.out.println(newZoom);
 	}
 	
 	/* Getter per lo zoom */
