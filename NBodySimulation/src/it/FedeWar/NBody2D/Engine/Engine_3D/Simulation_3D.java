@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL13;
 
 import it.FedeWar.NBody2D.Engine.Sim_Info;
 import it.FedeWar.NBody2D.Engine.Simulation;
@@ -24,7 +26,8 @@ public class Simulation_3D extends Simulation
 	private long wndHandle;		// Handle per la finestra
 	private float[] posBuffer;	// Tutte le posizioni degli oggetti, per il VBO
 	int vbo_id;					// Puntatore al VBO
-	int floor;
+	//int floor;
+	//int quad;
 	RenderEngine pipeline;
 	
 	@Override
@@ -71,8 +74,33 @@ public class Simulation_3D extends Simulation
 				0, -1, 10
 		};
 		
-		vbo_id = createVBO(posBuffer);
-		floor = createVBO(floorBuffer);
+		float[] quadBuffer = {
+				-1, 1, 0,
+				-1, -1, 0,
+				1, -1, 0,
+				
+				1, -1, 0,
+				1, 1, 0,
+				-1, 1, 0
+		};
+		
+		pipeline.points.bind();
+		vbo_id = pipeline.points.createVBO(floorBuffer, 3);
+		//vbo_id = createVBO(posBuffer);
+		//pipeline.sim.createVBO(floorBuffer);
+		//floor = createVBO(floorBuffer);
+		//quad = createVBO(quadBuffer);
+		pipeline.screen.bind();
+		pipeline.screen.createVBO(quadBuffer, 3);
+		pipeline.screen.createVBO(new float[] {
+				0, 0,
+				1, 0,
+				1, 1,
+				
+				0, 0,
+				1, 1,
+				0, 1
+		},  2);
 	}
 	
 	@Override
@@ -135,11 +163,13 @@ public class Simulation_3D extends Simulation
 		GL.createCapabilities();
 		
 		// Crea la pipeline
-		pipeline = new RenderEngine("shaders/vertex.glsl", "shaders/fragment.glsl");
+		pipeline = new RenderEngine("shaders/scene/vertex.glsl", "shaders/scene/fragment.glsl");
 		pipeline.use();
 		pipeline.setUniform("test", 1.0f);
 		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);
 		pipeline.bindProjectionMatrix();
+		
+		RenderEngine screen = new RenderEngine("shaders/screen/vertex.glsl", "shaders/screen/fragment.glsl");
 		
 		setCallbacks();
 		
@@ -147,26 +177,68 @@ public class Simulation_3D extends Simulation
 		
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
+		pipeline.createFBO();
+		
+		boolean postprocessing = true;
+		
 		// Render loop
 		while (!glfwWindowShouldClose(wndHandle))
 		{
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
+			pipeline.use();
+			
+			if(postprocessing)
+				pipeline.f.bind();
+			//glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnableClientState(GL_VERTEX_ARRAY);
 			
+			pipeline.points.bind();
+			glDrawArrays(GL_TRIANGLES, 0, 6);//info.obj_count);
+			pipeline.points.unbind();
+			
 			// Particelle
-			glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+			/*glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_POINTS, 0, info.obj_count);
+			glDrawArrays(GL_POINTS, 0, info.obj_count);*/
 			
 			// Floor
-			glBindBuffer(GL_ARRAY_BUFFER, floor);
+			/*glBindBuffer(GL_ARRAY_BUFFER, floor);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDrawArrays(GL_TRIANGLES, 0, 6);*/
 			
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glDisableClientState(GL_VERTEX_ARRAY);
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//glDisableClientState(GL_VERTEX_ARRAY);
+			
+			if(postprocessing)
+			{
+				pipeline.f.unbind();
 
+				// Usa gli shader per lo schermo
+				screen.use();
+				//glEnableClientState(GL_VERTEX_ARRAY);
+
+				// Framebuffer texture
+				//glBindBuffer(GL_ARRAY_BUFFER, quad);
+				//glVertexPointer(3, GL_FLOAT, 0, 0);
+				//glActiveTexture(GL_TEXTURE0);
+				//glBindTexture(GL_TEXTURE_2D, pipeline.f.getTex());
+				//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+				//glBindBuffer(GL_ARRAY_BUFFER, 0);
+				
+				pipeline.screen.bind();
+				glEnableVertexAttribArray(0);
+				//glEnableVertexAttribArray(1);
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, pipeline.f.getTex());
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+				pipeline.screen.unbind();
+			}
+			
+			glDisableClientState(GL_VERTEX_ARRAY);
 			glfwSwapBuffers(wndHandle);
 			glfwPollEvents();
 			
@@ -224,19 +296,5 @@ public class Simulation_3D extends Simulation
 			}
 			pipeline.bindProjectionMatrix();
 		});
-	}
-	
-	private static int createVBO(float[] vertexes)
-	{
-		int vbo_id = glGenBuffers();
-		FloatBuffer data = BufferUtils.createFloatBuffer(vertexes.length);
-		data.put(vertexes);
-		data.flip();
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		return vbo_id;
 	}
 }

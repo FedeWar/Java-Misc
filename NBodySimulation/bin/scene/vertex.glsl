@@ -3,6 +3,7 @@
 uniform mat4 projection;
 
 in vec3 vertex;
+in vec2 texCoordIn;
 
 void main()
 {
