@@ -4,7 +4,6 @@ import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Dimension;
@@ -15,45 +14,41 @@ import javax.swing.JPanel;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 
-import it.FedeWar.NBody2D.Engine.Sim_Info;
 import it.FedeWar.NBody2D.Engine.Simulation;
 
 public class Simulation_3D extends Simulation
 {
+	private Sim_Info_3D info;	// Informazioni sulla simulazione
 	public G_Obj go[];			// Gli oggetti gravitazionali
 	public int pnum_objs = 0;	// Il numero di oggetti attivi
+	
+	private float[] posBuffer;		// Tutte le posizioni degli oggetti, per il VBO
+	private int vbo_id;				// Puntatore al VBO
+	private RenderEngine pipeline;	// Pipeline OpenGL
+	
 	private long wndHandle;		// Handle per la finestra
-	private float[] posBuffer;	// Tutte le posizioni degli oggetti, per il VBO
-	int vbo_id;					// Puntatore al VBO
-	//int floor;
-	//int quad;
-	RenderEngine pipeline;
 
 	@Override
 	public void initEngine()
 	{
-		posBuffer = new float[info.obj_count * 3];/*{
-				-0.5f, -0.5f, -3,
-				-0.5f, 0.5f, -3,
-				0.5f, -0.5f, -3,
-
-				-0.5f, 0.5f, -3,
-				0.5f, 0.5f, -3,
-				0.5f, -0.5f, -3
-		};*/
+		// Crea l'array delle posizioni, verrà passato alla GPU
+		posBuffer = new float[info.obj_count * 3];
+		
+		// Imposta le proprietà generali degli oggetti gravitazionali
 		G_Obj.staticInit(this, posBuffer);
 
-		go = new G_Obj[info.obj_count];
-		pnum_objs = info.obj_count;
+		// Crea un array di oggetti gravitazionali
+		go = new G_Obj[pnum_objs = info.obj_count];
 
-		int defaultMass = info.standard_mass;
-		int defaultRadius = info.standard_radius;
-		int massVariation = info.mass_variation;
-		int radiusVariation = info.radius_variation;
+		// Crea degli alias per i nomi delle proprietà
+		int dfltMass = info.standard_mass;
+		int dfltRadius = info.standard_radius;
+		int massVar = info.mass_variation;
+		int radiusVar = info.radius_variation;
 
+		// Imposta le propietà degli oggetti
 		for(int i = 0; i < info.obj_count; i++)
 		{
 			posBuffer[i * 3] = (float)(Math.random() * info.spaceDim[0]);
@@ -61,48 +56,19 @@ public class Simulation_3D extends Simulation
 			posBuffer[i * 3 + 2] = -(float)(Math.random() * info.spaceDim[2]);
 
 			go[i] = new G_Obj(
-					defaultMass + (int)(Math.random() * massVariation * 2 - massVariation),
-					defaultRadius + (int)(Math.random() * radiusVariation * 2 - radiusVariation),
+					dfltMass + (int)(Math.random() * massVar * 2 - massVar),
+					dfltRadius + (int)(Math.random() * radiusVar * 2 - radiusVar),
 					i * 3);
 		}
-
-		float[] floorBuffer = {
-				0, -1, 0,
-				10, -1, 0,
-				10, -1, 10,
-
-				0, -1, 0,
-				10, -1, 10,
-				0, -1, 10
-		};
-
-		float[] quadBuffer = {
-				-1, 1, 0,
-				-1, -1, 0,
-				1, -1, 0,
-
-				1, -1, 0,
-				1, 1, 0,
-				-1, 1, 0
-		};
-
+		
+		// Crea il vbo per i vertici
 		pipeline.points.bind();
-		vbo_id = pipeline.points.createVBO(floorBuffer, 3);
-		//vbo_id = createVBO(posBuffer);
-		//pipeline.sim.createVBO(floorBuffer);
-		//floor = createVBO(floorBuffer);
-		//quad = createVBO(quadBuffer);
-		pipeline.screen.bind();
-		pipeline.screen.createVBO(quadBuffer, 3);
-		pipeline.screen.createVBO(new float[] {
-				0, 0,
-				1, 0,
-				1, 1,
-
-				0, 0,
-				1, 1,
-				0, 1
-		},  2);
+		vbo_id = pipeline.points.createVBO(posBuffer, 3);
+	}
+	
+	@Override
+	public Sim_Info_3D getInfo() {
+		return info;
 	}
 
 	@Override
@@ -113,11 +79,12 @@ public class Simulation_3D extends Simulation
 		for(int i = 0; i < pnum_objs; i++)	// Per ogni oggetto
 			go[i].updatePos();				// Ne ricalcola la velocità
 
-		// Copia i dati nel VBO
+		// Copia i dati in un buffer
 		FloatBuffer data = BufferUtils.createFloatBuffer(posBuffer.length);
 		data.put(posBuffer);
 		data.flip();
 
+		// Copia il buffer nel vbo
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -126,10 +93,10 @@ public class Simulation_3D extends Simulation
 	@Override
 	public void packInfo()
 	{
-		info = new Sim_Info();
+		info = new Sim_Info_3D();
 
-		info.deltaT = 1;
-		info.G = 0.01;
+		info.deltaT = 0.1f;
+		info.G = 0.1f;
 		info.mass_variation = 0;
 		info.standard_mass = 1;
 		info.standard_radius = 1;
@@ -147,22 +114,7 @@ public class Simulation_3D extends Simulation
 
 	public void createSimulationGUI()
 	{
-		if (!glfwInit())
-			throw new IllegalStateException("Unable to initialize GLFW");
-
-		// Crea la finestra e verifica che sia valida
-		wndHandle = glfwCreateWindow(info.winDim.width, info.winDim.height, "Hello World!", NULL, NULL);
-		if (wndHandle == NULL)
-			throw new RuntimeException("Failed to create the GLFW window");
-
-		// Crea il contesto grafico e prepara la finestra
-		glfwGetVideoMode(glfwGetPrimaryMonitor());
-		glfwSetWindowPos(wndHandle, 200, 200);
-		glfwMakeContextCurrent(wndHandle);
-		glfwSwapInterval(1);
-		glfwShowWindow(wndHandle);
-
-		GL.createCapabilities();
+		createWin();
 
 		// Crea la pipeline
 		pipeline = new RenderEngine("shaders/scene/vertex.glsl", "shaders/scene/fragment.glsl");
@@ -171,7 +123,7 @@ public class Simulation_3D extends Simulation
 		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);
 		pipeline.bindProjectionMatrix();
 
-		RenderEngine screen = new RenderEngine("shaders/screen/vertex.glsl", "shaders/screen/fragment.glsl");
+//		RenderEngine screen = new RenderEngine("shaders/screen/vertex.glsl", "shaders/screen/fragment.glsl");
 
 		setCallbacks();
 
@@ -198,7 +150,7 @@ public class Simulation_3D extends Simulation
 
 			if(postprocessing)
 				pipeline.f.bind();
-			//glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -219,7 +171,7 @@ public class Simulation_3D extends Simulation
 			//glBindBuffer(GL_ARRAY_BUFFER, 0);
 			//glDisableClientState(GL_VERTEX_ARRAY);
 
-			if(postprocessing)
+			/*if(postprocessing)
 			{
 				pipeline.f.unbind();
 
@@ -243,7 +195,7 @@ public class Simulation_3D extends Simulation
 				glBindTexture(GL_TEXTURE_2D, pipeline.f.getTex());
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 				pipeline.screen.unbind();
-			}
+			}*/
 
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glfwSwapBuffers(wndHandle);
@@ -303,5 +255,25 @@ public class Simulation_3D extends Simulation
 			}
 			pipeline.bindProjectionMatrix();
 		});
+	}
+	
+	private void createWin()
+	{
+		if (!glfwInit())
+			throw new IllegalStateException("Unable to initialize GLFW");
+
+		// Crea la finestra e verifica che sia valida
+		wndHandle = glfwCreateWindow(info.winDim.width, info.winDim.height, "Hello World!", NULL, NULL);
+		if (wndHandle == NULL)
+			throw new RuntimeException("Failed to create the GLFW window");
+
+		// Crea il contesto grafico e prepara la finestra
+		glfwGetVideoMode(glfwGetPrimaryMonitor());
+		glfwSetWindowPos(wndHandle, 200, 200);
+		glfwMakeContextCurrent(wndHandle);
+		glfwSwapInterval(1);
+		glfwShowWindow(wndHandle);
+
+		GL.createCapabilities();
 	}
 }

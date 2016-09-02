@@ -19,8 +19,9 @@ public class G_Obj
 	/* Inizializza i campi statici */
 	public static void staticInit(Simulation_3D e, float[] positions)
 	{
-		G = 0.001f;
-		t_gap = 1.0f;
+		Sim_Info_3D info = (Sim_Info_3D) e.getInfo();
+		G = info.G;
+		t_gap = info.deltaT;
 		dst = new Vec3f(0, 0, 0);
 		E = e;
 		G_Obj.positions = positions;

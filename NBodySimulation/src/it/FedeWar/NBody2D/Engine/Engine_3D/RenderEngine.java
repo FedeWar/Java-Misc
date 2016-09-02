@@ -92,22 +92,19 @@ public class RenderEngine
 		int vao;
 		int index_used = 0;
 		
-		public VAO()
-		{
+		public VAO() {
 			vao = glGenVertexArrays();
 		}
 		
-		public void bind()
-		{
+		public void bind() {
 			glBindVertexArray(vao);
 		}
 		
-		public void unbind()
-		{
+		public void unbind() {
 			glBindVertexArray(0);
 		}
 		
-		public int createVBO(float[] data, int size)
+		public int createVBO(float[] data, int element_size)
 		{
 			int vbo_id = glGenBuffers();
 			FloatBuffer databuffer = BufferUtils.createFloatBuffer(data.length);
@@ -116,7 +113,7 @@ public class RenderEngine
 			
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 			glBufferData(GL_ARRAY_BUFFER, databuffer, GL_STATIC_DRAW);
-			glVertexAttribPointer(index_used, size, GL_FLOAT, false, 0, 0);
+			glVertexAttribPointer(index_used, element_size, GL_FLOAT, false, 0, 0);
 			glEnableVertexAttribArray(index_used++);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
