@@ -1,4 +1,4 @@
-package it.FedeWar.NBody;
+package it.FedeWar.NBody.Engine;
 
 import javax.swing.JPanel;
 import javax.swing.event.AncestorEvent;
