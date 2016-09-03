@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine;
+package it.FedeWar.NBody;
 
 import java.util.ArrayList;
 

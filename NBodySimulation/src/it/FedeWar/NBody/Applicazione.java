@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D;
+package it.FedeWar.NBody;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import it.FedeWar.NBody2D.Engine.PluginManager;
-import it.FedeWar.NBody2D.Engine.Simulation;
 
 /* Finestra aperta all'avvio del programma, permette
  * di scegliere la simulazione da avviare */

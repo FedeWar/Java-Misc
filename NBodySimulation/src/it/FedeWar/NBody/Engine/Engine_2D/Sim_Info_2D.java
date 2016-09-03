@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine.Engine_2D;
+package it.FedeWar.NBody.Engine.Engine_2D;
 
 import java.awt.Dimension;
 

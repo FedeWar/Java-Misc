@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine.Engine_3D;
+package it.FedeWar.NBody.Engine.Engine_3D;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;

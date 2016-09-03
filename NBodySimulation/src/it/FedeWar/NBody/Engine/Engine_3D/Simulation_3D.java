@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine.Engine_3D;
+package it.FedeWar.NBody.Engine.Engine_3D;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -16,7 +16,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import it.FedeWar.NBody2D.Engine.Simulation;
+import com.sun.javafx.geom.Vec3d;
+
+import it.FedeWar.NBody.Simulation;
 
 public class Simulation_3D extends Simulation
 {
@@ -44,20 +46,17 @@ public class Simulation_3D extends Simulation
 
 		// Crea degli alias per i nomi delle proprietà
 		int dfltMass = info.standard_mass;
-		int dfltRadius = info.standard_radius;
 		int massVar = info.mass_variation;
-		int radiusVar = info.radius_variation;
 
 		// Imposta le propietà degli oggetti
 		for(int i = 0; i < info.obj_count; i++)
 		{
-			posBuffer[i * 3] = (float)(Math.random() * info.spaceDim[0]);
-			posBuffer[i * 3 + 1] = (float)(Math.random() * info.spaceDim[1]);
-			posBuffer[i * 3 + 2] = -(float)(Math.random() * info.spaceDim[2]);
+			posBuffer[i * 3] = (float)(Math.random() * info.spaceDim.x);
+			posBuffer[i * 3 + 1] = (float)(Math.random() * info.spaceDim.y);
+			posBuffer[i * 3 + 2] = -(float)(Math.random() * info.spaceDim.z);
 
 			go[i] = new G_Obj(
 					dfltMass + (int)(Math.random() * massVar * 2 - massVar),
-					dfltRadius + (int)(Math.random() * radiusVar * 2 - radiusVar),
 					i * 3);
 		}
 		
@@ -98,9 +97,7 @@ public class Simulation_3D extends Simulation
 		info.G = 0.1f;
 		info.mass_variation = 0;
 		info.standard_mass = 1;
-		info.standard_radius = 1;
-		info.radius_variation = 0;
-		info.spaceDim = new double[] { 15, 15, 15 };
+		info.spaceDim = new Vec3d(15.0, 15.0, 15.0);
 		info.obj_count = 128;
 		info.winDim = new Dimension(500, 500);
 	}

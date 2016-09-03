@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine.Engine_3D;
+package it.FedeWar.NBody.Engine.Engine_3D;
 
 import com.sun.javafx.geom.Vec3f;
 
@@ -26,7 +26,7 @@ public class G_Obj
 	}
 	
 	/* Costruttore, inizializza i campi */
-	public G_Obj(int mass, int radius, int pos)
+	public G_Obj(int mass, int pos)
 	{
 		this.mass		= mass;
 		this.pos_id		= pos;

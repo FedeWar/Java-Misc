@@ -1,4 +1,4 @@
-package it.FedeWar.NBody2D.Engine.Engine_2D;
+package it.FedeWar.NBody.Engine.Engine_2D;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 import com.sun.javafx.geom.Vec2d;
 
-import it.FedeWar.NBody2D.Engine.Simulation;
+import it.FedeWar.NBody.Simulation;
 
 public class Simulation_2D extends Simulation
 {
@@ -42,26 +42,22 @@ public class Simulation_2D extends Simulation
 			lblObjsCount.setText("Numero Oggetti: " + pnum_objs);
 		}
 	}
+	
 	public G_Obj go[];			// Gli oggetti gravitazionali
 	public int pnum_objs = 0;	// Il numero di oggetti attivi
-	/* SimulationGUI */
 	private Color background;
-	private Vec2d camera;	// Posizione della camera per rendering
+	private Vec2d camera;		// Posizione della camera per rendering
 	private Color foreground;
-	private Graphics2D gc;	// Contesto grafico con cui disegnare
-	private Sim_Info_2D info;
-	
+	private Graphics2D gc;		// Contesto grafico con cui disegnare
+	private Sim_Info_2D info;	// Informazioni della simulazione
 	private JLabel lblFPS;
 	private JLabel lblObjsCount;
 	private JTextField txtMassVariation;
 	private JTextField txtObjCount;
 	private JTextField txtRadiusVariation;
 	private JTextField txtSpaceDims;
-	
 	private JTextField txtStandardMass;
 	private JTextField txtStandardRadius;
-	
-	/* SettingsGUI */
 	private JTextField txtWinDims;
 	
 	@Override
