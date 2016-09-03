@@ -2,42 +2,42 @@ package it.FedeWar.NBody2D.Engine.Engine_2D;
 
 import java.awt.Graphics2D;
 
-import com.sun.javafx.geom.Vec2f;
+import com.sun.javafx.geom.Vec2d;
 
 public class G_Obj
 {
-	private static float G;			// Costante di gravitazione
-	private static float t_gap;		// Passo temporale
+	private static double G;		// Costante di gravitazione
+	private static double t_gap;	// Passo temporale
 	private static Simulation_2D E;	// Il motore a cui fare riferimento
-	private static Vec2f dst;		// Evita di riallocarlo ogni volta
+	private static Vec2d dst;		// Evita di riallocarlo ogni volta
 	
 	private		float	radius;			// Il raggio del corpo
 	private		int		mass;			// La massa del corpo
-	private		Vec2f	position;		// La posizione
-	private		Vec2f	velocity;		// La velocità
-	private 	Vec2f	acceleration;	// L' accelerazione
+	private		Vec2d	position;		// La posizione
+	private		Vec2d	velocity;		// La velocità
+	private 	Vec2d	acceleration;	// L' accelerazione
 	
 	/* Inizializza i campi statici */
 	public static void staticInit(Simulation_2D e)
 	{
-		G = (float)e.getInfo().G;
-		t_gap = (float)e.getInfo().deltaT;
-		dst = new Vec2f(0, 0);
+		G = e.getInfo().G;
+		t_gap = e.getInfo().deltaT;
+		dst = new Vec2d(0, 0);
 		E = e;
 	}
 	
 	/* Costruttore, inizializza i campi */
-	public G_Obj(int mass, int radius, Vec2f pos)
+	public G_Obj(int mass, int radius, Vec2d pos)
 	{
 		this.mass	= mass;
 		this.radius	= radius;
 		this.position		= pos;
-		this.velocity		= new Vec2f(0.0f, 0.0f);
-		this.acceleration		= new Vec2f(0.0f, 0.0f);
+		this.velocity		= new Vec2d(0.0f, 0.0f);
+		this.acceleration	= new Vec2d(0.0f, 0.0f);
 	}
 	
 	/* Calcola la nuova posizione dalla velocità */
-	public void updatePos(Graphics2D g2, Vec2f camera)
+	public void updatePos(Graphics2D g2, Vec2d camera)
 	{
 		// Calcola la nuova posizione
 		position.x += (velocity.x * t_gap + 0.5f * acceleration.x * t_gap * t_gap);
@@ -63,17 +63,17 @@ public class G_Obj
 		// Itera su tutti gli oggetti
 		for(int i = 0; i < E.pnum_objs; i++)
 		{
-			G_Obj O1 = E.go[i];						// Ottiene un riferimento all'altro oggetto
-			if(O1 == this) continue;				// Non deve eseguire calcoli con se stesso
+			G_Obj O1 = E.go[i];					// Ottiene un riferimento all'altro oggetto
+			if(O1 == this) continue;			// Non deve eseguire calcoli con se stesso
 			
-			dst.x = (float)(O1.position.x - position.x);		// Calcola la distanza tra i due oggetti
-			dst.y = (float)(O1.position.y - position.y);
+			dst.x = O1.position.x - position.x;	// Calcola la distanza tra i due oggetti
+			dst.y = O1.position.y - position.y;
 			
 			if(norm(dst) <= radius + O1.radius)	// Se la distanza è minore della somma dei raggi
 			{
-				if(radius < O1.radius)				// Se questo oggetto è più piccolo
+				if(radius < O1.radius)			// Se questo oggetto è più piccolo
 				{
-					position.x = O1.position.x;				// Ne cambia la posizione con l'altro
+					position.x = O1.position.x;	// Ne cambia la posizione con l'altro
 					position.y = O1.position.y;
 				}
 				
@@ -90,9 +90,9 @@ public class G_Obj
 			}
 			else
 			{
-				float dstQuadra = dst.x * dst.x + dst.y * dst.y;// La distanza da O1 quadra
-				float mod = (float) Math.sqrt(dstQuadra);		// La distanza da O1
-				float acc = G * O1.mass / dstQuadra;			// L'accelerazione
+				double dstQuadra = dst.x * dst.x + dst.y * dst.y;// La distanza da O1 quadra
+				double mod = Math.sqrt(dstQuadra);		// La distanza da O1
+				double acc = G * O1.mass / dstQuadra;	// L'accelerazione
 				
 				acceleration.x += acc * dst.x / mod;		// Calcola la nuova accelerazione
 				acceleration.y += acc * dst.y / mod;
@@ -101,9 +101,9 @@ public class G_Obj
 		}
 	}
 
-	private float norm(Vec2f v)
+	private double norm(Vec2d v)
 	{
-		return (float) Math.sqrt(v.x * v.x + v.y * v.y);
+		return Math.sqrt(v.x * v.x + v.y * v.y);
 	}
 	
 	/* Disegna l'oggetto su un Contesto Grafico */
