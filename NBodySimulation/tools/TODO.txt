@@ -1,5 +1,5 @@
-PluginManager: caricare plugins da file
-PluginManager: caricare tutti i builtin del progetto
-Progetto: cambiare package names e ufficializzare versione 1.0
+PluginManager: caricare tutti i builtin del progetto			X
+Progetto: cambiare package names e ufficializzare versione 1.0	X
+PluginManager: caricare plugins da file esterno
 Simulation: salvare simulazione su un file per poi caricarla
 Simulation: esportare immagini e video
