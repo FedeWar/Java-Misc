@@ -1,31 +1,67 @@
 package it.FedeWar.NBody2D.Engine;
 
 import javax.swing.JPanel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 public abstract class Simulation
 {
-	protected Sim_Info info;
-	
-	/* Crea l'iterfaccia per scegliere le 
-	 * impostazioni della simulazione */
-	public abstract void createSettingsGUI(JPanel father);
-	
-	/* Ricalcola la posizione di tutti gli oggetti */
-	public abstract void refresh();
-	
-	/* L'utente ha scelto le impostazioni quindi le
-	 * si possono impacchettare in un oggetto Sim_Info */
-	public abstract void packInfo();
-	
-	/* Inizializza gli oggetti, la grafica ed eventuali
-	 * librerie esterne per far funzionare l'engine */
-	public abstract void initEngine();
-	
-	public Sim_Info getInfo() {
-		return info;
+	/**
+	 * Sovraccaricarlo per disegnare l'interfaccia delle
+	 * impostazioni della simulazione, chiamarlo per aggiungere
+	 * il listener, che impacchetta le informazioni, al pannello.
+	 * 
+	 * @param father Il pannello su cui disegnare.
+	 * @since 1.0
+	 */
+	public void createSettingsGUI(JPanel father) {
+		father.addAncestorListener(new CloseListener());
 	}
 	
-	public void setInfo(Sim_Info info) {
-		this.info = info;
+	/**
+	 * Sovraccaricarlo per disegnare l'interfaccia della
+	 * simulazione, si ha totale liberta sulla natura della
+	 * interfaccia.
+	 * 
+	 * @since 1.0
+	 */
+	public abstract void createSimulationGUI();
+	
+	/**
+	 * Chiamato ad ogni frame, deve essere sovraccaricato
+	 * per svolgere tutte le attività della simulazione.
+	 * 
+	 * @since 1.0
+	 */
+	public abstract void refresh();
+	
+	/**
+	 * Inizializza gli oggetti, la grafica ed eventuali
+	 * librerie esterne per far funzionare l'engine.
+	 * 
+	 * @since 1.0
+	 */
+	public abstract void initEngine();
+	
+	/**
+	 * Sovraccaricare per impacchettare le informazioni
+	 * della simulazione per essere usate successivamente.
+	 * 
+	 * @since 1.0
+	 */
+	protected abstract void packInfo();
+	
+	/* Aspetta la chiusura del pannello delle impostazioni,
+	 * quando viene chiuso impacchetta le informazioni. */
+	private class CloseListener implements AncestorListener
+	{
+		public void ancestorAdded(AncestorEvent arg0) {}
+		public void ancestorMoved(AncestorEvent arg0) {}
+
+		@Override
+		public void ancestorRemoved(AncestorEvent arg0) {
+			packInfo();
+		}
+		
 	}
 }
