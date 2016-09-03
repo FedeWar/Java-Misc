@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL20;
 
 import com.sun.javafx.geom.Vec3d;
 
-import it.FedeWar.NBody.Simulation;
+import it.FedeWar.NBody.Engine.Simulation;
 
 public class Simulation_3D extends Simulation
 {

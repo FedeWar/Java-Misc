@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
+import it.FedeWar.NBody.Engine.Simulation;
+
 /* Gestione dei plugin, la classe non può essere instanziata */
 public abstract class PluginManager
 {

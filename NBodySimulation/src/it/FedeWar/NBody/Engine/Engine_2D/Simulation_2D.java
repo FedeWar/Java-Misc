@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 import com.sun.javafx.geom.Vec2d;
 
-import it.FedeWar.NBody.Simulation;
+import it.FedeWar.NBody.Engine.Simulation;
 
 public class Simulation_2D extends Simulation
 {

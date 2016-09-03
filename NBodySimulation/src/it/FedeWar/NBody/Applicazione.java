@@ -10,6 +10,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import it.FedeWar.NBody.Engine.Simulation;
+
 /* Finestra aperta all'avvio del programma, permette
  * di scegliere la simulazione da avviare */
 public class Applicazione extends JFrame
