@@ -2,7 +2,7 @@ package it.FedeWar.NBody2D.Engine.Engine_2D;
 
 import java.awt.Dimension;
 
-import com.sun.javafx.geom.Vec3d;
+import com.sun.javafx.geom.Vec2d;
 
 /* Collezione di informazioni sulla simulazione 2D. */
 public class Sim_Info_2D
@@ -28,5 +28,5 @@ public class Sim_Info_2D
 	public int radius_variation;
 	
 	/* Dimensioni dello spazio in cui possono spawnare oggetti. */
-	public Vec3d spaceDim;
+	public Vec2d spaceDim;
 }

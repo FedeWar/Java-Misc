@@ -40,8 +40,8 @@ public class Simulation_2D extends Simulation
 		int defaultRadius = info.standard_radius;
 		int massVariation = info.mass_variation;
 		int radiusVariation = info.radius_variation;
-		double dimX = info.spaceDim[0];
-		double dimY = info.spaceDim[1];
+		double dimX = info.spaceDim.x;
+		double dimY = info.spaceDim.y;
 		
 		for(int i = 0; i < go.length; i++)
 		{
@@ -77,7 +77,7 @@ public class Simulation_2D extends Simulation
 		int spcDimW = Integer.parseInt(sDim.substring(0, sDim.indexOf(';')));
 		int spcDimH = Integer.parseInt(sDim.substring(sDim.indexOf(';') + 1, sDim.length()));
 		
-		info.spaceDim = new double[]{ spcDimW, spcDimH };
+		info.spaceDim = new Vec2d(spcDimW, spcDimH);
 
 		info.G = 0.001;
 		info.deltaT = 1;
