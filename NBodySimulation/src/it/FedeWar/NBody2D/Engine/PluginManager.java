@@ -36,9 +36,9 @@ public abstract class PluginManager
 				
 			names.addElement("Simulazione 3D");
 			
-			plugins.add((Class<Simulation>)
+			/*plugins.add((Class<Simulation>)
 					ClassLoader.getSystemClassLoader().loadClass(
-						pluginsPath + "CUDA.Simulation_CUDA"));
+						pluginsPath + "CUDA.Simulation_CUDA"));*/
 				
 			names.addElement("Simulazione CUDA");
 		} catch (ClassNotFoundException e) {
