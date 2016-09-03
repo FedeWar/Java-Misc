@@ -22,6 +22,8 @@ import it.FedeWar.NBody.Engine.Simulation;
 
 public class Simulation_3D extends Simulation
 {
+	public static final String name = "Simulazione 3D - OpenGL";
+	
 	private Sim_Info_3D info;	// Informazioni sulla simulazione
 	public G_Obj go[];			// Gli oggetti gravitazionali
 	public int pnum_objs;		// Il numero di oggetti attivi

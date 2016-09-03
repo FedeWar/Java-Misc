@@ -17,6 +17,8 @@ import it.FedeWar.NBody.Engine.Simulation;
 
 public class Simulation_2D extends Simulation
 {
+	public static final String name = "Simulazione 2D - No GPU";
+	
 	/* Pannello per disegnare gli oggetti */
 	private class Canvas extends JPanel
 	{
