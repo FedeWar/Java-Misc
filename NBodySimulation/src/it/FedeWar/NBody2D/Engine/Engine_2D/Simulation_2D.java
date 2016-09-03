@@ -1,9 +1,12 @@
 package it.FedeWar.NBody2D.Engine.Engine_2D;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -14,77 +17,53 @@ import it.FedeWar.NBody2D.Engine.Simulation;
 
 public class Simulation_2D extends Simulation
 {
-	private JTextField txtWinDims;
-	private JTextField txtObjCount;
-	private JTextField txtMassVariation;
-	private JTextField txtRadiusVariation;
-	private JTextField txtStandardMass;
-	private JTextField txtStandardRadius;
-	private JTextField txtSpaceDims;
-	private Sim_Info_2D info;
-	
-	public G_Obj go[];			// Gli oggetti gravitazionali
-	public int pnum_objs = 0;	// Il numero di oggetti attivi
-	
-	private Graphics2D gc;	// Contesto grafico con cui disegnare
-	private Vec2d camera;	// Posizione della camera, appartiene all GUI
-	
-	/* Costruttore, inizializza le variabili e distribuisce gli oggetti */
-	public void initEngine()
+	/* Pannello per disegnare gli oggetti */
+	private class Canvas extends JPanel
 	{
-		G_Obj.staticInit(this);
-		go = new G_Obj[info.obj_count];
-		pnum_objs = go.length;
-		
-		int defaultMass = info.standard_mass;
-		int defaultRadius = info.standard_radius;
-		int massVariation = info.mass_variation;
-		int radiusVariation = info.radius_variation;
-		double dimX = info.spaceDim.x;
-		double dimY = info.spaceDim.y;
-		
-		for(int i = 0; i < go.length; i++)
+		private static final long serialVersionUID = 2647550373102965024L;
+
+		public void paintComponent(Graphics g)
 		{
-			go[i] = new G_Obj(
-				defaultMass + (int)(Math.random() * massVariation * 2 - massVariation),
-				defaultRadius + (int)(Math.random() * radiusVariation * 2 - radiusVariation),
-				new Vec2d(Math.random() * dimX, Math.random() * dimY));
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D) g;
+
+			// Disegna lo sfondo
+			g2.setColor(background);
+			g2.fillRect(0, 0, getSize().width - 1, getSize().height - 1);
+
+			// Disegna tutti gli oggetti, uno per uno
+			g2.setColor(foreground);
+			
+			// Non si possono passare parametri a refresh,
+			// quindi bisogna passare per un altro metodo.
+			gc = g2;
+			refresh();
+
+			lblObjsCount.setText("Numero Oggetti: " + pnum_objs);
 		}
 	}
+	public G_Obj go[];			// Gli oggetti gravitazionali
+	public int pnum_objs = 0;	// Il numero di oggetti attivi
+	/* SimulationGUI */
+	private Color background;
+	private Vec2d camera;	// Posizione della camera per rendering
+	private Color foreground;
+	private Graphics2D gc;	// Contesto grafico con cui disegnare
+	private Sim_Info_2D info;
 	
-	public Sim_Info_2D getInfo() {
-		return info;
-	}
+	private JLabel lblFPS;
+	private JLabel lblObjsCount;
+	private JTextField txtMassVariation;
+	private JTextField txtObjCount;
+	private JTextField txtRadiusVariation;
+	private JTextField txtSpaceDims;
 	
-	@Override
-	protected void packInfo()
-	{
-		Sim_Info_2D info = new Sim_Info_2D();
-
-		String wDim = txtWinDims.getText();
-		int winDimW = Integer.parseInt(wDim.substring(0, wDim.indexOf(';')));
-		int winDimH = Integer.parseInt(wDim.substring(wDim.indexOf(';') + 1, wDim.length()));
-		
-		info.winDim = new Dimension(winDimW, winDimH);
-
-		info.obj_count = Integer.parseInt(txtObjCount.getText());
-		info.standard_mass = Integer.parseInt(txtStandardMass.getText());
-		info.standard_radius = Integer.parseInt(txtStandardRadius.getText());
-		info.mass_variation = Integer.parseInt(txtMassVariation.getText());
-		info.radius_variation = Integer.parseInt(txtRadiusVariation.getText());
-
-		String sDim = txtSpaceDims.getText();
-		int spcDimW = Integer.parseInt(sDim.substring(0, sDim.indexOf(';')));
-		int spcDimH = Integer.parseInt(sDim.substring(sDim.indexOf(';') + 1, sDim.length()));
-		
-		info.spaceDim = new Vec2d(spcDimW, spcDimH);
-
-		info.G = 0.001;
-		info.deltaT = 1;
-		
-		this.info = info;
-	}
-
+	private JTextField txtStandardMass;
+	private JTextField txtStandardRadius;
+	
+	/* SettingsGUI */
+	private JTextField txtWinDims;
+	
 	@Override
 	public void createSettingsGUI(JPanel father)
 	{
@@ -165,14 +144,69 @@ public class Simulation_2D extends Simulation
 		father.repaint();
 	}
 	
-	/* Deve essere chiamato prima di refresh per impostare
-	 * le informazioni per il disegno degli oggetti */
-	public void setGC(Graphics2D g2, Vec2d camera)
+	@Override
+	public void createSimulationGUI()
 	{
-		this.gc = g2;
-		this.camera = camera;
+		JFrame frame = new JFrame("Simulazione 2D");
+		
+		initEngine();
+		background = Color.BLACK;
+		foreground = Color.LIGHT_GRAY;
+		camera = new Vec2d(0, 0);
+		
+		frame.setSize(info.winDim);
+		frame.setLayout(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Canvas pnlDraw = new Canvas();
+		int lato = Math.min(info.winDim.width, info.winDim.height);
+		pnlDraw.setBounds(0, 0, lato, lato);
+		frame.add(pnlDraw);
+		
+		lblObjsCount = new JLabel("Numero Oggetti: 0");
+		lblObjsCount.setHorizontalAlignment(JLabel.RIGHT);
+		lblObjsCount.setBounds(0, 10, info.winDim.width - 10, 20);
+		lblObjsCount.setForeground(Color.LIGHT_GRAY);
+		frame.add(lblObjsCount);
+		
+		lblFPS = new JLabel("Frame al Secondo: 0");
+		lblFPS.setForeground(Color.LIGHT_GRAY);
+		lblFPS.setHorizontalAlignment(JLabel.RIGHT);
+		lblFPS.setBounds(0, 62, info.winDim.width - 10, 20);
+		frame.add(lblFPS);
+		
+		frame.setVisible(true);
+		
+		open(frame);
 	}
 	
+	public Sim_Info_2D getInfo() {
+		return info;
+	}
+	
+	/* Costruttore, inizializza le variabili e distribuisce gli oggetti */
+	public void initEngine()
+	{
+		G_Obj.staticInit(this);
+		go = new G_Obj[info.obj_count];
+		pnum_objs = go.length;
+		
+		int defaultMass = info.standard_mass;
+		int defaultRadius = info.standard_radius;
+		int massVariation = info.mass_variation;
+		int radiusVariation = info.radius_variation;
+		double dimX = info.spaceDim.x;
+		double dimY = info.spaceDim.y;
+		
+		for(int i = 0; i < go.length; i++)
+		{
+			go[i] = new G_Obj(
+				defaultMass + (int)(Math.random() * massVariation * 2 - massVariation),
+				defaultRadius + (int)(Math.random() * radiusVariation * 2 - radiusVariation),
+				new Vec2d(Math.random() * dimX, Math.random() * dimY));
+		}
+	}
+
 	/* Ricalcola la posizione degli oggetti e li ridisegna */
 	public void refresh()
 	{
@@ -186,8 +220,32 @@ public class Simulation_2D extends Simulation
 	}
 
 	@Override
-	public void createSimulationGUI() {
-		new SimulationWin(this).open();
+	protected void packInfo()
+	{
+		Sim_Info_2D info = new Sim_Info_2D();
+	
+		String wDim = txtWinDims.getText();
+		int winDimW = Integer.parseInt(wDim.substring(0, wDim.indexOf(';')));
+		int winDimH = Integer.parseInt(wDim.substring(wDim.indexOf(';') + 1, wDim.length()));
+		
+		info.winDim = new Dimension(winDimW, winDimH);
+	
+		info.obj_count = Integer.parseInt(txtObjCount.getText());
+		info.standard_mass = Integer.parseInt(txtStandardMass.getText());
+		info.standard_radius = Integer.parseInt(txtStandardRadius.getText());
+		info.mass_variation = Integer.parseInt(txtMassVariation.getText());
+		info.radius_variation = Integer.parseInt(txtRadiusVariation.getText());
+	
+		String sDim = txtSpaceDims.getText();
+		int spcDimW = Integer.parseInt(sDim.substring(0, sDim.indexOf(';')));
+		int spcDimH = Integer.parseInt(sDim.substring(sDim.indexOf(';') + 1, sDim.length()));
+		
+		info.spaceDim = new Vec2d(spcDimW, spcDimH);
+	
+		info.G = 0.001;
+		info.deltaT = 1;
+		
+		this.info = info;
 	}
 	
 	/* TODO Le simulazioni già pronte vanno lette da un file */
@@ -204,4 +262,29 @@ public class Simulation_2D extends Simulation
         go[1].Pos = new Vector2f(Win.canvas.getWidth()/2-d, Win.canvas.getHeight()/2);
         go[1].Vel = new Vector2f(0,v);
 	}*/
+	
+	private void open(JFrame frame)
+	{
+		long benchStart = 0;	// Per determinare quando è passato un secondo
+		int frames = 0;			// Frame calcolati in un secondo
+		
+		while (frame.isVisible())
+		{
+			// Benchmark
+			if(System.currentTimeMillis() - benchStart >= 1000)
+			{
+				lblFPS.setText("Frame al Secondo: " + frames);
+				frames = 0;
+				benchStart = System.currentTimeMillis();
+			}
+			
+			// Nuovo frame
+			frames++;
+			frame.repaint();
+			
+			// Max 60 frames
+			try { Thread.sleep(1000 / 60);
+			} catch (InterruptedException e) {}
+		}
+	}
 }
