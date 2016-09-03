@@ -4,6 +4,13 @@ import javax.swing.JPanel;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
+/**
+ * Classe per l'implementazioni di simulazioni.
+ * 
+ * @author FedeWar
+ * @version 1.0
+ * @since 1.0
+ */
 public abstract class Simulation
 {
 	/**
