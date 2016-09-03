@@ -1,5 +1,11 @@
 package it.FedeWar.NBody;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -20,31 +26,36 @@ public abstract class PluginManager
 		loadBuiltinFractals();
 	}
 	
-	/* Carica i frattali distribuiti col programma */
-	@SuppressWarnings("unchecked")
+	/* Carica le simulazioni distribuite col programma */
 	private static void loadBuiltinFractals()
 	{
-		String pluginsPath = "it.FedeWar.NBody2D.Engine.";
+		String pluginsPath = "it.FedeWar.NBody.Engine.";
+		String file = "/it/FedeWar/NBody/res/plugins";
+		
 		try {
-			plugins.add((Class<Simulation>)
-				ClassLoader.getSystemClassLoader().loadClass(
-					pluginsPath + "Engine_2D.Simulation_2D"));
+			// Apre il file con la lista dei plugins
+			FileReader plugins = new FileReader(new File(
+					PluginManager.class.getResource(file).toURI()));
+			BufferedReader br = new BufferedReader(plugins);
 			
-			names.addElement("Simulazione 2D No GPU");
-			
-			plugins.add((Class<Simulation>)
-					ClassLoader.getSystemClassLoader().loadClass(
-						pluginsPath + "Engine_3D.Simulation_3D"));
-				
-			names.addElement("Simulazione 3D");
-			
-			/*plugins.add((Class<Simulation>)
-					ClassLoader.getSystemClassLoader().loadClass(
-						pluginsPath + "CUDA.Simulation_CUDA"));*/
-				
-			names.addElement("Simulazione CUDA");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossibile caricare la classe: " + e.getMessage());
+			int start = 0;
+			int end = 1;
+			// Il file è composto da una sola riga
+			String data = br.readLine();
+			// Divide il file in token separati da ';', ogni
+			// token è un percorso di un plugin
+			while((end = data.indexOf(';', start + 1)) != -1)
+			{
+				add(pluginsPath + data.substring(start, end));
+				start = end + 1;
+			}
+			// Chiude lo stream
+			br.close();
+		}
+		catch (URISyntaxException | FileNotFoundException e) {
+			System.err.println("Errore nell'apertura della lista dei plugins.");
+		} catch (IOException e) {
+			System.err.println("Errore nella lettura della lista dei plugins.");
 		}
 	}
 	
@@ -53,8 +64,7 @@ public abstract class PluginManager
 	{
 		Simulation sim = null;
 		
-		try
-		{
+		try {
 			sim = plugins.get(selected).newInstance();
 		}
 		catch (InstantiationException | IllegalAccessException e) {
@@ -69,20 +79,24 @@ public abstract class PluginManager
 	public static void add(String name)
 	{
 		Class<Simulation> plugin;
-		try
-		{
+		try {
 			plugin = (Class<Simulation>) ClassLoader.getSystemClassLoader().loadClass(name);
 			plugins.add(plugin);
-			names.addElement(plugin.getName());
+			names.addElement((String) plugin.getField("name").get(null));
 		}
 		catch (ClassNotFoundException e) {
-			System.err.println("Non è stato possibile caricare la classe!");
+			System.err.println("Impossibile caricare la classe: " + e.getMessage());
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			System.err.println("La classe non presenta un nome.");
+		} catch (SecurityException e) {
+			System.err.println("Security violation.");
+		} catch (IllegalArgumentException e) {
+			System.err.println("Illegal argument.");
 		}
 	}
 	
 	/* Getter per la lista dei nomi */
-	public static DefaultListModel<String> getNames()
-	{
+	public static DefaultListModel<String> getNames() {
 		return names;
 	}
 	
