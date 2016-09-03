@@ -22,7 +22,7 @@ public class Simulation_3D extends Simulation
 {
 	private Sim_Info_3D info;	// Informazioni sulla simulazione
 	public G_Obj go[];			// Gli oggetti gravitazionali
-	public int pnum_objs = 0;	// Il numero di oggetti attivi
+	public int pnum_objs;		// Il numero di oggetti attivi
 	
 	private float[] posBuffer;		// Tutte le posizioni degli oggetti, per il VBO
 	private int vbo_id;				// Puntatore al VBO
@@ -66,7 +66,6 @@ public class Simulation_3D extends Simulation
 		vbo_id = pipeline.points.createVBO(posBuffer, 3);
 	}
 	
-	@Override
 	public Sim_Info_3D getInfo() {
 		return info;
 	}
@@ -91,7 +90,7 @@ public class Simulation_3D extends Simulation
 	}
 
 	@Override
-	public void packInfo()
+	protected void packInfo()
 	{
 		info = new Sim_Info_3D();
 
@@ -109,7 +108,7 @@ public class Simulation_3D extends Simulation
 	@Override
 	public void createSettingsGUI(JPanel father)
 	{
-
+		super.createSettingsGUI(father);
 	}
 
 	public void createSimulationGUI()

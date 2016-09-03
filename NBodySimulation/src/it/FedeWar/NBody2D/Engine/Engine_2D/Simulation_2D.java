@@ -8,9 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.javafx.geom.Vec2f;
+import com.sun.javafx.geom.Vec2d;
 
-import it.FedeWar.NBody2D.Engine.Sim_Info;
 import it.FedeWar.NBody2D.Engine.Simulation;
 
 public class Simulation_2D extends Simulation
@@ -22,12 +21,13 @@ public class Simulation_2D extends Simulation
 	private JTextField txtStandardMass;
 	private JTextField txtStandardRadius;
 	private JTextField txtSpaceDims;
-
+	private Sim_Info_2D info;
+	
 	public G_Obj go[];			// Gli oggetti gravitazionali
 	public int pnum_objs = 0;	// Il numero di oggetti attivi
 	
 	private Graphics2D gc;	// Contesto grafico con cui disegnare
-	private Vec2f camera;	// Posizione della camera, appartiene all GUI
+	private Vec2d camera;	// Posizione della camera, appartiene all GUI
 	
 	/* Costruttore, inizializza le variabili e distribuisce gli oggetti */
 	public void initEngine()
@@ -48,14 +48,18 @@ public class Simulation_2D extends Simulation
 			go[i] = new G_Obj(
 				defaultMass + (int)(Math.random() * massVariation * 2 - massVariation),
 				defaultRadius + (int)(Math.random() * radiusVariation * 2 - radiusVariation),
-				new Vec2f((float)(Math.random() * dimX), (float)(Math.random() * dimY)));
+				new Vec2d(Math.random() * dimX, Math.random() * dimY));
 		}
 	}
 	
+	public Sim_Info_2D getInfo() {
+		return info;
+	}
+	
 	@Override
-	public void packInfo()
+	protected void packInfo()
 	{
-		Sim_Info info = new Sim_Info();
+		Sim_Info_2D info = new Sim_Info_2D();
 
 		String wDim = txtWinDims.getText();
 		int winDimW = Integer.parseInt(wDim.substring(0, wDim.indexOf(';')));
@@ -84,6 +88,7 @@ public class Simulation_2D extends Simulation
 	@Override
 	public void createSettingsGUI(JPanel father)
 	{
+		super.createSettingsGUI(father);
 		Dimension display = Toolkit.getDefaultToolkit().getScreenSize();
 
 		JLabel lblWinDims = new JLabel("Dimensioni Finestra");
@@ -162,7 +167,7 @@ public class Simulation_2D extends Simulation
 	
 	/* Deve essere chiamato prima di refresh per impostare
 	 * le informazioni per il disegno degli oggetti */
-	public void setGC(Graphics2D g2, Vec2f camera)
+	public void setGC(Graphics2D g2, Vec2d camera)
 	{
 		this.gc = g2;
 		this.camera = camera;
@@ -178,6 +183,11 @@ public class Simulation_2D extends Simulation
 		// Ricalcola la velocità, la posizione e disegna l'oggetto
 		for(int i = 0; i < pnum_objs; i++)
 			go[i].updatePos(gc, camera);
+	}
+
+	@Override
+	public void createSimulationGUI() {
+		new SimulationWin(this).open();
 	}
 	
 	/* TODO Le simulazioni già pronte vanno lette da un file */
