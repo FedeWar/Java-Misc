@@ -1,5 +1,6 @@
 *.class
 /bin/
+/bin/it/FedeWar/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
