@@ -10,31 +10,28 @@ public class G_Obj
 	private static Vec3f dst;			// Evita di riallocarlo ogni volta
 	private	static float[] positions;	// Tutte le posizioni degli oggetti
 	
-	//private		float	radius; 		// Il raggio del corpo
-	private		int		mass;			// La massa del corpo
-	private		int		pos_id;			// Indice della posizione nell'array
-	private		Vec3f	velocity;		// La velocità
-	private 	Vec3f	acceleration;	// L' accelerazione
+	private	int		mass;			// La massa del corpo
+	private	int		pos_id;			// Indice della posizione nell'array
+	private	Vec3f	velocity;		// La velocità
+	private Vec3f	acceleration;	// L' accelerazione
 	
 	/* Inizializza i campi statici */
-	public static void staticInit(Simulation_3D e, float[] positions)
+	public static void staticInit(Simulation_3D e, float[] pos_arr)
 	{
-		Sim_Info_3D info = (Sim_Info_3D) e.getInfo();
-		G = info.G;
-		t_gap = info.deltaT;
-		dst = new Vec3f(0, 0, 0);
-		E = e;
-		G_Obj.positions = positions;
+		G			= e.getInfo().G;
+		t_gap		= e.getInfo().deltaT;
+		dst			= new Vec3f(0.0f, 0.0f, 0.0f);
+		E			= e;
+		positions	= pos_arr;
 	}
 	
 	/* Costruttore, inizializza i campi */
 	public G_Obj(int mass, int radius, int pos)
 	{
-		this.mass = mass;
-		//this.radius = radius;
-		this.pos_id = pos;
-		velocity = new Vec3f(0, 0, 0);
-		acceleration = new Vec3f(0, 0, 0);
+		this.mass		= mass;
+		this.pos_id		= pos;
+		velocity		= new Vec3f(0.0f, 0.0f, 0.0f);
+		acceleration	= new Vec3f(0.0f, 0.0f, 0.0f);
 	}
 	
 	/* Calcola la nuova posizione dalla velocità */
@@ -52,7 +49,7 @@ public class G_Obj
 	
 	public void updateAcc()
 	{
-		acceleration.set(0, 0, 0);
+		acceleration.set(0.0f, 0.0f, 0.0f);
 		
 		// Itera su tutti gli oggetti
 		for(int i = 0; i < E.pnum_objs; i++)
@@ -63,49 +60,19 @@ public class G_Obj
 			if(O1 == this) continue;
 			
 			// Calcola la distanza tra i due oggetti
-			dst.set(positions[O1.pos_id] - positions[pos_id],
-					positions[O1.pos_id + 1] - positions[pos_id + 1],
-					positions[O1.pos_id + 2] - positions[pos_id + 2]);
-			
-			// Se la distanza è minore della somma dei raggi
-			/*if(dst.length() <= radius + O1.radius)
-			{
-				// Se questo oggetto è più piccolo di O1
-				if(radius < O1.radius)
-				{
-					positions[pos_id] = positions[O1.pos_id];
-					positions[pos_id + 1] = positions[O1.pos_id + 1];
-					positions[pos_id + 2] = positions[O1.pos_id + 2];
-				}
-				
-				// Il nuovo raggio si calcola con il teorema di pitagora per mantere l'area costante
-				radius = (int) Math.sqrt(radius * radius + E.go[i].radius * E.go[i].radius);
-				
-				// Per calcolare la nuova velocità fa conservare la quantità di moto
-				velocity.x = ((mass * velocity.x) + (O1.mass * O1.velocity.x)) / (mass + O1.mass);
-				velocity.y = ((mass * velocity.y) + (O1.mass * O1.velocity.y)) / (mass + O1.mass);
-				velocity.z = ((mass * velocity.z) + (O1.mass * O1.velocity.z)) / (mass + O1.mass);
-				
-				// La nuova massa è la somma delle masse
-				mass += O1.mass;
-				
-				// Sposta l'ultimo oggetto nel posto dell'oggetto cancellato
-				E.go[i] = E.go[E.pnum_objs - 1];
-				E.pnum_objs--;
-			}
-			else*/
-			{
-				// La distanza da O1 quadra
-				float dstQuadra = dst.x * dst.x + dst.y * dst.y + dst.z * dst.z;
-				float mod = (float) Math.sqrt(dstQuadra + 0.1);// La distanza da O1
-				float acc = G * O1.mass / dstQuadra;			// L'accelerazione
-				
-				// Calcola la nuova accelerazione
-				acceleration.x += acc * dst.x / mod;
-				acceleration.y += acc * dst.y / mod;
-				acceleration.z += acc * dst.z / mod;
-			}
+			dst.x = positions[O1.pos_id	   ] - positions[pos_id    ];
+			dst.y = positions[O1.pos_id + 1] - positions[pos_id + 1];
+			dst.z = positions[O1.pos_id + 2] - positions[pos_id + 2];
 
+			// Calcola la distanza da O1 e la direzione
+			float dstQuadra = dst.x * dst.x + dst.y * dst.y + dst.z * dst.z;
+			float mod = (float) Math.sqrt(dstQuadra + 0.1f);
+			float acc = G * O1.mass / dstQuadra;
+
+			// Calcola la nuova accelerazione
+			acceleration.x += acc * dst.x / mod;
+			acceleration.y += acc * dst.y / mod;
+			acceleration.z += acc * dst.z / mod;
 		}
 	}
 }
