@@ -17,7 +17,7 @@ import it.FedeWar.NBody2D.Engine.Simulation;
  * di scegliere la simulazione da avviare */
 public class Applicazione extends JFrame
 {
-	private static final long serialVersionUID = -847133995748685491L;
+	private static final long serialVersionUID = 1581479179574006942L;
 	
 	private JList<String> lstSims;	// Lista delle simulazioni
 	private Simulation sim;			// Simulazione selezionata
@@ -59,10 +59,10 @@ public class Applicazione extends JFrame
 			if(simulation != null)
 				// Avvia la simulazione
 				simulation.createSimulationGUI();
-			// Non è valida = chiusa finestra dalla X
+			// Non è valida = finestra chiusa dalla X
 			else
 				// Interrompe il programma
-				return;
+				break;
 		}
 	}
 	
@@ -114,13 +114,16 @@ public class Applicazione extends JFrame
 	 * l'utente non preme "Avvia" poi restituisce una simulazione. */
 	public Simulation open()
 	{
+		// Rende visibile la finestra
 		setVisible(true);
 		
+		// Finché la finestra è visibile non fa nulla
 		while(isVisible())
 			try { Thread.sleep(500);
 			} catch(InterruptedException e) {}
 		dispose();
 
+		// Se è stata chiusa restituisce sim
 		return sim;
 	}
 }
