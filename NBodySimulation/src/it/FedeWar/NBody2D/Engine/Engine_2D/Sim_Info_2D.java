@@ -1,8 +1,20 @@
-package it.FedeWar.NBody2D.Engine.Engine_3D;
+package it.FedeWar.NBody2D.Engine.Engine_2D;
 
 import java.awt.Dimension;
 
-public class Sim_Info_3D
+/**
+ * La quantità delle informazioni cambia a seconda del tipo
+ * di simulazione, questa classe fornisce una base per
+ * implementare ogni tipo di simulazione.
+ * Alcune proprietà sono già implementate, sono quelle
+ * base che ogni simulazione dovrebbe usare.
+ * 
+ * @author FedeWar
+ * @version 1.0
+ * @since 1.0
+ * @date 24/07/2016
+ * */
+public class Sim_Info_2D
 {
 	/**
 	 * La quantità di oggetti da creare e utilizzare.
@@ -17,14 +29,14 @@ public class Sim_Info_3D
 	 * 
 	 * @since 1.0
 	 */
-	public float G;
+	public double G;
 	
 	/**
 	 * Il passo temporale tra due frame.
 	 * 
 	 * @since 1.0
 	 */
-	public float deltaT;
+	public double deltaT;
 	
 	/**
 	 * Le dimensioni della finestra su cui visualizzare
