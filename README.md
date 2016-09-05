@@ -17,4 +17,6 @@ Coming soon:
 Per maggiori informazioni visitate il mio sito: fedewar.altervista.it [Attualmente in preparazione]
 
 #License
-Il codice è disponibile sotto la licenza [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl-howto.html)
+Parte del codice è disponibile sotto licenza [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl-howto.html).
+
+Parte del codice non ha licenza ed è protetto dal diritto di copyright secondo i [termini di servizio](https://help.github.com/articles/github-terms-of-service/#f-copyright-and-content-ownership) di GitHub.
