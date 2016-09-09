@@ -8,11 +8,8 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -189,28 +186,23 @@ public class RenderEngine
 	/* Carica e compila lo shader contenuto in 'file' */
 	private int compileShader(String file, int type)
 	{
-		// Dice a OpengìGL di creare uno shader vuoto
+		// Dice a OpengGL di creare uno shader vuoto
 		int shader = glCreateShader(type);
 		String source = "";
 		
 		try {
 			// Apre il file per la lettura
-			BufferedReader br = new BufferedReader(
-					new FileReader(new File(
-							RenderEngine.class.getResource(file).toURI())));
-			String line;
+			InputStream str = RenderEngine.class.getResourceAsStream(file);
 			
-			// Carica tutto il file in 'source'
-			while((line = br.readLine()) != null)
-				source += line + '\n';
+			int c;
+			while((c = str.read()) != -1)
+				source += (char) c;
 			
-			br.close();
-		} catch(IOException e) {
+			str.close();
+		}
+		catch(IOException e) {
 			System.err.println("Errore " + e.getMessage());
 			System.exit(-1);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		// Compila lo shader e controlla che gli errori
