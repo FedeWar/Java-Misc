@@ -1,4 +1,4 @@
-#version 130
+#version 450
 
 uniform mat4 projection;
 
