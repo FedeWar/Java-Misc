@@ -13,10 +13,12 @@ public abstract class PluginManager
 {
 	private	static DefaultListModel<String> names;		// Lista nomi frattali disponibili
 	private	static ArrayList<Class<Simulation>> plugins;// Lista classi dei frattali
+	private static ClassLoader stdLoader;
 	
-	/* Inizializza le liste */
+	/* Inizializza i campi statici*/
 	static
 	{
+		stdLoader = Applicazione.class.getClassLoader();
 		plugins = new ArrayList<Class<Simulation>>();
 		names = new DefaultListModel<String>();
 		loadBuiltin();
@@ -76,7 +78,7 @@ public abstract class PluginManager
 	{
 		Class<Simulation> plugin;
 		try {
-			plugin = (Class<Simulation>) ClassLoader.getSystemClassLoader().loadClass(name);
+			plugin = (Class<Simulation>) stdLoader.loadClass(name);
 			plugins.add(plugin);
 			names.addElement((String) plugin.getField("name").get(null));
 		}
