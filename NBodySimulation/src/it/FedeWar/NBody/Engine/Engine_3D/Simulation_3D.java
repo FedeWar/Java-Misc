@@ -115,7 +115,9 @@ public class Simulation_3D extends Simulation
 		createWin();
 
 		// Crea la pipeline
-		pipeline = new RenderEngine("shaders/scene/vertex.glsl", "shaders/scene/fragment.glsl");
+		pipeline = new RenderEngine(
+				"/it/FedeWar/NBody/res/vertex.glsl",
+				"/it/FedeWar/NBody/res/fragment.glsl");
 		pipeline.use();
 		pipeline.setUniform("test", 1.0f);
 		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);

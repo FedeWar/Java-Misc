@@ -9,8 +9,10 @@ import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -193,7 +195,9 @@ public class RenderEngine
 		
 		try {
 			// Apre il file per la lettura
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			BufferedReader br = new BufferedReader(
+					new FileReader(new File(
+							RenderEngine.class.getResource(file).toURI())));
 			String line;
 			
 			// Carica tutto il file in 'source'
@@ -204,6 +208,9 @@ public class RenderEngine
 		} catch(IOException e) {
 			System.err.println("Errore " + e.getMessage());
 			System.exit(-1);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		// Compila lo shader e controlla che gli errori
