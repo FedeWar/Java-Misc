@@ -38,8 +38,10 @@ public class Applicazione extends JFrame
 				else
 					dispose();
 			}
-			// Premuto "Cambia simulazione"
-			else if(src.compareTo("Cambia Simulazione") == 0) {
+			// Premuto "Cambia simulazione", avvisa il
+			// thread principale di caricare una simulazione
+			else if(src.compareTo("Cambia Simulazione") == 0)
+			{
 				sim = PluginManager.create(lstSims.getSelectedIndex());
 				sim.createSettingsGUI(pnlSim);
 			}
@@ -120,6 +122,7 @@ public class Applicazione extends JFrame
 		while(isVisible())
 			try { Thread.sleep(500);
 			} catch(InterruptedException e) {}
+
 		dispose();
 
 		// Se è stata chiusa restituisce sim
