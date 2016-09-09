@@ -23,11 +23,11 @@ public abstract class PluginManager
 	{
 		plugins = new ArrayList<Class<Simulation>>();
 		names = new DefaultListModel<String>();
-		loadBuiltinFractals();
+		loadBuiltin();
 	}
 	
 	/* Carica le simulazioni distribuite col programma */
-	private static void loadBuiltinFractals()
+	private static void loadBuiltin()
 	{
 		String pluginsPath = "it.FedeWar.NBody.Engine.";
 		String file = "/it/FedeWar/NBody/res/plugins";
@@ -74,7 +74,7 @@ public abstract class PluginManager
 		return sim;
 	}
 	
-	/* Carica un nuovo frattale e lo aggiunge alla lista */
+	/* Carica una nuova simulazione e la aggiunge alla lista */
 	@SuppressWarnings("unchecked")
 	public static void add(String name)
 	{
@@ -100,7 +100,7 @@ public abstract class PluginManager
 		return names;
 	}
 	
-	/* Restituisce l'id del frattale selezionato */
+	/* Restituisce l'id del plugin selezionato */
 	public static int search(String key)
 	{
 		for(int i = 0; i < names.size(); i++)
