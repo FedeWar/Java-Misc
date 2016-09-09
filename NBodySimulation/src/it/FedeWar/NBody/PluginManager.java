@@ -1,11 +1,7 @@
 package it.FedeWar.NBody;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -29,19 +25,21 @@ public abstract class PluginManager
 	/* Carica le simulazioni distribuite col programma */
 	private static void loadBuiltin()
 	{
-		String pluginsPath = "it.FedeWar.NBody.Engine.";
-		String file = "/it/FedeWar/NBody/res/plugins";
+		final String pluginsPath = "it.FedeWar.NBody.Engine.";
+		final String file = "/it/FedeWar/NBody/res/plugins";
 		
 		try {
 			// Apre il file con la lista dei plugins
-			FileReader plugins = new FileReader(new File(
-					PluginManager.class.getResource(file).toURI()));
-			BufferedReader br = new BufferedReader(plugins);
+			InputStream plugins = PluginManager.class.getResourceAsStream(file);
 			
 			int start = 0;
 			int end = 1;
-			// Il file è composto da una sola riga
-			String data = br.readLine();
+			// Legge il file
+			String data = new String();
+			int c = 0;
+			while((c = plugins.read()) != -1)
+				data += (char) c;
+			
 			// Divide il file in token separati da ';', ogni
 			// token è un percorso di un plugin
 			while((end = data.indexOf(';', start + 1)) != -1)
@@ -50,16 +48,14 @@ public abstract class PluginManager
 				start = end + 1;
 			}
 			// Chiude lo stream
-			br.close();
+			plugins.close();
 		}
-		catch (URISyntaxException | FileNotFoundException e) {
-			System.err.println("Errore nell'apertura della lista dei plugins.");
-		} catch (IOException e) {
+		catch (IOException e) {
 			System.err.println("Errore nella lettura della lista dei plugins.");
 		}
 	}
 	
-	/* Alloca un frattale per essere disegnato */
+	/* Alloca un plugins per essere eseguito */
 	public static Simulation create(int selected)
 	{
 		Simulation sim = null;
