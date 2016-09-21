@@ -1,8 +1,4 @@
-#version 450
-
-uniform float test;
-
-in vec2 onScreen;
+#version 130
 
 void main()
 {
