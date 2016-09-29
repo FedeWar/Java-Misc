@@ -40,7 +40,7 @@ public abstract class Simulation
 	 * 
 	 * @since 1.0
 	 */
-	public abstract void refresh();
+	protected abstract void refresh();
 	
 	/**
 	 * Inizializza gli oggetti, la grafica ed eventuali
@@ -48,7 +48,7 @@ public abstract class Simulation
 	 * 
 	 * @since 1.0
 	 */
-	public abstract void initEngine();
+	protected abstract void initEngine();
 	
 	/**
 	 * Sovraccaricare per impacchettare le informazioni
@@ -58,8 +58,10 @@ public abstract class Simulation
 	 */
 	protected abstract void packInfo();
 	
-	/* Aspetta la chiusura del pannello delle impostazioni,
-	 * quando viene chiuso impacchetta le informazioni. */
+	/*
+	 * Aspetta la chiusura del pannello delle impostazioni,
+	 * quando viene chiuso impacchetta le informazioni.
+	 */
 	private class CloseListener implements AncestorListener
 	{
 		public void ancestorAdded(AncestorEvent arg0) {}

@@ -21,6 +21,7 @@ public class Applicazione extends JFrame
 	private JList<String> lstSims;	// Lista delle simulazioni
 	private Simulation sim;			// Simulazione selezionata
 	private JPanel pnlSim;			// Pannello per le impostazioni
+	private boolean avviaPressed;	// Distingue tra la pressione di avvia e della X
 
 	/* Listener per i due pulsanti Avvia e Cambia Simulazione */
 	private class BtnListener implements ActionListener
@@ -36,7 +37,10 @@ public class Applicazione extends JFrame
 				if(sim == null)
 					JOptionPane.showMessageDialog(null, "Nessuna simulazione selezionata.");
 				else
-					dispose();
+				{
+					setVisible(false);
+					avviaPressed = true;
+				}
 			}
 			// Premuto "Cambia simulazione", avvisa il
 			// thread principale di caricare una simulazione
@@ -51,15 +55,17 @@ public class Applicazione extends JFrame
 	/* Punto di accesso per l'applicazione */
 	public static void main(String[] args)
 	{
+		Applicazione app = new Applicazione();
+		
 		while(true)
 		{
 			// Avvia l'applicazione e aspetta che venga creata una simulazione
-			Simulation simulation = new Applicazione().open();
+			Simulation simulation = app.open();
 
-			// Se la simulazione è valida
+			// Se la simulazione è valida la avvia
 			if(simulation != null)
-				// Avvia la simulazione
 				simulation.createSimulationGUI();
+			
 			// Non è valida = finestra chiusa dalla X
 			else
 				// Interrompe il programma
@@ -111,20 +117,25 @@ public class Applicazione extends JFrame
 		this.add(pnlSim);
 	}
 	
-	/* Rende visibile la finestra, rimane aperta fino a che
-	 * l'utente non preme "Avvia" poi restituisce una simulazione. */
+	/*
+	 * Rende visibile la finestra, rimane aperta fino a che
+	 * l'utente non preme "Avvia" poi restituisce una simulazione.
+	 */
 	public Simulation open()
 	{
 		// Rende visibile la finestra
 		setVisible(true);
+		avviaPressed = false;
 		
 		// Finché la finestra è visibile non fa nulla
 		while(isVisible())
-			try { Thread.sleep(500);
-			} catch(InterruptedException e) {}
+			try { Thread.sleep(500); }
+			catch(InterruptedException e) {}
 
-		dispose();
-
+		// Se è stata premuta la X chiude.
+		if(!avviaPressed)
+			return null;
+		
 		// Se è stata chiusa restituisce sim
 		return sim;
 	}

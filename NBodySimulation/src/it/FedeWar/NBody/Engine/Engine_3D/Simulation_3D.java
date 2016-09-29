@@ -1,20 +1,20 @@
 package it.FedeWar.NBody.Engine.Engine_3D;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.awt.Dimension;
-import java.nio.FloatBuffer;
+import java.io.InputStream;
 
 import javax.swing.JPanel;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
+import org.fedewar.fog.gui.GLFrame;
+import org.fedewar.fog.objects.Camera;
+import org.fedewar.fog.objects.VAO;
+import org.fedewar.fog.pipeline.Pipeline;
+import org.fedewar.fog.pipeline.Shader;
+import org.fedewar.fog.pipeline.Shader.shader_t;
 
 import com.sun.javafx.geom.Vec3d;
 
@@ -29,11 +29,111 @@ public class Simulation_3D extends Simulation
 	public int pnum_objs;		// Il numero di oggetti attivi
 	
 	private float[] posBuffer;		// Tutte le posizioni degli oggetti, per il VBO
-	private int vbo_id;				// Puntatore al VBO
-	private RenderEngine pipeline;	// Pipeline OpenGL
-	
-	private long wndHandle;		// Handle per la finestra
+	SimGUI g;
 
+	private class SimGUI extends GLFrame
+	{
+		private Pipeline pipeline;
+		private Camera camera;
+		private VAO objects;
+		
+		public SimGUI(String name) {
+			super(name);
+		}
+
+		@Override
+		public void drawCallback() {
+			pipeline.setProjection();
+			objects.draw();
+			refresh();
+		}
+
+		@Override
+		public void resizeCallback(int width, int height)
+		{
+			camera.setRatio(1.0f * width / height);
+		}
+
+		@Override
+		public void initGLCallback()
+		{
+			pipeline = new Pipeline();
+			InputStream in = Pipeline.class.getResourceAsStream("res/vertex.glsl");
+			Shader vrtx = new Shader(shader_t.VERTEX, in);
+			
+			in = Pipeline.class.getResourceAsStream("res/fragment.glsl");
+			Shader frgm = new Shader(shader_t.FRAGMENT, in);
+			
+			pipeline.attach(vrtx);
+			pipeline.attach(frgm);
+			pipeline.link();
+			pipeline.bind();
+			
+			camera = new Camera(1.0f, (float) (Math.PI / 2), 1, 50);
+			pipeline.attach(camera);
+			
+			glEnable(GL_POINT_SPRITE);
+			glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+			
+			objects = new VAO();
+		}
+		
+		public void setVBOs(float[] pos, float[] color)
+		{
+			objects.set_vbo(VAO.VERTEX_VBO, pos, 3);
+			objects.set_vbo(VAO.COLOR_VBO, color, 3);
+		}
+
+		@Override
+		public void keypressCallback(int key)
+		{
+			switch(key)
+			{
+			case GLFW_KEY_UP:
+				camera.incRot(-.01f, 0);
+				break;
+
+			case GLFW_KEY_DOWN:
+				camera.incRot(.01f, 0);
+				break;
+
+			case GLFW_KEY_LEFT:
+				camera.incRot(0, -.01f);
+				break;
+
+			case GLFW_KEY_RIGHT:
+				camera.incRot(0, .01f);
+				break;
+
+			case GLFW_KEY_W:
+				camera.moveFP(.1f, .1f, 0);
+				break;
+
+			case GLFW_KEY_S:
+				camera.moveFP(-.1f, -.1f, 0);
+				break;
+				
+			case GLFW_KEY_A:
+				camera.moveFP(0, 0, .1f);
+				break;
+
+			case GLFW_KEY_D:
+				camera.moveFP(0, 0, -.1f);
+				break;
+
+			case GLFW_KEY_Q:
+				camera.incPos(0, -.1f, 0);
+				break;
+
+			case GLFW_KEY_Z:
+				camera.incPos(0, .1f, 0);
+				break;
+			}
+		}
+	}
+	
 	@Override
 	public void initEngine()
 	{
@@ -62,13 +162,8 @@ public class Simulation_3D extends Simulation
 					i * 3);
 		}
 		
-		// Crea il vbo per i vertici
-		pipeline.points.bind();
-		vbo_id = pipeline.points.createVBO(posBuffer, 3);
-	}
-	
-	public Sim_Info_3D getInfo() {
-		return info;
+		// Copia i dati nel VBO.
+		g.setVBOs(posBuffer, posBuffer);
 	}
 
 	@Override
@@ -79,17 +174,14 @@ public class Simulation_3D extends Simulation
 		for(int i = 0; i < pnum_objs; i++)	// Per ogni oggetto
 			go[i].updatePos();				// Ne ricalcola la velocità
 
-		// Copia i dati in un buffer
-		FloatBuffer data = BufferUtils.createFloatBuffer(posBuffer.length);
-		data.put(posBuffer);
-		data.flip();
-
-		// Copia il buffer nel vbo
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Aggiorna il VBO.
+		g.setVBOs(posBuffer, posBuffer);
 	}
 
+	public Sim_Info_3D getInfo() {
+		return info;
+	}
+	
 	@Override
 	protected void packInfo()
 	{
@@ -112,168 +204,14 @@ public class Simulation_3D extends Simulation
 
 	public void createSimulationGUI()
 	{
-		createWin();
-
-		// Crea la pipeline
-		pipeline = new RenderEngine(
-				"/it/FedeWar/NBody/res/vertex.glsl",
-				"/it/FedeWar/NBody/res/fragment.glsl");
-		pipeline.use();
-		pipeline.setUniform("test", 1.0f);
-		pipeline.createProjectionMatrix(info.winDim.width / info.winDim.height);
-		pipeline.bindProjectionMatrix();
-
-//		RenderEngine screen = new RenderEngine("shaders/screen/vertex.glsl", "shaders/screen/fragment.glsl");
-
-		setCallbacks();
+		g = new SimGUI(name);
+		g.setBounds(200, 200, 500, 500);
+		g.setBackground(.0f, .0f, .0f);
+		g.show();
+		g.initGL();
 
 		initEngine();
-
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-		pipeline.createFBO();
-
-		GL11.glEnable(GL20.GL_POINT_SPRITE);
-		GL11.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
-		GL11.glEnable(GL_BLEND);
-		GL11.glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-		boolean postprocessing = false;
-
-		// Render loop
-		while (!glfwWindowShouldClose(wndHandle))
-		{
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			pipeline.use();
-
-			if(postprocessing)
-				pipeline.f.bind();
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glEnableClientState(GL_VERTEX_ARRAY);
-
-			pipeline.points.bind();
-			glDrawArrays(GL_POINTS, 0, info.obj_count);
-			pipeline.points.unbind();
-
-			// Particelle
-			/*glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_POINTS, 0, info.obj_count);*/
-
-			// Floor
-			/*glBindBuffer(GL_ARRAY_BUFFER, floor);
-			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_TRIANGLES, 0, 6);*/
-
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
-			//glDisableClientState(GL_VERTEX_ARRAY);
-
-			/*if(postprocessing)
-			{
-				pipeline.f.unbind();
-
-				// Usa gli shader per lo schermo
-				screen.use();
-				//glEnableClientState(GL_VERTEX_ARRAY);
-
-				// Framebuffer texture
-				//glBindBuffer(GL_ARRAY_BUFFER, quad);
-				//glVertexPointer(3, GL_FLOAT, 0, 0);
-				//glActiveTexture(GL_TEXTURE0);
-				//glBindTexture(GL_TEXTURE_2D, pipeline.f.getTex());
-				//glDrawArrays(GL_TRIANGLES, 0, 6);
-
-				//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				pipeline.screen.bind();
-				glEnableVertexAttribArray(0);
-				//glEnableVertexAttribArray(1);
-				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, pipeline.f.getTex());
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-				pipeline.screen.unbind();
-			}*/
-
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glfwSwapBuffers(wndHandle);
-			glfwPollEvents();
-
-			refresh();
-		}
-
-		// Libera le risorse
-		glfwFreeCallbacks(wndHandle);
-		glfwDestroyWindow(wndHandle);
-		glfwTerminate();
-	}
-
-	private void setCallbacks()
-	{
-		// Callback per il resize della finestra
-		glfwSetWindowSizeCallback(wndHandle, (window, width, height) -> {
-			glViewport(0, 0, width, height);
-			pipeline.createProjectionMatrix(width / height);
-		});
-
-		// Callback per la tastiera
-		glfwSetKeyCallback(wndHandle, (window, key, scancode, action, mods) -> {
-			switch(key)
-			{
-			case GLFW_KEY_UP:
-				pipeline.pitch -= 0.01f;
-				break;
-
-			case GLFW_KEY_DOWN:
-				pipeline.pitch += 0.01f;
-				break;
-
-			case GLFW_KEY_LEFT:
-				pipeline.yaw -= 0.01f;
-				break;
-
-			case GLFW_KEY_RIGHT:
-				pipeline.yaw += 0.01f;
-				break;
-
-			case GLFW_KEY_W:
-				pipeline.cameraPos.add(
-						(float) (Math.sin(pipeline.yaw) * -0.1),
-						(float) (Math.sin(pipeline.pitch) * 0.1),
-						(float) (Math.cos(pipeline.yaw) * 0.1));
-				break;
-
-			case GLFW_KEY_S:
-				pipeline.cameraPos.sub(
-						(float) (Math.sin(pipeline.yaw) * -0.1),
-						(float) (Math.sin(pipeline.pitch) * 0.1),
-						(float) (Math.cos(pipeline.yaw) * 0.1));
-				break;
-
-			}
-			pipeline.bindProjectionMatrix();
-		});
-	}
-	
-	private void createWin()
-	{
-		if (!glfwInit())
-			throw new IllegalStateException("Unable to initialize GLFW");
-
-		// Crea la finestra e verifica che sia valida
-		wndHandle = glfwCreateWindow(info.winDim.width, info.winDim.height, "Hello World!", NULL, NULL);
-		if (wndHandle == NULL)
-			throw new RuntimeException("Failed to create the GLFW window");
-
-		// Crea il contesto grafico e prepara la finestra
-		glfwGetVideoMode(glfwGetPrimaryMonitor());
-		glfwSetWindowPos(wndHandle, 200, 200);
-		glfwMakeContextCurrent(wndHandle);
-		glfwSwapInterval(1);
-		glfwShowWindow(wndHandle);
-
-		GL.createCapabilities();
+		
+		g.loopGL();
 	}
 }
