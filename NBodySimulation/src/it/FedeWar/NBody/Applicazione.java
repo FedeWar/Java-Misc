@@ -28,6 +28,7 @@ public class Applicazione extends JFrame
 	{
 		public void actionPerformed(ActionEvent arg)
 		{
+			// Testo del bottone premuto
 			String src = ((JButton) arg.getSource()).getText();
 			
 			// Premuto "Avvia"
@@ -47,7 +48,12 @@ public class Applicazione extends JFrame
 			else if(src.compareTo("Cambia Simulazione") == 0)
 			{
 				sim = PluginManager.create(lstSims.getSelectedIndex());
+				pnlSim.removeAll();
+				pnlSim.revalidate();
+				pnlSim.setLayout(null);
 				sim.createSettingsGUI(pnlSim);
+				pnlSim.validate();
+				pnlSim.repaint();
 			}
 		}
 	}
