@@ -9,12 +9,12 @@ import java.io.InputStream;
 
 import javax.swing.JPanel;
 
+import org.fedewar.fog.gpu.Shader;
+import org.fedewar.fog.gpu.Shader.shader_t;
 import org.fedewar.fog.gui.GLFrame;
 import org.fedewar.fog.objects.Camera;
 import org.fedewar.fog.objects.VAO;
-import org.fedewar.fog.pipeline.Pipeline;
-import org.fedewar.fog.pipeline.Shader;
-import org.fedewar.fog.pipeline.Shader.shader_t;
+import org.fedewar.fog.pipeline.Program;
 
 import com.sun.javafx.geom.Vec3d;
 
@@ -33,7 +33,7 @@ public class Simulation_3D extends Simulation
 
 	private class SimGUI extends GLFrame
 	{
-		private Pipeline pipeline;
+		private Program pipeline;
 		private Camera camera;
 		private VAO objects;
 		
@@ -57,11 +57,11 @@ public class Simulation_3D extends Simulation
 		@Override
 		public void initGLCallback()
 		{
-			pipeline = new Pipeline();
-			InputStream in = Pipeline.class.getResourceAsStream("res/vertex.glsl");
+			pipeline = new Program();
+			InputStream in = Shader.class.getResourceAsStream("res/vertex-particles.glsl");
 			Shader vrtx = new Shader(shader_t.VERTEX, in);
 			
-			in = Pipeline.class.getResourceAsStream("res/fragment.glsl");
+			in = Shader.class.getResourceAsStream("res/fragment-particles.glsl");
 			Shader frgm = new Shader(shader_t.FRAGMENT, in);
 			
 			pipeline.attach(vrtx);
@@ -77,7 +77,7 @@ public class Simulation_3D extends Simulation
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 			
-			objects = new VAO();
+			objects = new VAO(VAO.POINTS);
 		}
 		
 		public void setVBOs(float[] pos, float[] color)
