@@ -26,19 +26,21 @@ public class GraphPanel extends JPanel
 		zoomX = (float) (2.0f / width * Math.PI);
 		zoomY = (float) (2.0f / height);
 		Waves = new ArrayList<Wave>();
-		Waves.add(new Wave());
 	}
 	
 	/* I controlli sono stati modificati, quindi bisogna
 	 * sostituire l'onda i cui parametri sono cambiati */
 	public void setWave(int id, Wave W)
 	{
-		Waves.set(id, W);
+		if(id < Waves.size() && id > 0)
+			Waves.set(id, W);
 	}
 	
 	public Wave getWave(int id)
 	{
-		return Waves.get(id);
+		if(id < Waves.size() && id > 0)
+			return Waves.get(id);
+		return null;
 	}
 	
 	public void addWave(Wave wave)
@@ -46,13 +48,17 @@ public class GraphPanel extends JPanel
 		Waves.add(wave);
 	}
 	
-	public void removeWave(int index)
-	{
+	/*
+	 * Rimuove l'elemento in posizione index, gli
+	 * elementi seguenti sono spostati in basso.
+	 * 
+	 * @param index L'indice dell'elemento da eliminare.
+	 */
+	public void removeWave(int index) {
 		Waves.remove(index);
 	}
 	
-	public int wavesCount()
-	{
+	public int wavesCount() {
 		return Waves.size();
 	}
 	
