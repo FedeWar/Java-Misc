@@ -32,13 +32,13 @@ public class GraphPanel extends JPanel
 	 * sostituire l'onda i cui parametri sono cambiati */
 	public void setWave(int id, Wave W)
 	{
-		if(id < Waves.size() && id > 0)
+		if(id < Waves.size() && id >= 0)
 			Waves.set(id, W);
 	}
 	
 	public Wave getWave(int id)
 	{
-		if(id < Waves.size() && id > 0)
+		if(id < Waves.size() && id >= 0)
 			return Waves.get(id);
 		return null;
 	}
