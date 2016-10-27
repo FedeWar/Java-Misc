@@ -11,7 +11,9 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JSpinner.ListEditor;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -31,7 +33,9 @@ public class WavePanel extends JPanel
 	private JTextField	txtHz;
 	private JTextField	txtA;
 	
-	/* Cattura tutti gli eventi generati da un click */
+	/*
+	 * Cattura tutti gli eventi generati da un click.
+	 */
 	class ButtonListener implements MouseListener
 	{
 		@Override
@@ -39,28 +43,25 @@ public class WavePanel extends JPanel
 		{
 			Object source = arg0.getSource();
 			
-			/* Fa scegliere all'utente, tramite una dialog box, il colore da usare */
+			// Fa scegliere all'utente, tramite una dialog box, il colore da usare
 			if(source instanceof JButton && ((JButton)source).getText() == "Colore")
 			{
 				Color scelto = JColorChooser.showDialog(null, "Scegli un Colore" , Color.GREEN);
 				if(scelto != null)
 					setColor(getSelectedId(), scelto);
 			}
-			/* Aggiunge o rimuove un onda */
 			else if(source instanceof JLabel)
 			{
-				/* Ottiene la sorgente dell'evento */
-				JLabel src = (JLabel)arg0.getSource();
+				// Ottiene il testo dell'elemento che ha lanciato l'evento
+				String src = ((JLabel)arg0.getSource()).getText();
 				
-				/* Se � stata premuta la label '+'
-				 * aggiunge un'onda alla lista*/
-				if(src.getText().compareTo("+") == 0)
-					pnlGraph.addWave(new Wave());
+				// Aggiunge un'onda alla lista
+				if(src.compareTo("+") == 0)
+					addWave();
 				
-				/* Se � stata premuta la label '-'
-				 * rimuove un'onda dalla lista */
-				else if(src.getText().compareTo("-") == 0)
-					pnlGraph.removeWave(getSelectedId());
+				// Rimuove l'onda selezionata alla lista
+				else if(src.compareTo("-") == 0)
+					removeWave();
 			}
 			else
 			{
@@ -74,22 +75,111 @@ public class WavePanel extends JPanel
 		@Override public void mouseReleased(MouseEvent arg0) {}
 	}
 	
-	/* Cattura gli eventi dagli Spinner */
+	/*
+	 * Visualizza il testo del JSpinner nel formato pos/max.
+	 * Con 0 < posizione <= max e max >= 0.
+	 */
+	class CustomListModel extends SpinnerListModel
+	{
+		private static final long serialVersionUID = -364597415670249620L;
+		
+		private int max;
+		private int pos;
+		private ChangeListener listener;
+		private final ChangeEvent event;
+		
+		public CustomListModel()
+		{
+			event = new ChangeEvent(this);
+			max = pos = 0;
+		}
+		
+		public void inc()
+		{
+			++max;
+			listener.stateChanged(event);
+		}
+		
+		public void dec() 
+		{
+			--max;
+			checkBounds();
+			listener.stateChanged(event);
+		}
+		
+		@Override
+		public void addChangeListener(ChangeListener l) {
+			listener = l;
+		}
+
+		@Override
+		public Object getNextValue()
+		{
+			++pos;
+			checkBounds();
+			listener.stateChanged(event);
+			return genStr();
+		}
+
+		@Override
+		public Object getPreviousValue()
+		{
+			listener.stateChanged(event);
+			--pos;
+			checkBounds();
+			return genStr();
+		}
+
+		@Override
+		public Object getValue() {
+			return genStr();
+		}
+
+		@Override
+		public void removeChangeListener(ChangeListener l) {
+			listener = null;
+		}
+
+		@Override
+		public void setValue(Object value)
+		{
+			String str = (String) value;
+			pos = Integer.parseInt(str.substring(0, str.indexOf('/') - 1));
+			checkBounds();
+			listener.stateChanged(event);
+		}
+
+		private void checkBounds()
+		{
+			if(max < 0)
+				max = 0;
+			if(pos <= 0)
+				pos = 1;
+			if(pos > max)
+				pos = max;
+		}
+		
+		private String genStr() {
+			return new String(String.valueOf(pos) + " / " + max);
+		}
+	}
+	
+	/*
+	 * Cattura gli eventi dagli Spinner.
+	 */
 	class SpinnerListener implements ChangeListener
 	{
-		int oldId = 0;
+		// Onda selezionata prima della generazione dell'evento
+		private int oldId = 0;
+		
 		@Override public void stateChanged(ChangeEvent e)
 		{
-			/* Controlla che i valori non sballino */
 			int newId = getSelectedId();
-			if(newId < 0)
-				newId = setSelectedId(0);
-			else if(newId >= pnlGraph.wavesCount())
-				newId = setSelectedId(pnlGraph.wavesCount() - 1);
 			
-			/* Aggiorna l'onda modificata */
+			// Aggiorna l'onda modificata
 			pnlGraph.setWave(oldId, getSelectedWave());
-			/* Aggiorna i controlli di conseguenza */
+			
+			// Aggiorna i controlli di conseguenza
 			setSelectedWave(pnlGraph.getWave(newId));
 			
 			pnlGraph.repaint();
@@ -102,53 +192,29 @@ public class WavePanel extends JPanel
 		pnlGraph = gp;
 		initialize();
 	}
-	
-	public double getHz()
-	{
-		return Double.valueOf(txtHz.getText());
-	}
-	
-	public void setHz(double newVal)
-	{
-		txtHz.setText(String.valueOf(newVal));
-	}
-	
-	public double getA()
-	{
-		return Double.valueOf(txtA.getText());
-	}
-	
-	public void setA(double A)
-	{
-		txtA.setText(String.valueOf(A));
-	}
 
+	/*
+	 * Restituisce l'indice dell'onda selezionata sullo spinner.
+	 */
 	public int getSelectedId()
 	{
-		return (int) spnWavID.getValue();
-	}
-	
-	public int setSelectedId(int id)
-	{
-		spnWavID.setValue(id);
-		return id;
+		// Esegue il parsing del numero
+		String str = (String) spnWavID.getValue();
+		return Integer.parseInt(str.substring(0, str.indexOf('/') - 1)) - 1;
 	}
 
-	public void setColor(int id, Color color)
-	{
-		btnColore.setBackground(color);
-		btnColore.setForeground(new Color(
-			255 - color.getRed(),
-			255 - color.getGreen(),
-			255 - color.getBlue()));
-	}
-
+	/*
+	 * Inpacchetta tutte le informazioni, contenute
+	 * nei controlli della GUI, in un oggetto Wave.
+	 * 
+	 * @return Un nuovo oggetto Wave.
+	 */
 	public Wave getSelectedWave()
 	{
 		Wave W = new Wave();
 		
-		W.Hz = getHz();
-		W.Amp = getA();
+		W.Hz = Double.valueOf(txtHz.getText());
+		W.Amp = Double.valueOf(txtA.getText());
 		W.isShown = chckbxEvidenzia.isSelected();
 		W.Pos.width = (int) spnXOffset.getValue();
 		W.Pos.height = (int) spnYOffset.getValue();
@@ -157,10 +223,19 @@ public class WavePanel extends JPanel
 		return W;
 	}
 	
+	/*
+	 * Imposta i valori dei controlli secondi
+	 * le infomazioni dell'onda W.
+	 * 
+	 * @param W L'onda da rappresentare.
+	 */
 	public void setSelectedWave(Wave W)
 	{
-		setHz(W.Hz);
-		setA(W.Amp);
+		if(W == null)
+			return;
+		
+		txtHz.setText(String.valueOf(W.Hz));
+		txtA.setText(String.valueOf(W.Amp));
 		chckbxEvidenzia.setSelected(W.isShown);
 		spnXOffset.setValue(W.Pos.width);
 		spnYOffset.setValue(W.Pos.height);
@@ -171,12 +246,48 @@ public class WavePanel extends JPanel
 			255 - W.color.getBlue()));
 	}
 	
+	private void setColor(int id, Color color)
+	{
+		btnColore.setBackground(color);
+		btnColore.setForeground(new Color(
+			255 - color.getRed(),
+			255 - color.getGreen(),
+			255 - color.getBlue()));
+	}
+	
+	/*
+	 * Aggiunge una nuova onda alla lista.
+	 */
+	private void addWave()
+	{
+		// Aumenta la lunghezza della lista di uno
+		((CustomListModel)spnWavID.getModel()).inc();
+		
+		// Avverte la lista delle onde di aggiungerne una
+		pnlGraph.addWave(new Wave());
+	}
+	
+	/*
+	 * Rimuove dalla lista l'onda selezionata.
+	 */
+	private void removeWave()
+	{
+		// Riduce di uno il numero di onde
+		((CustomListModel)spnWavID.getModel()).dec();
+		
+		// Avverte la lista di onde di eliminarne una
+		pnlGraph.removeWave(getSelectedId());
+	}
+	
+	/*
+	 * Inizializza i controlli dell'intergaccia grafica.
+	 */
 	private void initialize()
 	{
-		/* Listener */
+		// Listener
 		ButtonListener BL = new ButtonListener();
 		
-		/* Label */
+		// Label
 		
 		JLabel lblFrequenza = new JLabel("Frequenza");
 		lblFrequenza.setToolTipText("La frequenza dell'onda");
@@ -222,7 +333,7 @@ public class WavePanel extends JPanel
 		lblRemoveWave.addMouseListener(BL);
 		add(lblRemoveWave);
 		
-		/* Checkbox */
+		// Checkbox
 		
 		chckbxEvidenzia = new JCheckBox("Evidenzia");
 		chckbxEvidenzia.setMnemonic('e');
@@ -230,11 +341,13 @@ public class WavePanel extends JPanel
 		chckbxEvidenzia.setBounds(10, 215, 218, 23);
 		add(chckbxEvidenzia);
 		
-		/* Spinner */
+		// Spinner
 		
-		spnWavID = new JSpinner();
+		spnWavID = new JSpinner(new CustomListModel());
 		spnWavID.setBounds(130, 55, 71, 20);
 		spnWavID.addChangeListener(new SpinnerListener());
+		ListEditor dEditor = new JSpinner.ListEditor(spnWavID);
+		spnWavID.setEditor(dEditor);
 		add(spnWavID);
 		
 		spnXOffset = new JSpinner();
@@ -245,7 +358,7 @@ public class WavePanel extends JPanel
 		spnYOffset.setBounds(104, 188, 124, 20);
 		add(spnYOffset);
 		
-		/* Textfield */
+		// Textfield
 		
 		txtHz = new JTextField();
 		txtHz.setText("1.0");
@@ -261,7 +374,7 @@ public class WavePanel extends JPanel
 		txtA.setColumns(10);
 		add(txtA);
 		
-		/* Button */
+		// Button
 		
 		btnColore = new JButton("Colore");
 		btnColore.setBounds(72, 245, 89, 23);
