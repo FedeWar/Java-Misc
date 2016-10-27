@@ -53,7 +53,7 @@ public class MainFrame
 			{
 				pnlGraph.Parse(function.getText());
 				pnlWave.setSelectedWave(pnlGraph.getWave(0));
-				pnlWave.setSelectedId(0);
+//				pnlWave.setSelectedId(0); FIXME
 			}
 		}
 
