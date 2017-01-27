@@ -18,7 +18,9 @@
 package it.FedeWar.Fractnet.fractals;
 
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
 
+import it.FedeWar.Fractnet.math.BigComplex;
 import it.FedeWar.Fractnet.math.Complex;
 
 /* Classe base per frattali in due dimensioni */
@@ -74,10 +76,45 @@ public abstract class ComplexFract extends Fractal
 		out.i = rotation[2] * posX + rotation[3] * posY;
 	}
 	
+	BigDecimal c0, c1, r0, r1, r2, r3;
+	
+	public void computeBigCache()
+	{
+		c0 = new BigDecimal(clipPos[0]);
+		c1 = new BigDecimal(clipPos[1]);
+		r0 = new BigDecimal(rotation[0]);
+		r1 = new BigDecimal(rotation[1]);
+		r2 = new BigDecimal(rotation[2]);
+		r3 = new BigDecimal(rotation[3]);
+	}
+	
+	/* Converte le coordinate dello schermo in coordinate complesse */
+	public void toFractalCoordinates(int x, int y, BigComplex out)
+	{
+		// La proiezione dalle coordinate dello schermo a quelle
+		// del frattale avviene con la formula:
+		// z = rot * (p * clipSize / screenSize - clipPos)
+		BigDecimal posX = new BigDecimal(x * clipSize[0] / width()).subtract(c0);
+		BigDecimal posY = new BigDecimal(y * clipSize[1] / height()).subtract(c1);
+		
+		out.r = posX.multiply(r0).add(posY.multiply(r1));
+		out.i = posX.multiply(r2).add(posY.multiply(r3));
+	}
+	
 	public void setClipPos(double[] newTrasl)
 	{
 		clipPos[0] = newTrasl[0];
 		clipPos[1] = newTrasl[1];
+	}
+	
+	/* Getter per la posizione del clipping,
+	 * usato principalmente per debug */
+	public double[] getClipPos()
+	{
+		double[] trasl = new double[2];
+		trasl[0] = clipPos[0];
+		trasl[1] = clipPos[1];
+		return trasl;
 	}
 	
 	/* Setter per lo zoom */

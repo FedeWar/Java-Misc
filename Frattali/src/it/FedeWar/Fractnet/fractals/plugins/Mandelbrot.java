@@ -18,6 +18,8 @@
 
 package it.FedeWar.Fractnet.fractals.plugins;
 
+import java.math.BigDecimal;
+
 import it.FedeWar.Fractnet.fractals.ComplexFract;
 import it.FedeWar.Fractnet.fractals.Palette;
 import it.FedeWar.Fractnet.math.*;
@@ -27,7 +29,6 @@ public class Mandelbrot extends ComplexFract
 {
 	private class StdPalette extends Palette
 	{
-
 		@Override
 		public int getRed(int x) {
 			return 0;
@@ -43,10 +44,17 @@ public class Mandelbrot extends ComplexFract
 			return x;
 		}
 	}
+	
+	boolean useBigComplex = false;
 
 	/* Calcola l'immagine */
 	public void draw()
 	{
+		if(useBigComplex) {
+			bigDraw();
+			return;
+		}
+		
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 		int count;
@@ -71,6 +79,41 @@ public class Mandelbrot extends ComplexFract
 		}
 	}
 
+	/*
+	 * FIXME è troppo lento, ci vorrebbero giorni a renderizzare un frame,
+	 * assolutamente non pronto all'uso e attivabile solo da debugger
+	 */
+	private void bigDraw()
+	{
+		int width = canvas.getWidth();
+		int height = canvas.getHeight();
+		int count;
+		StdPalette palette = new StdPalette();
+		BigComplex z = new BigComplex(0, 0);
+		BigDecimal quattro = new BigDecimal(4.0);
+
+		BigComplex c = new BigComplex(0.0, 0.0);
+		
+		computeBigCache();
+		
+		for(int x = 0; x < width; x++)
+		{
+			for(int y = 0; y < height; y++)
+			{
+				toFractalCoordinates(x, y, c);
+				z.copyFrom(c);
+
+				for(count = 1; count < MAX && z.sqrdNorm().compareTo(quattro) == -1; count++)
+				{
+					z.pow(2);
+					z.add(c);
+				}
+
+				canvas.setRGB(x, y, palette.getRGB(count));
+			}
+		}
+	}
+	
 	/* Mandelbrot non accetta argomenti aggiuntivi */
 	public void setC(double r, double i) {}
 }

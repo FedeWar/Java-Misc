@@ -201,7 +201,10 @@ class Canvas extends JPanel
 	{
 		newClipWidth = newZoom;
 		refreshFractal = false;
-		System.out.println(newZoom);
+		
+		// Debug
+		double[] d = ((ComplexFract)currFract).getClipPos();
+		System.out.println("Zoom: " + newZoom + "\nPosizione: " + d[0] + ';' + d[1] + '\n');
 	}
 	
 	/* Getter per lo zoom */
